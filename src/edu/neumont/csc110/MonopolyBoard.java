@@ -7,10 +7,9 @@ import edu.neumont.csc110.equipment_abstract.Card;
 import edu.neumont.csc110.equipment_abstract.Square;
 
 public class MonopolyBoard {
-
-	Square[] squares;
-	Card[] chanceCards, communityChestCards;
-	Piece[] pieces;
+	private final Square[] squares;
+	private final Card[] chanceCards, communityChestCards;
+	private final Piece[] pieces;
 	
 	public MonopolyBoard() {
 		squares = new Square[36];
