@@ -34,7 +34,7 @@ public class Property extends Square {
 	}
 
 	@Override
-	public void landedOn() {
+	public void landedOn(Player player) {
 		
 	}
 }
