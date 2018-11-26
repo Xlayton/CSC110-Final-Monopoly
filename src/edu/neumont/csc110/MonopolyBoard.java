@@ -23,7 +23,7 @@ public class MonopolyBoard {
 	 * Constructs and initializes a new Monopoly board with a maximum of 8 players
 	 */
 	public MonopolyBoard() {
-		squares = new Square[36];
+		squares = new Square[40];
 		chanceCards = new ChanceCard[16];
 		communityChestCards = new CommunityChestCard[16];
 		pieces = new Piece[8];
@@ -36,7 +36,7 @@ public class MonopolyBoard {
 	 * @param distance - how far to move it
 	 */
 	public void movePiece(Player player, int distance) {
-
+		player.getPiece().setLocation((player.getPiece().getLocation() + distance) % squares.length);
 	}
 
 	/**
@@ -69,6 +69,6 @@ public class MonopolyBoard {
 	 * @param shouldPassGo - whether the player should collect $200 if their piece passes go
 	 */
 	public void moveTo(Player player, Square location, boolean shouldPassGo) {
-
+		
 	}
 }
