@@ -64,4 +64,8 @@ public class Player {
 	public int getHotelCount() {
 		return hotelCount;
 	}
+	
+	public Piece getPiece() {
+		return piece;
+	}
 }

@@ -1,7 +1,9 @@
 package edu.neumont.csc110.game_pieces;
 
 public class Piece {
+	
 	private String art;
+	private int location;
 	
 	public Piece(String art) {
 		this.art = art;
@@ -14,5 +16,13 @@ public class Piece {
 	@Override
 	public String toString() {
 		return this.getArt();
+	}
+	
+	public int getLocation() {
+		return location;
+	}
+	
+	public void setLocation(int newLocation) {
+		location =  newLocation;
 	}
 }
