@@ -1,5 +1,6 @@
 package edu.neumont.csc110.game_pieces;
 
+import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces_abstract.Card;
 
 public class CommunityChestCard extends Card {
@@ -9,7 +10,7 @@ public class CommunityChestCard extends Card {
 	}
 
 	@Override
-	public void applyEffect() {
+	public void applyEffect(Player toApply) {
 		
 	}
 

@@ -9,7 +9,7 @@ public class GoToJailSquare extends SpecialSquare {
 	}
 
 	@Override
-	protected void applyEffect(Player player) {
+	protected void applyEffect(Player toApply) {
 		
 	}
 }

@@ -12,7 +12,7 @@ public class TaxSquare extends SpecialSquare {
 	}
 
 	@Override
-	protected void applyEffect(Player player) {
+	protected void applyEffect(Player toApply) {
 		
 	}
 }
