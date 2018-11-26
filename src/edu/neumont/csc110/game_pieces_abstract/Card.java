@@ -1,4 +1,4 @@
-package edu.neumont.csc110.equipment_abstract;
+package edu.neumont.csc110.game_pieces_abstract;
 
 public abstract class Card {
 	private final String name, flavorText;

@@ -1,14 +1,14 @@
 package edu.neumont.csc110;
 
 import java.util.ArrayList;
-import edu.neumont.csc110.equipment.Piece;
-import edu.neumont.csc110.equipment.Property;
-import edu.neumont.csc110.equipment_abstract.Building;
+import edu.neumont.csc110.game_pieces.Piece;
+import edu.neumont.csc110.game_pieces.Property;
+import edu.neumont.csc110.game_pieces_abstract.Building;
 
 public class Player {
 	private final String name;
 	private final Piece piece;
-	ArrayList<Property> properties;
+	private final ArrayList<Property> properties;
 
 	int balance;
 

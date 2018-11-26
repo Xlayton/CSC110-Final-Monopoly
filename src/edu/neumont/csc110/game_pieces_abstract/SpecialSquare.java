@@ -1,4 +1,4 @@
-package edu.neumont.csc110.equipment_abstract;
+package edu.neumont.csc110.game_pieces_abstract;
 
 import edu.neumont.csc110.Player;
 
