@@ -12,7 +12,7 @@ public class TaxSquare extends SpecialSquare {
 	}
 
 	@Override
-	protected void applyEffect(Player toApply) {
-		
+	protected void applyEffect(Player toApply) throws IllegalArgumentException {
+		toApply.subtractBalance(TAX_AMOUNT);
 	}
 }
