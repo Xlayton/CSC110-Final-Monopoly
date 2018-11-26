@@ -9,7 +9,7 @@ public class CommunityChestCard extends Card {
 	}
 
 	@Override
-	public void getEffect() {
+	public void applyEffect() {
 		
 	}
 

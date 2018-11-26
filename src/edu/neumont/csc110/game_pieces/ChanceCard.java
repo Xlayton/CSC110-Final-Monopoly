@@ -9,7 +9,7 @@ public class ChanceCard extends Card {
 	}
 
 	@Override
-	public void getEffect() {
+	public void applyEffect() {
 		
 	}
 

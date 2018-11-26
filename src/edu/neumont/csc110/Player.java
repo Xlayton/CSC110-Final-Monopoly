@@ -10,8 +10,10 @@ public class Player {
 	private final String name;
 	private final Piece piece;
 	private final ArrayList<Property> properties;
-
-	int balance;
+	private int houseCount;
+	private int hotelCount;
+	
+	private int balance;
 
 	public Player(String name, Piece piece) {
 		this(name, piece, 1500);
@@ -24,6 +26,17 @@ public class Player {
 		properties = new ArrayList<>();
 	}
 
+	public void subtractBalance(int amount) {
+		if(amount > balance) {
+			throw new IllegalArgumentException("Insufficient funds");
+		}
+		balance -= amount;
+	}
+	
+	public void addBalance(int amount) {
+		balance += amount;
+	}
+	
 	public boolean isBankrupt() {
 		return false;
 	}
@@ -42,5 +55,13 @@ public class Player {
 
 	public void sellBuilding(Property toSellFrom, Building toSell, int numberOfBuildings) {
 
+	}
+	
+	public int getHouseCount() {
+		return houseCount;
+	}
+	
+	public int getHotelCount() {
+		return hotelCount;
 	}
 }
