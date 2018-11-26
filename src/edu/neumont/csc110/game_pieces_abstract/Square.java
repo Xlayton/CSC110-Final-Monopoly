@@ -1,4 +1,6 @@
-package edu.neumont.csc110.equipment_abstract;
+package edu.neumont.csc110.game_pieces_abstract;
+
+import edu.neumont.csc110.Player;
 
 public abstract class Square {
 	protected final String name;
@@ -7,7 +9,7 @@ public abstract class Square {
 		this.name = name;
 	}
 	
-	public abstract void landedOn();
+	public abstract void landedOn(Player player);
 	
 	public String getName() {
 		return name;

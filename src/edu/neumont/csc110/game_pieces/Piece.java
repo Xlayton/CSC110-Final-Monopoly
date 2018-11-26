@@ -1,4 +1,4 @@
-package edu.neumont.csc110.equipment;
+package edu.neumont.csc110.game_pieces;
 
 public class Piece {
 	private String art;

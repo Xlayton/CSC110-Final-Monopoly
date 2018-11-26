@@ -1,6 +1,6 @@
-package edu.neumont.csc110.equipment;
+package edu.neumont.csc110.game_pieces;
 
-import edu.neumont.csc110.equipment_abstract.Building;
+import edu.neumont.csc110.game_pieces_abstract.Building;
 
 public class House extends Building {
 	private static int count = 32;

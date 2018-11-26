@@ -1,10 +1,10 @@
-package edu.neumont.csc110.equipment;
+package edu.neumont.csc110.game_pieces;
 
 import java.awt.Color;
 import java.util.ArrayList;
 import edu.neumont.csc110.Player;
-import edu.neumont.csc110.equipment_abstract.Building;
-import edu.neumont.csc110.equipment_abstract.Square;
+import edu.neumont.csc110.game_pieces_abstract.Building;
+import edu.neumont.csc110.game_pieces_abstract.Square;
 
 public class Property extends Square {
 
@@ -34,7 +34,7 @@ public class Property extends Square {
 	}
 
 	@Override
-	public void landedOn() {
+	public void landedOn(Player player) {
 		
 	}
 }

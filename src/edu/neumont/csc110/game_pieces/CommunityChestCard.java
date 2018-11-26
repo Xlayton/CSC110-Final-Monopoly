@@ -1,6 +1,6 @@
-package edu.neumont.csc110.equipment;
+package edu.neumont.csc110.game_pieces;
 
-import edu.neumont.csc110.equipment_abstract.Card;
+import edu.neumont.csc110.game_pieces_abstract.Card;
 
 public class CommunityChestCard extends Card {
 
