@@ -1,5 +1,7 @@
 package edu.neumont.csc110.game_pieces_abstract;
 
+import edu.neumont.csc110.Player;
+
 public abstract class Card {
 	private final String name, flavorText;
 	
@@ -16,5 +18,5 @@ public abstract class Card {
 		return flavorText;
 	}
 	
-	public abstract void getEffect();
+	public abstract void applyEffect(Player toApply);
 }

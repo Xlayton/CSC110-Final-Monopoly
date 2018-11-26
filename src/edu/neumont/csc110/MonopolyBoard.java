@@ -39,6 +39,16 @@ public class MonopolyBoard {
 
 	}
 
+	public Square getLocation(String locationName) {
+		for (Square square : squares) {
+			if (square.getName() == locationName) {
+				return square;
+			}
+		}
+		
+		return null;
+	}
+	
 	/**
 	 * Draws a card from either the chance deck or the community chest deck
 	 * 
