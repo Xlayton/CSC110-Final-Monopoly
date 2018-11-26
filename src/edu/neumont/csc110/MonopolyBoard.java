@@ -11,8 +11,8 @@ import edu.neumont.csc110.game_pieces_abstract.Square;
  * A monopoly board
  * 
  * @author Ryder James
- * @author Clayton Name
- * @author Maya Name
+ * @author Clayton Schrumpf
+ * @author Maya Shackleford
  */
 public class MonopolyBoard {
 	private final Square[] squares;

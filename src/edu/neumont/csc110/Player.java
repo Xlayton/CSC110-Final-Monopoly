@@ -1,6 +1,7 @@
 package edu.neumont.csc110;
 
 import java.util.ArrayList;
+import java.util.Random;
 import edu.neumont.csc110.game_pieces.Piece;
 import edu.neumont.csc110.game_pieces.Property;
 import edu.neumont.csc110.game_pieces_abstract.Building;
@@ -28,7 +29,7 @@ public class Player {
 	}
 
 	public int roll() {
-		return 0;
+		return (new Random().nextInt(6) + 1) + (new Random().nextInt(6) + 1);
 	}
 
 	public void mortgage(Property toMortgage) {
