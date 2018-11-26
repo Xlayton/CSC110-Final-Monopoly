@@ -14,5 +14,6 @@ public class GoToJailSquare extends SpecialSquare {
 	@Override
 	protected void applyEffect(Player toApply) {
 		toApply.getPiece().setLocation(JAIL_LOCATION);
+		toApply.setJailed(true);
 	}
 }

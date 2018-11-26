@@ -12,6 +12,7 @@ public class Player {
 	private final ArrayList<Property> properties;
 	private int houseCount;
 	private int hotelCount;
+	private boolean isJailed;
 	
 	private int balance;
 
@@ -67,5 +68,13 @@ public class Player {
 	
 	public Piece getPiece() {
 		return piece;
+	}
+	
+	public boolean isJailed() {
+		return isJailed;
+	}
+	
+	public void setJailed(boolean isJailed) {
+		this.isJailed = isJailed;
 	}
 }
