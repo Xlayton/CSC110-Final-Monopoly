@@ -28,7 +28,7 @@ public class Property extends Square {
 	}
 	
 	public boolean isOwned() {
-		return getOwner() == null;
+		return getOwner() != null;
 	}
 	
 	public Player getOwner() {
