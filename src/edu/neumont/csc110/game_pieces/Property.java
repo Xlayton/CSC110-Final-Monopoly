@@ -17,7 +17,7 @@ public class Property extends Square {
 		GREEN,
 		BLUE;
 	}
-
+	
 	private final Color color;
 	private final int price;
 	
@@ -33,6 +33,10 @@ public class Property extends Square {
 		isMortgaged = false;
 		owner = null;
 		buildings = new ArrayList<>();
+	}
+	
+	public void setOwnership(Player owner) {
+		this.owner = owner;
 	}
 	
 	public boolean isOwned() {

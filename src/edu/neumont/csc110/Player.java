@@ -12,7 +12,7 @@ public class Player {
 	private final Piece piece;
 	private final ArrayList<Property> properties;
   
-	private int houseCount, hotelCount, jailBreakCount, balance;
+	private int houseCount, hotelCount, jailBreakCount, railroadCount, utilityCount, balance;
 	private boolean isJailed;
 
 	public Player(String name, Piece piece) {
@@ -92,5 +92,13 @@ public class Player {
 	
 	public void setJailed(boolean isJailed) {
 		this.isJailed = isJailed;
+	}
+
+	public double getRailroadCount() {
+		return railroadCount;
+	}
+
+	public int getUtilCount() {
+		return utilityCount;
 	}
 }
