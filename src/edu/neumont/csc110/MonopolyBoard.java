@@ -44,7 +44,7 @@ public class MonopolyBoard {
 	 * @param distance - how far to move it
 	 */
 	public void movePiece(Player player, int distance) {
-
+		
 	}
 
 	public Square getLocation(String locationName) {
