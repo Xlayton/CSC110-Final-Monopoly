@@ -4,8 +4,8 @@ import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces_abstract.Card;
 
 public class JailBreakCard extends Card {
-	public JailBreakCard(String name, String flavorText) {
-		super(name, flavorText);
+	public JailBreakCard(String flavorText, boolean isChance) {
+		super(flavorText, isChance);
 	}
 
 	@Override

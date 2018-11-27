@@ -1,7 +1,7 @@
 package edu.neumont.csc110;
 
-import edu.neumont.csc110.game_pieces.ChanceCard;
-import edu.neumont.csc110.game_pieces.CommunityChestCard;
+import edu.neumont.csc110.game_pieces.ChanceCardList;
+import edu.neumont.csc110.game_pieces.CommunityChestCardList;
 import edu.neumont.csc110.game_pieces.Piece;
 import edu.neumont.csc110.game_pieces.Property;
 import edu.neumont.csc110.game_pieces_abstract.Card;
@@ -24,8 +24,8 @@ public class MonopolyBoard {
 	 */
 	public MonopolyBoard() {
 		squares = new Square[40];
-		chanceCards = new ChanceCard[16];
-		communityChestCards = new CommunityChestCard[16];
+		chanceCards = ChanceCardList.getChanceCards();
+		communityChestCards = CommunityChestCardList.getCommunityChestCards();
 		pieces = new Piece[8];
 	}
 
