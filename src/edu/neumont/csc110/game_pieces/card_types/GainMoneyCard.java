@@ -4,14 +4,17 @@ import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces_abstract.Card;
 
 public class GainMoneyCard extends Card {
-
-	public GainMoneyCard(String name, String flavorText) {
+	private final int my_gainAmount;
+	
+	public GainMoneyCard(String name, String flavorText, int gainAmount) {
 		super(name, flavorText);
+		
+		my_gainAmount = gainAmount;
 	}
 
 	@Override
 	public void applyEffect(Player toApply) {
-		
+		toApply.addBalance(my_gainAmount);
 	}
 
 }

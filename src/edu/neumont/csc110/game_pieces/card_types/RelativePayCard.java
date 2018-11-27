@@ -17,5 +17,4 @@ public class RelativePayCard extends Card {
 	public void applyEffect(Player toApply) throws IllegalArgumentException {
 		toApply.subtractBalance((toApply.getHouseCount() * houseCost) + (toApply.getHotelCount() * hotelCost));
 	}
-	
 }

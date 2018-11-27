@@ -10,11 +10,12 @@ public class Player {
 	private final String name;
 	private final Piece piece;
 	private final ArrayList<Property> properties;
+  
 	private int houseCount;
 	private int hotelCount;
-	private boolean isJailed;
-	
 	private int balance;
+	private int jailBreakCount;
+	private boolean isJailed;
 
 	public Player(String name, Piece piece) {
 		this(name, piece, 1500);
@@ -24,6 +25,7 @@ public class Player {
 		this.name = name;
 		this.piece = piece;
 		this.balance = initBalance;
+		this.jailBreakCount = 0;
 		properties = new ArrayList<>();
 	}
 
@@ -40,6 +42,22 @@ public class Player {
 	
 	public boolean isBankrupt() {
 		return false;
+	}
+	
+	public boolean hasJailBreak() {
+		return jailBreakCount > 0;
+	}
+	
+	public boolean jailBreak() {
+		if (hasJailBreak()) {
+			jailBreakCount--;
+			return true;
+		}
+		return false;
+	}
+	
+	public void giveJailBreak() {
+		jailBreakCount++;
 	}
 
 	public int roll() {

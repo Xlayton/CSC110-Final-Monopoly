@@ -11,8 +11,8 @@ public class ChanceCard extends Card {
 
 	@Override
 	public void applyEffect(Player toApply) {
-		// TODO Auto-generated method stub
 		
 	}
-
+	
 }
+
