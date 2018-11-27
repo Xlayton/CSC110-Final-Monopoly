@@ -9,9 +9,9 @@ public class RelativeTravelCard extends Card {
 	private final Square location;
 	private final MonopolyBoard board;
 
-	public RelativeTravelCard(String name, String flavorText, MonopolyBoard board, int spaces,
+	public RelativeTravelCard(String flavorText, boolean isChance, MonopolyBoard board, int spaces,
 			Square location) {
-		super(name, flavorText);
+		super(flavorText, isChance);
 		this.board = board;
 		this.location = location;
 	}

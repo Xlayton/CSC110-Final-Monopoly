@@ -3,15 +3,16 @@ package edu.neumont.csc110.game_pieces_abstract;
 import edu.neumont.csc110.Player;
 
 public abstract class Card {
-	private final String name, flavorText;
+	private final String flavorText;
+	private final boolean isChance;
 	
-	protected Card(String name, String flavorText) {
-		this.name = name;
+	protected Card(String flavorText, boolean isChance) {
 		this.flavorText = flavorText;
+		this.isChance = isChance;
 	}
 	
-	public String getName() {
-		return name;
+	public boolean isChance() {
+		return isChance;
 	}
 	
 	public String getFlavorText() {
@@ -22,6 +23,6 @@ public abstract class Card {
 	
 	@Override
 	public String toString() {
-		return this.getName() + ": " + this.getFlavorText();
+		return (isChance ? "Chance" : "Community Chest") + ": " + this.getFlavorText();
 	}
 }
