@@ -29,6 +29,10 @@ public class MonopolyBoard {
 		pieces = new Piece[8];
 	}
 
+	public Square getPieceLocation(Piece piece) {
+		return null;
+	}
+	
 	/**
 	 * Move a specified player's piece a number of spaces around the board
 	 * 
@@ -41,7 +45,7 @@ public class MonopolyBoard {
 
 	public Square getLocation(String locationName) {
 		for (Square square : squares) {
-			if (square.getName() == locationName) {
+			if (square.getName().equalsIgnoreCase(locationName)) {
 				return square;
 			}
 		}
@@ -80,5 +84,14 @@ public class MonopolyBoard {
 	 */
 	public void moveTo(Player player, Square location, boolean shouldPassGo) {
 
+	}
+	
+	private int getLocationIndex(Square location) {
+		for (int i = 0; i < squares.length; i++) {
+			if (location.equals(squares[i])) {
+				return i;
+			}
+		}
+		return -1;
 	}
 }

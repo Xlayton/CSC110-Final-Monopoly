@@ -11,7 +11,7 @@ public class JailBreakCard extends Card {
 
 	@Override
 	public void applyEffect(Player toApply) {
-		
+		toApply.giveJailBreak();
 	}
 
 }
