@@ -10,6 +10,6 @@ public class JailSquare extends SpecialSquare {
 
 	@Override
 	public void applyEffect(Player toApply) {
-
+		return;
 	}
 }

@@ -1,13 +1,22 @@
 package edu.neumont.csc110.game_pieces;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces_abstract.Building;
 import edu.neumont.csc110.game_pieces_abstract.Square;
 
 public class Property extends Square {
-
+	public enum Color {
+		BROWN,
+		CYAN,
+		MAGENTA,
+		ORANGE,
+		RED,
+		YELLOW,
+		GREEN,
+		BLUE;
+	}
+	
 	private final Color color;
 	private final int price;
 	
@@ -23,6 +32,10 @@ public class Property extends Square {
 		isMortgaged = false;
 		owner = null;
 		buildings = new ArrayList<>();
+	}
+	
+	public void setOwnership(Player owner) {
+		this.owner = owner;
 	}
 	
 	public boolean isOwned() {
