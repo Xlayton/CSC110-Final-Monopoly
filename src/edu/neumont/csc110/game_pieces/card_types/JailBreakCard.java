@@ -4,8 +4,8 @@ import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces_abstract.Card;
 
 public class JailBreakCard extends Card {
-	public JailBreakCard(String flavorText, boolean isChance) {
-		super(flavorText, isChance);
+	public JailBreakCard(boolean isChance) {
+		super("GET OUT OF JAIL FREE.\nThis card may be kept until needed or traded.", isChance);
 	}
 
 	@Override
