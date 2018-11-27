@@ -4,7 +4,6 @@ import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces_abstract.Card;
 
 public class JailBreakCard extends Card {
-
 	public JailBreakCard(String name, String flavorText) {
 		super(name, flavorText);
 	}
@@ -13,5 +12,4 @@ public class JailBreakCard extends Card {
 	public void applyEffect(Player toApply) {
 		toApply.giveJailBreak();
 	}
-
 }

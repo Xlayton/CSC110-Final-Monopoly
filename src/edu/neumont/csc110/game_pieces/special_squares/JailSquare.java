@@ -4,12 +4,12 @@ import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces_abstract.SpecialSquare;
 
 public class JailSquare extends SpecialSquare {
-	protected JailSquare(String name) {
+	public JailSquare(String name) {
 		super("Jail");
 	}
 
 	@Override
-	protected void applyEffect(Player toApply) {
+	public void applyEffect(Player toApply) {
 
 	}
 }

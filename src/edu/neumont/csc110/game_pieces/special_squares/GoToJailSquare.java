@@ -13,7 +13,7 @@ public class GoToJailSquare extends SpecialSquare {
 	}
 
 	@Override
-	protected void applyEffect(Player toApply) {
+	public void applyEffect(Player toApply) {
 		board.moveTo(toApply, board.getLocation("Jail"), false);
 		toApply.setJailed(true);
 	}

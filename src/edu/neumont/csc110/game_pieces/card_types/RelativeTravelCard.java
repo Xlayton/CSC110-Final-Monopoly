@@ -6,33 +6,32 @@ import edu.neumont.csc110.game_pieces_abstract.Card;
 import edu.neumont.csc110.game_pieces_abstract.Square;
 
 public class RelativeTravelCard extends Card {
-
-	private String location;
+	private final Square location;
 	private final MonopolyBoard board;
 
-	public RelativeTravelCard(String name, String flavorText, MonopolyBoard board, int spaces, Square location, int locaiton) {
-	public RelativeTravelCard(String name, String flavorText) {
+	public RelativeTravelCard(String name, String flavorText, MonopolyBoard board, int spaces,
+			Square location) {
 		super(name, flavorText);
 		this.board = board;
+		this.location = location;
 	}
 
 	@Override
 	public void applyEffect(Player toApply) {
-		if (location == "Go back 3 spaces") {
-	        Player toApplyprevpos = toApply;
-	        board.movePiece(toApply, -3);
-	        Player toApplyprevpos1 = toApply;
+		if (location == null) {
+			board.movePiece(toApply, -3);
 		}
 	}
+
 	public void moveToRailRoad(Player toApply) {
-		int[] moveRailRoad= {5, 15, 25, 35};
+		int[] moveRailRoad = {5, 15, 25, 35};
 		int workingnumber = 0;
 		int lowestNumber = Integer.MAX_VALUE;
 		int nearestRail = 0;
 		int getPieceLocation = 0;
-		
-		for (int i = 0; i<moveRailRoad.length; i++) {
-			getPieceLocation = board.getPieceLocation(toApply.getPiece());
+
+		for (int i = 0; i < moveRailRoad.length; i++) {
+//			getPieceLocation = board.getPieceLocation(toApply.getPiece());
 		}
 	}
 }

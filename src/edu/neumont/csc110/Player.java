@@ -12,10 +12,7 @@ public class Player {
 	private final Piece piece;
 	private final ArrayList<Property> properties;
   
-	private int houseCount;
-	private int hotelCount;
-	private int balance;
-	private int jailBreakCount;
+	private int houseCount, hotelCount, jailBreakCount, balance;
 	private boolean isJailed;
 
 	public Player(String name, Piece piece) {

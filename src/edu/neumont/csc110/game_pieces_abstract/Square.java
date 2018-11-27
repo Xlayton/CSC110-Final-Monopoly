@@ -3,7 +3,7 @@ package edu.neumont.csc110.game_pieces_abstract;
 import edu.neumont.csc110.Player;
 
 public abstract class Square implements Comparable<Square> {
-	protected final String name;
+	private final String name;
 	
 	protected Square(String name) {
 		this.name = name;

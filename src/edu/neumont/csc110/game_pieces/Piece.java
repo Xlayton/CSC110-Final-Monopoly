@@ -2,8 +2,7 @@ package edu.neumont.csc110.game_pieces;
 
 public class Piece {
 	
-	private String art;
-	private int location;
+	private final String art;
 	
 	public Piece(String art) {
 		this.art = art;

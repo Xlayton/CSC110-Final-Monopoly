@@ -5,7 +5,7 @@ import edu.neumont.csc110.game_pieces_abstract.Card;
 
 public class ChanceCard extends Card {
 
-	protected ChanceCard(String name, String flavorText) {
+	public ChanceCard(String name, String flavorText) {
 		super(name, flavorText);
 	}
 

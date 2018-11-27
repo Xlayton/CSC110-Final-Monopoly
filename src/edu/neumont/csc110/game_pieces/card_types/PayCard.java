@@ -14,6 +14,6 @@ public class PayCard extends Card {
 
 	@Override
 	public void applyEffect(Player toApply) throws IllegalArgumentException {
-		toApply.subtractBalance(my_payAmount);
+		toApply.subtractBalance(payAmount);
 	}
 }

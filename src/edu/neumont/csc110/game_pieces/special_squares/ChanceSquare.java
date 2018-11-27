@@ -9,7 +9,7 @@ public class ChanceSquare extends SpecialSquare {
 	}
 
 	@Override
-	protected void applyEffect(Player toApply) {
+	public void applyEffect(Player toApply) {
 		
 	}
 }

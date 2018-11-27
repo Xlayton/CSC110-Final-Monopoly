@@ -7,7 +7,7 @@ public abstract class SpecialSquare extends Square {
 		super(name);
 	}
 
-	protected abstract void applyEffect(Player player);
+	public abstract void applyEffect(Player player);
 	
 	@Override
 	public final void landedOn(Player player) {

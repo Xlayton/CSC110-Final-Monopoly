@@ -5,11 +5,11 @@ import edu.neumont.csc110.game_pieces_abstract.SpecialSquare;
 
 public class CommunityChestSquare extends SpecialSquare {
 	protected CommunityChestSquare(String name) {
-		super("Community");
+		super("Community Chest");
 	}
 
 	@Override
-	protected void applyEffect(Player toApply) {
+	public void applyEffect(Player toApply) {
 		
 	}
 }

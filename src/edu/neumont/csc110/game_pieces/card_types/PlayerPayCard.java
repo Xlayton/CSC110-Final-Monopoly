@@ -4,9 +4,9 @@ import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces_abstract.Card;
 
 public class PlayerPayCard extends Card {
-	
-	private final boolean payCurrent;
 	private final Player[] allPlayers;
+	private final boolean payCurrent;
+	
 	private int amtChange;
 	
 	public PlayerPayCard(String name, String flavorText, boolean payCurrent, Player[] allPlayers, int amtChange) {
