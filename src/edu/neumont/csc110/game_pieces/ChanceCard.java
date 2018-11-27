@@ -1,5 +1,6 @@
 package edu.neumont.csc110.game_pieces;
 
+import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces_abstract.Card;
 
 public class ChanceCard extends Card {
@@ -9,7 +10,7 @@ public class ChanceCard extends Card {
 	}
 
 	@Override
-	public void getEffect() {
+	public void applyEffect(Player toApply) {
 		
 	}
 

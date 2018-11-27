@@ -7,6 +7,7 @@ import edu.neumont.csc110.game_pieces.Property;
 import edu.neumont.csc110.game_pieces_abstract.Building;
 
 public class Player {
+	public static Player player;
 	private final String name;
 	private final Piece piece;
 	private final ArrayList<Property> properties;
