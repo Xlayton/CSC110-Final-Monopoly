@@ -11,7 +11,8 @@ public class Player {
 	private final Piece piece;
 	private final ArrayList<Property> properties;
 
-	int balance;
+	private int balance;
+	private int jailBreakCount;
 
 	public Player(String name, Piece piece) {
 		this(name, piece, 1500);
@@ -21,11 +22,40 @@ public class Player {
 		this.name = name;
 		this.piece = piece;
 		this.balance = initBalance;
+		this.jailBreakCount = 0;
 		properties = new ArrayList<>();
 	}
 
+	public void subtractBalance(int amount) {
+		if (amount > balance) {
+			throw new IllegalArgumentException("Insufficient funds!");
+		}
+		
+		balance -= amount;
+	}
+	
+	public void addBalance(int amount) {
+		balance += amount;
+	}
+	
 	public boolean isBankrupt() {
 		return false;
+	}
+	
+	public boolean hasJailBreak() {
+		return jailBreakCount > 0;
+	}
+	
+	public boolean jailBreak() {
+		if (hasJailBreak()) {
+			jailBreakCount--;
+			return true;
+		}
+		return false;
+	}
+	
+	public void giveJailBreak() {
+		jailBreakCount++;
 	}
 
 	public int roll() {

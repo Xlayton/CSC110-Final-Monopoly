@@ -4,8 +4,8 @@ import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces_abstract.SpecialSquare;
 
 public class ChanceSquare extends SpecialSquare {
-	protected ChanceSquare(String name) {
-		super(name);
+	protected ChanceSquare() {
+		super("Chance");
 	}
 
 	@Override
