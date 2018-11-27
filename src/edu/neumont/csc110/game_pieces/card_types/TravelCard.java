@@ -10,7 +10,7 @@ public class TravelCard extends Card {
 	private final Square location;
 	private final boolean shouldPassGo;
 	
-	protected TravelCard(String name, String flavorText, MonopolyBoard board, Square location, boolean passGo) {
+	public TravelCard(String name, String flavorText, MonopolyBoard board, Square location, boolean passGo) {
 		super(name, flavorText);
 		
 		this.board = board;
@@ -22,5 +22,4 @@ public class TravelCard extends Card {
 	public void applyEffect(Player toApply) {
 		board.moveTo(toApply, location, shouldPassGo);
 	}
-
 }

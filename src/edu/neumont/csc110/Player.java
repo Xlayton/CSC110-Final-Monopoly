@@ -10,9 +10,12 @@ public class Player {
 	private final String name;
 	private final Piece piece;
 	private final ArrayList<Property> properties;
-
+  
+	private int houseCount;
+	private int hotelCount;
 	private int balance;
 	private int jailBreakCount;
+	private boolean isJailed;
 
 	public Player(String name, Piece piece) {
 		this(name, piece, 1500);
@@ -27,10 +30,9 @@ public class Player {
 	}
 
 	public void subtractBalance(int amount) {
-		if (amount > balance) {
-			throw new IllegalArgumentException("Insufficient funds!");
+		if(amount > balance) {
+			throw new IllegalArgumentException("Insufficient funds");
 		}
-		
 		balance -= amount;
 	}
 	
@@ -72,5 +74,25 @@ public class Player {
 
 	public void sellBuilding(Property toSellFrom, Building toSell, int numberOfBuildings) {
 
+	}
+	
+	public int getHouseCount() {
+		return houseCount;
+	}
+	
+	public int getHotelCount() {
+		return hotelCount;
+	}
+	
+	public Piece getPiece() {
+		return piece;
+	}
+	
+	public boolean isJailed() {
+		return isJailed;
+	}
+	
+	public void setJailed(boolean isJailed) {
+		this.isJailed = isJailed;
 	}
 }

@@ -6,7 +6,7 @@ import edu.neumont.csc110.game_pieces_abstract.Card;
 public class GainMoneyCard extends Card {
 	private final int my_gainAmount;
 	
-	protected GainMoneyCard(String name, String flavorText, int gainAmount) {
+	public GainMoneyCard(String name, String flavorText, int gainAmount) {
 		super(name, flavorText);
 		
 		my_gainAmount = gainAmount;
