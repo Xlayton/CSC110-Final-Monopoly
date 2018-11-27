@@ -1,5 +1,7 @@
 package edu.neumont.csc110;
 
+import java.util.Random;
+
 import edu.neumont.csc110.game_pieces.ChanceCardList;
 import edu.neumont.csc110.game_pieces.CommunityChestCardList;
 import edu.neumont.csc110.game_pieces.Piece;
@@ -18,7 +20,6 @@ public class MonopolyBoard {
 	private final Square[] squares;
 	private final Card[] chanceCards, communityChestCards;
 	private final Piece[] pieces;
-
 	/**
 	 * Constructs and initializes a new Monopoly board with a maximum of 8 players
 	 */
@@ -61,7 +62,10 @@ public class MonopolyBoard {
 	 *         type {@code CommunityChestCard}
 	 */
 	public Card drawCard(boolean chance) {
-		return null;
+		Random rand = new Random();
+		int cardNum = rand.nextInt(16) + 1;
+		Card returnCard = (chance) ? chanceCards[cardNum] : communityChestCards[cardNum];
+		return returnCard; 
 	}
 
 	/**
