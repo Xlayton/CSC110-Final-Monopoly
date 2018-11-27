@@ -19,15 +19,20 @@ import edu.neumont.csc110.game_pieces_abstract.Square;
 public class MonopolyBoard {
 	private final Square[] squares;
 	private final Card[] chanceCards, communityChestCards;
+<<<<<<< HEAD
 	private final Piece[] pieces;
+=======
+	private final Player[] players;
+
+>>>>>>> cc3ef09968ce7a6cf8704ff2d08ff8ca8060294a
 	/**
 	 * Constructs and initializes a new Monopoly board with a maximum of 8 players
 	 */
 	public MonopolyBoard() {
 		squares = new Square[40];
-		chanceCards = ChanceCardList.getChanceCards();
-		communityChestCards = CommunityChestCardList.getCommunityChestCards();
-		pieces = new Piece[8];
+		players = new Player[8];
+		chanceCards = ChanceCardList.getChanceCards(this, players);
+		communityChestCards = CommunityChestCardList.getCommunityChestCards(this, players);
 	}
 
 	public Square getPieceLocation(Piece piece) {

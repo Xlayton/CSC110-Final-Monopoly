@@ -9,9 +9,9 @@ public class PlayerPayCard extends Card {
 	
 	private int amtChange;
 	
-	public PlayerPayCard(String flavorText, boolean isChance, boolean payCurrent, Player[] allPlayers, int amtChange) {
+	public PlayerPayCard(String flavorText, boolean isChance, boolean payingOthers, Player[] allPlayers, int amtChange) {
 		super(flavorText, isChance);
-		this.payCurrent = payCurrent; 
+		this.payCurrent = !payingOthers; 
 		this.allPlayers = allPlayers;
 		this.amtChange = amtChange;
 	}

@@ -6,10 +6,11 @@ import edu.neumont.csc110.game_pieces_abstract.Card;
 import edu.neumont.csc110.game_pieces_abstract.Square;
 
 public class RelativeTravelCard extends Card {
-	private final String location;
 	private final MonopolyBoard board;
+	private final String location;
 
-	public RelativeTravelCard(String flavorText, boolean isChance, MonopolyBoard board, String location) {
+	public RelativeTravelCard(String flavorText, boolean isChance, MonopolyBoard board,
+			String location) {
 		super(flavorText, isChance);
 		this.board = board;
 		this.location = location;
@@ -17,7 +18,7 @@ public class RelativeTravelCard extends Card {
 
 	@Override
 	public void applyEffect(Player toApply) {
-		switch(location) {
+		switch (location) {
 		case "spaces":
 			board.movePiece(toApply, -3);
 			break;
@@ -26,7 +27,7 @@ public class RelativeTravelCard extends Card {
 			break;
 		case "utility":
 			moveToUtility(toApply);
-			break;
+      break;
 		}
 	}
 
