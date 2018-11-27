@@ -4,7 +4,7 @@ import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces_abstract.SpecialSquare;
 
 public class GoSquare extends SpecialSquare {
-	protected GoSquare(String name) {
+	public GoSquare() {
 		super("Go");
 	}
 
