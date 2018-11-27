@@ -5,12 +5,10 @@ import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces_abstract.SpecialSquare;
 
 public class GoToJailSquare extends SpecialSquare {
-	private final int JAIL_LOCATION;
 	private final MonopolyBoard board;
 
-	protected GoToJailSquare(MonopolyBoard board, String name) {
-		super(name);
-		JAIL_LOCATION = 10;
+	public GoToJailSquare(MonopolyBoard board) {
+		super("Go to Jail");
 		this.board = board;
 	}
 

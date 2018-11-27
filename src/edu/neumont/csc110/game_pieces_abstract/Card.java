@@ -19,7 +19,6 @@ public abstract class Card {
 	}
 	
 	public abstract void applyEffect(Player toApply);
-  
 	@Override
 	public String toString() {
 		return this.getName() + ": " + this.getFlavorText();

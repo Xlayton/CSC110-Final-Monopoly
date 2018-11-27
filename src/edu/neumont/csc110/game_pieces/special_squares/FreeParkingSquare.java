@@ -4,12 +4,12 @@ import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces_abstract.SpecialSquare;
 
 public class FreeParkingSquare extends SpecialSquare {
-	protected FreeParkingSquare() {
+	public FreeParkingSquare() {
 		super("Free Parking");
 	}
 
 	@Override
-	protected void applyEffect(Player toApply) {
+	public void applyEffect(Player toApply) {
 		return;
 	}
 }
