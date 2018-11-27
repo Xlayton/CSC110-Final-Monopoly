@@ -24,14 +24,21 @@ public class RelativeTravelCard extends Card {
 	}
 
 	public void moveToRailRoad(Player toApply) {
+		Square pieceAt = board.getPieceLocation(toApply.getPiece());
+		Square closestRail = null;
 		int[] moveRailRoad = {5, 15, 25, 35};
 		int workingnumber = 0;
 		int lowestNumber = Integer.MAX_VALUE;
-		int nearestRail = 0;
-		int getPieceLocation = 0;
+		int getPieceLocation = board.getLocationIndex(pieceAt);
+		
 
 		for (int i = 0; i < moveRailRoad.length; i++) {
-			// getPieceLocation = board.getPieceLocation(toApply.getPiece());
+			workingnumber = moveRailRoad[i] - getPieceLocation;
+			if(workingnumber < lowestNumber) {
+				lowestNumber = workingnumber;
+				closestRail = board.squareAtIndex(moveRailRoad[i]);
+			}
 		}
+		board.moveTo(toApply, closestRail, true);
 	}
 }
