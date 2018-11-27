@@ -7,7 +7,7 @@ public class Railroad extends Square {
 
 	private Player owner;
 	
-	protected Railroad(String name) {
+	public Railroad(String name) {
 		super(name);
 		owner = null;
 	}
