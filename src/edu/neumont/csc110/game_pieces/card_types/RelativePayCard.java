@@ -5,13 +5,16 @@ import edu.neumont.csc110.game_pieces_abstract.Card;
 
 public class RelativePayCard extends Card {
 
-	protected RelativePayCard(String name, String flavorText) {
+	private final int houseCost, hotelCost;
+	
+	public RelativePayCard(String name, String flavorText, int houseCost, int hotelCost) {
 		super(name, flavorText);
+		this.houseCost = houseCost;
+		this.hotelCost = hotelCost;
 	}
 
 	@Override
-	public void applyEffect(Player toApply) {
-		
+	public void applyEffect(Player toApply) throws IllegalArgumentException {
+		toApply.subtractBalance((toApply.getHouseCount() * houseCost) + (toApply.getHotelCount() * hotelCost));
 	}
-
 }

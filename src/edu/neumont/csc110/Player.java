@@ -11,8 +11,12 @@ public class Player {
 	private final String name;
 	private final Piece piece;
 	private final ArrayList<Property> properties;
-
-	int balance;
+  
+	private int houseCount;
+	private int hotelCount;
+	private int balance;
+	private int jailBreakCount;
+	private boolean isJailed;
 
 	public Player(String name, Piece piece) {
 		this(name, piece, 1500);
@@ -22,11 +26,39 @@ public class Player {
 		this.name = name;
 		this.piece = piece;
 		this.balance = initBalance;
+		this.jailBreakCount = 0;
 		properties = new ArrayList<>();
 	}
 
+	public void subtractBalance(int amount) {
+		if(amount > balance) {
+			throw new IllegalArgumentException("Insufficient funds");
+		}
+		balance -= amount;
+	}
+	
+	public void addBalance(int amount) {
+		balance += amount;
+	}
+	
 	public boolean isBankrupt() {
 		return false;
+	}
+	
+	public boolean hasJailBreak() {
+		return jailBreakCount > 0;
+	}
+	
+	public boolean jailBreak() {
+		if (hasJailBreak()) {
+			jailBreakCount--;
+			return true;
+		}
+		return false;
+	}
+	
+	public void giveJailBreak() {
+		jailBreakCount++;
 	}
 
 	public int roll() {
@@ -43,5 +75,25 @@ public class Player {
 
 	public void sellBuilding(Property toSellFrom, Building toSell, int numberOfBuildings) {
 
+	}
+	
+	public int getHouseCount() {
+		return houseCount;
+	}
+	
+	public int getHotelCount() {
+		return hotelCount;
+	}
+	
+	public Piece getPiece() {
+		return piece;
+	}
+	
+	public boolean isJailed() {
+		return isJailed;
+	}
+	
+	public void setJailed(boolean isJailed) {
+		this.isJailed = isJailed;
 	}
 }

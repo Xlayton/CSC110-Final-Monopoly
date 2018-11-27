@@ -4,14 +4,42 @@ import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces_abstract.Card;
 
 public class PlayerPayCard extends Card {
-
-	protected PlayerPayCard(String name, String flavorText) {
+	
+	private final boolean payCurrent;
+	private final Player[] allPlayers;
+	private int amtChange;
+	
+	public PlayerPayCard(String name, String flavorText, boolean payCurrent, Player[] allPlayers, int amtChange) {
 		super(name, flavorText);
+		this.payCurrent = payCurrent; 
+		this.allPlayers = allPlayers;
+		this.amtChange = amtChange;
 	}
 
 	@Override
 	public void applyEffect(Player toApply) {
-		
+		if(payCurrent) {
+			payCurrent(toApply);
+		} else {
+			payOthers(toApply);
+		}
 	}
-
+	
+	private void payOthers(Player toApply) throws IllegalArgumentException {
+		for(Player p : allPlayers) {
+			if(p != toApply) {
+				toApply.subtractBalance(amtChange);
+				p.addBalance(amtChange); 
+			}
+		}
+	}
+	
+	private void payCurrent(Player toApply) throws IllegalArgumentException {
+		for(Player p : allPlayers) {
+			if(p != toApply) {
+				toApply.addBalance(amtChange);
+				p.subtractBalance(amtChange); 
+			}
+		}
+	}
 }

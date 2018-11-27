@@ -11,13 +11,13 @@ public class RelativeTravelCard extends Card {
 	private final MonopolyBoard board;
 
 	public RelativeTravelCard(String name, String flavorText, MonopolyBoard board, int spaces, Square location, int locaiton) {
+	public RelativeTravelCard(String name, String flavorText) {
 		super(name, flavorText);
 		this.board = board;
 	}
 
 	@Override
 	public void applyEffect(Player toApply) {
-		
 		if (location == "Go back 3 spaces") {
 	        Player toApplyprevpos = toApply;
 	        board.movePiece(toApply, -3);
@@ -34,8 +34,5 @@ public class RelativeTravelCard extends Card {
 		for (int i = 0; i<moveRailRoad.length; i++) {
 			getPieceLocation = board.getPieceLocation(toApply.getPiece());
 		}
-		
-			
 	}
-
 }

@@ -23,12 +23,16 @@ public class MonopolyBoard {
 	 * Constructs and initializes a new Monopoly board with a maximum of 8 players
 	 */
 	public MonopolyBoard() {
-		squares = new Square[36];
+		squares = new Square[40];
 		chanceCards = new ChanceCard[16];
 		communityChestCards = new CommunityChestCard[16];
 		pieces = new Piece[8];
 	}
 
+	public Square getPieceLocation(Piece piece) {
+		return null;
+	}
+	
 	/**
 	 * Move a specified player's piece a number of spaces around the board
 	 * 
@@ -36,9 +40,19 @@ public class MonopolyBoard {
 	 * @param distance - how far to move it
 	 */
 	public void movePiece(Player player, int distance) {
-
+		
 	}
 
+	public Square getLocation(String locationName) {
+		for (Square square : squares) {
+			if (square.getName().equalsIgnoreCase(locationName)) {
+				return square;
+			}
+		}
+		
+		return null;
+	}
+	
 	/**
 	 * Draws a card from either the chance deck or the community chest deck
 	 * 
@@ -69,6 +83,15 @@ public class MonopolyBoard {
 	 * @param shouldPassGo - whether the player should collect $200 if their piece passes go
 	 */
 	public void moveTo(Player player, Square location, boolean shouldPassGo) {
-
+		
+	}
+	
+	private int getLocationIndex(Square location) {
+		for (int i = 0; i < squares.length; i++) {
+			if (location.equals(squares[i])) {
+				return i;
+			}
+		}
+		return -1;
 	}
 }

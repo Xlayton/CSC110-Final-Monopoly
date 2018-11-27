@@ -13,5 +13,6 @@ public class ChanceCard extends Card {
 	public void applyEffect(Player toApply) {
 		
 	}
-
+	
 }
+

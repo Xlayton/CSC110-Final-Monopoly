@@ -4,15 +4,15 @@ import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces_abstract.SpecialSquare;
 
 public class TaxSquare extends SpecialSquare {
-	private final int TAX_AMOUNT;
+	private final int taxAmount;
 	
-	protected TaxSquare(String name, int taxAmount) {
+	public TaxSquare(String name, int taxAmount) {
 		super(name);
-		TAX_AMOUNT = taxAmount;
+		this.taxAmount = taxAmount;
 	}
 
 	@Override
-	protected void applyEffect(Player player) {
-		
+	public void applyEffect(Player player) {
+		player.subtractBalance(taxAmount);
 	}
 }
