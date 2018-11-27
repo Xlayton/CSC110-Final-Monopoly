@@ -80,7 +80,7 @@ public class MonopolyBoard {
 	 * @param toBuy  - the property being purchased
 	 */
 	public void buyProperty(Player player, Property toBuy) {
-
+		
 	}
 
 	/**

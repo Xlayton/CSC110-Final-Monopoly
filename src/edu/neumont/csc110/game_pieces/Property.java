@@ -15,12 +15,14 @@ public class Property extends Square {
 	private ArrayList<Building> buildings;
 	private int rent;
 	private boolean isMortgaged;
+	private boolean isOwned;
 	
 	public Property(String name, Color color, int price) {
 		super(name);
 		this.color = color;
 		this.price = price;
 		isMortgaged = false;
+		isOwned = false;
 		owner = null;
 		buildings = new ArrayList<>();
 	}
@@ -35,6 +37,11 @@ public class Property extends Square {
 
 	@Override
 	public void landedOn(Player player) {
+		if(isOwned) {
+			return; //TODO actually implement paying...
+		} else {
+			return; //TODO actually implement buying...
+		}
 		
 	}
 }
