@@ -86,12 +86,16 @@ public class MonopolyBoard {
 		
 	}
 	
-	private int getLocationIndex(Square location) {
+	public int getLocationIndex(Square location) {
 		for (int i = 0; i < squares.length; i++) {
 			if (location.equals(squares[i])) {
 				return i;
 			}
 		}
 		return -1;
+	}
+	
+	public Square squareAtIndex(int index) {
+		return squares[index];
 	}
 }
