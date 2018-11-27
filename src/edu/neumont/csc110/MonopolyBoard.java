@@ -36,7 +36,7 @@ public class MonopolyBoard {
 	 * @param distance - how far to move it
 	 */
 	public void movePiece(Player player, int distance) {
-		player.getPiece().setLocation((player.getPiece().getLocation() + distance) % squares.length);
+		
 	}
 
 	/**

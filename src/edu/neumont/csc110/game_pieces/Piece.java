@@ -17,12 +17,4 @@ public class Piece {
 	public String toString() {
 		return this.getArt();
 	}
-	
-	public int getLocation() {
-		return location;
-	}
-	
-	public void setLocation(int newLocation) {
-		location =  newLocation;
-	}
 }
