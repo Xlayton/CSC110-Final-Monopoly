@@ -1,7 +1,6 @@
 package edu.neumont.csc110;
 
 import java.util.Random;
-
 import edu.neumont.csc110.game_pieces.ChanceCardList;
 import edu.neumont.csc110.game_pieces.CommunityChestCardList;
 import edu.neumont.csc110.game_pieces.Piece;
@@ -28,7 +27,8 @@ public class MonopolyBoard {
 		squares = new Square[40];
 		players = new Player[8];
 		(chanceDeck = new Deck(ChanceCardList.getChanceCards(this, players))).shuffle();;
-		(communityChestDeck = new Deck(CommunityChestCardList.getCommunityChestCards(this, players))).shuffle();;
+		(communityChestDeck =
+				new Deck(CommunityChestCardList.getCommunityChestCards(this, players))).shuffle();;
 	}
 
 	public Square getPieceLocation(Piece piece) {
@@ -42,7 +42,7 @@ public class MonopolyBoard {
 	 * @param distance - how far to move it
 	 */
 	public void movePiece(Player player, int distance) {
-		
+
 	}
 
 	public Square getLocation(String locationName) {
@@ -58,8 +58,8 @@ public class MonopolyBoard {
 	 * Draws a card from either the chance deck or the community chest deck
 	 * 
 	 * @param chance - if this should draw from the chance deck or not
-	 * @return the drawn card, which is of type {@code ChanceCard} if chance was
-	 *         true, else is of type {@code CommunityChestCard}
+	 * @return the drawn card, which is of type {@code ChanceCard} if chance was true, else is of
+	 *         type {@code CommunityChestCard}
 	 */
 	public Card drawCard(boolean chance) {
 		Deck toDrawFrom = (chance ? chanceDeck : communityChestDeck);
@@ -71,24 +71,22 @@ public class MonopolyBoard {
 	}
 
 	/**
-	 * Gives a certain player ownership of a property, and deducts the price of that
-	 * property from their balance
+	 * Gives a certain player ownership of a property, and deducts the price of that property from
+	 * their balance
 	 * 
 	 * @param player - the player purchasing the property
-	 * @param toBuy  - the property being purchased
+	 * @param toBuy - the property being purchased
 	 */
 	public void buyProperty(Player player, Property toBuy) {
-		
+
 	}
 
 	/**
-	 * Moves a player's piece to the next instance of a certain location on the
-	 * board
+	 * Moves a player's piece to the next instance of a certain location on the board
 	 * 
-	 * @param player       - the player who owns the piece to move
-	 * @param location     - the location to move the piece to
-	 * @param shouldPassGo - whether the player should collect $200 if their piece
-	 *                     passes go
+	 * @param player - the player who owns the piece to move
+	 * @param location - the location to move the piece to
+	 * @param shouldPassGo - whether the player should collect $200 if their piece passes go
 	 */
 	public void moveTo(Player player, Square location, boolean shouldPassGo) {
 

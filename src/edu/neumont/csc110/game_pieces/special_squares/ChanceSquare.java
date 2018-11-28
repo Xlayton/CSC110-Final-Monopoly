@@ -6,6 +6,7 @@ import edu.neumont.csc110.game_pieces_abstract.SpecialSquare;
 
 public class ChanceSquare extends SpecialSquare {
 	private final MonopolyBoard board;
+
 	public ChanceSquare(MonopolyBoard board) {
 		super("Chance");
 		this.board = board;
