@@ -64,7 +64,7 @@ public class MonopolyBoard {
 	public Card drawCard(boolean chance) {
 		Deck toDrawFrom = (chance ? chanceDeck : communityChestDeck);
 		if (toDrawFrom.isEmpty()) {
-			toDrawFrom.add(ChanceCardList.getChanceCards(this, players));
+			toDrawFrom.add(chance ? ChanceCardList.getChanceCards(this, players) : CommunityChestCardList.getCommunityChestCards(this, players));
 			toDrawFrom.shuffle();
 		}
 		return toDrawFrom.draw();
