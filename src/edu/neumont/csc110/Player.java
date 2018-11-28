@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Random;
 import edu.neumont.csc110.game_pieces.Piece;
 import edu.neumont.csc110.game_pieces.Property;
-import edu.neumont.csc110.game_pieces_abstract.Building;
 
 public class Player {
 	public static Player player;
@@ -66,11 +65,11 @@ public class Player {
 
 	}
 
-	public void buyBuilding(Property toBuyOn, Building toBuy, int numberOfBuildings) {
+	public void buyBuilding(Property toBuyOn, int numberOfBuildings) {
 
 	}
 
-	public void sellBuilding(Property toSellFrom, Building toSell, int numberOfBuildings) {
+	public void sellBuilding(Property toSellFrom, int numberOfBuildings) {
 
 	}
 
