@@ -38,7 +38,7 @@ public class MonopolyBoard {
 	/**
 	 * Move a specified player's piece a number of spaces around the board
 	 * 
-	 * @param player   - the player who owns the piece to move
+	 * @param player - the player who owns the piece to move
 	 * @param distance - how far to move it
 	 */
 	public void movePiece(Player player, int distance) {
