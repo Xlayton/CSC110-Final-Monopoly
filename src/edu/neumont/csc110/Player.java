@@ -66,11 +66,11 @@ public class Player {
 
 	}
 
-	public void buyBuilding(Property toBuyOn, Building toBuy, int numberOfBuildings) {
+	public void buyBuilding(Property toBuyOn, int numberOfBuildings) {
 
 	}
 
-	public void sellBuilding(Property toSellFrom, Building toSell, int numberOfBuildings) {
+	public void sellBuilding(Property toSellFrom, int numberOfBuildings) {
 
 	}
 

@@ -1,12 +1,9 @@
 package edu.neumont.csc110.game_pieces;
 
-import edu.neumont.csc110.game_pieces_abstract.Building;
-
-public class Hotel extends Building {
+public class Hotel {
 	private static int count = 12;
 
-	@Override
-	public boolean takeBuilding() {
+	public static boolean takeBuilding() {
 		if (count == 0) {
 			return false;
 		}
@@ -14,8 +11,7 @@ public class Hotel extends Building {
 		return true;
 	}
 
-	@Override
-	public void returnBuilding() {
+	public static void returnBuilding() {
 		count++;
 	}
 }
