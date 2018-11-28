@@ -56,6 +56,10 @@ public class Deck implements Iterable<Card> {
 		return deck;
 	}
 	
+	public boolean isEmpty() {
+		return (my_cards.size() == 0);
+	}
+	
 	public void shuffle() {
 		for (int i = 0; i < my_cards.size(); i++) {
 			Card temp = my_cards.get(i);
@@ -65,6 +69,8 @@ public class Deck implements Iterable<Card> {
 			my_cards.set(randIndex, temp);
 		}
 	}
+	
+	
 	
 	@Override
 	public String toString() {

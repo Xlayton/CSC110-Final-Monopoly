@@ -1,5 +1,6 @@
 package edu.neumont.csc110;
 
+import java.util.Random;
 import edu.neumont.csc110.game_pieces.ChanceCardList;
 import edu.neumont.csc110.game_pieces.CommunityChestCardList;
 import edu.neumont.csc110.game_pieces.Piece;
@@ -16,7 +17,7 @@ import edu.neumont.csc110.game_pieces_abstract.Square;
  */
 public class MonopolyBoard {
 	private final Square[] squares;
-	private final Card[] chanceCards, communityChestCards;
+	private final Deck chanceDeck, communityChestDeck;
 	private final Player[] players;
 
 	/**
@@ -25,14 +26,15 @@ public class MonopolyBoard {
 	public MonopolyBoard() {
 		squares = new Square[40];
 		players = new Player[8];
-		chanceCards = ChanceCardList.getChanceCards(this, players);
-		communityChestCards = CommunityChestCardList.getCommunityChestCards(this, players);
+		(chanceDeck = new Deck(ChanceCardList.getChanceCards(this, players))).shuffle();;
+		(communityChestDeck =
+				new Deck(CommunityChestCardList.getCommunityChestCards(this, players))).shuffle();;
 	}
 
 	public Square getPieceLocation(Piece piece) {
 		return null;
 	}
-	
+
 	/**
 	 * Move a specified player's piece a number of spaces around the board
 	 * 
@@ -40,7 +42,7 @@ public class MonopolyBoard {
 	 * @param distance - how far to move it
 	 */
 	public void movePiece(Player player, int distance) {
-		
+
 	}
 
 	public Square getLocation(String locationName) {
@@ -49,10 +51,9 @@ public class MonopolyBoard {
 				return square;
 			}
 		}
-		
 		return null;
 	}
-	
+
 	/**
 	 * Draws a card from either the chance deck or the community chest deck
 	 * 
@@ -61,7 +62,12 @@ public class MonopolyBoard {
 	 *         type {@code CommunityChestCard}
 	 */
 	public Card drawCard(boolean chance) {
-		return null;
+		Deck toDrawFrom = (chance ? chanceDeck : communityChestDeck);
+		if (toDrawFrom.isEmpty()) {
+			toDrawFrom.add(ChanceCardList.getChanceCards(this, players));
+			toDrawFrom.shuffle();
+		}
+		return toDrawFrom.draw();
 	}
 
 	/**
@@ -83,9 +89,9 @@ public class MonopolyBoard {
 	 * @param shouldPassGo - whether the player should collect $200 if their piece passes go
 	 */
 	public void moveTo(Player player, Square location, boolean shouldPassGo) {
-		
+
 	}
-	
+
 	public int getLocationIndex(Square location) {
 		for (int i = 0; i < squares.length; i++) {
 			if (location.equals(squares[i])) {
@@ -94,7 +100,7 @@ public class MonopolyBoard {
 		}
 		return -1;
 	}
-	
+
 	public Square squareAtIndex(int index) {
 		return squares[index];
 	}
