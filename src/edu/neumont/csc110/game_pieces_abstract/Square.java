@@ -37,7 +37,7 @@ public abstract class Square implements Comparable<Square> {
 		return name.compareTo(anotherSquare.getName());
 	}
 
-	public static Square[] getSquares(MonopolyBoard board) {
+	public static final Square[] getSquares(MonopolyBoard board) {
 		Square[] squares = new Square[40];
 
 		squares[0] = new GoSquare();
