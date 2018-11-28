@@ -20,15 +20,10 @@ public class Property extends Square {
 	private ArrayList<Building> buildings;
 	private int rent;
 	private boolean isMortgaged;
-<<<<<<< HEAD
 	private boolean isOwned;
-	
-	public Property(String name, Color color, int price) {
-=======
 
 	public Property(String name, Color color, int price, int baseRent, int oneHouse, int twoHouse, int threeHouse,
 			int fourHouse, int hotel, int buildingCost) {
->>>>>>> master
 		super(name);
 		this.color = color;
 		this.price = price;
@@ -61,15 +56,10 @@ public class Property extends Square {
 
 	@Override
 	public void landedOn(Player player) {
-<<<<<<< HEAD
 		if(isOwned) {
 			return; //TODO actually implement paying...
 		} else {
 			return; //TODO actually implement buying...
 		}
-		
-=======
-
->>>>>>> master
 	}
 }
