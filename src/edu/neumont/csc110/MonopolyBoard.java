@@ -1,6 +1,5 @@
 package edu.neumont.csc110;
 
-import java.util.Random;
 import edu.neumont.csc110.game_pieces.ChanceCardList;
 import edu.neumont.csc110.game_pieces.CommunityChestCardList;
 import edu.neumont.csc110.game_pieces.Piece;
@@ -65,7 +64,8 @@ public class MonopolyBoard {
 	public Card drawCard(boolean chance) {
 		Deck toDrawFrom = (chance ? chanceDeck : communityChestDeck);
 		if (toDrawFrom.isEmpty()) {
-			toDrawFrom.add(chance ? ChanceCardList.getChanceCards(this, players) : CommunityChestCardList.getCommunityChestCards(this, players));
+			toDrawFrom.add(chance ? ChanceCardList.getChanceCards(this, players)
+					: CommunityChestCardList.getCommunityChestCards(this, players));
 			toDrawFrom.shuffle();
 		}
 		return toDrawFrom.draw();

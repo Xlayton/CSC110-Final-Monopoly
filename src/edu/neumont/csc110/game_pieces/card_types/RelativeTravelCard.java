@@ -27,20 +27,20 @@ public class RelativeTravelCard extends Card {
 			break;
 		case "utility":
 			moveToUtility(toApply);
-      break;
+			break;
 		}
 	}
 
 	private void moveToRailRoad(Player toApply) {
 		Square pieceAt = board.getPieceLocation(toApply.getPiece());
 		Square closestRail = null;
-		int[] moveRailRoad = { 5, 15, 25, 35 };
+		int[] moveRailRoad = {5, 15, 25, 35};
 		int workingnumber = 0;
 		int lowestNumber = Integer.MAX_VALUE;
 		int getPieceLocation = board.getLocationIndex(pieceAt);
 
 		for (int i = 0; i < moveRailRoad.length; i++) {
-			if(moveRailRoad[i] < getPieceLocation) {
+			if (moveRailRoad[i] < getPieceLocation) {
 				continue;
 			}
 			workingnumber = moveRailRoad[i] - getPieceLocation;
@@ -55,13 +55,13 @@ public class RelativeTravelCard extends Card {
 	private void moveToUtility(Player toApply) {
 		Square pieceAt = board.getPieceLocation(toApply.getPiece());
 		Square closestUtil = null;
-		int[] allUtil = { 12, 28 };
+		int[] allUtil = {12, 28};
 		int workingnumber = 0;
 		int lowestNumber = Integer.MAX_VALUE;
 		int getPieceLocation = board.getLocationIndex(pieceAt);
 
 		for (int i = 0; i < allUtil.length; i++) {
-			if(allUtil[i] < getPieceLocation) {
+			if (allUtil[i] < getPieceLocation) {
 				continue;
 			}
 			workingnumber = allUtil[i] - getPieceLocation;

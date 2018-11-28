@@ -8,7 +8,7 @@ public abstract class SpecialSquare extends Square {
 	}
 
 	public abstract void applyEffect(Player player);
-	
+
 	@Override
 	public final void landedOn(Player player) {
 		this.applyEffect(player);

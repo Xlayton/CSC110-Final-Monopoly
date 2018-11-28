@@ -5,20 +5,20 @@ import edu.neumont.csc110.game_pieces_abstract.Square;
 
 public class Utility extends Square {
 	private Player owner;
-	
+
 	public Utility(String name) {
 		super(name);
 		owner = null;
 	}
-	
+
 	public void setOwnership(Player owner) {
 		this.owner = owner;
 	}
-	
+
 	public Player getOwner() {
 		return owner;
 	}
-	
+
 	public boolean isOwned() {
 		return getOwner() != null;
 	}
