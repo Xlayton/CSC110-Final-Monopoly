@@ -27,10 +27,8 @@ public class MonopolyBoard {
 	public MonopolyBoard() {
 		squares = new Square[40];
 		players = new Player[8];
-		chanceDeck = new Deck(ChanceCardList.getChanceCards(this, players));
-		chanceDeck.shuffle();
-		communityChestDeck = new Deck(CommunityChestCardList.getCommunityChestCards(this, players));
-		communityChestDeck.shuffle();
+		(chanceDeck = new Deck(ChanceCardList.getChanceCards(this, players))).shuffle();;
+		(communityChestDeck = new Deck(CommunityChestCardList.getCommunityChestCards(this, players))).shuffle();;
 	}
 
 	public Square getPieceLocation(Piece piece) {
