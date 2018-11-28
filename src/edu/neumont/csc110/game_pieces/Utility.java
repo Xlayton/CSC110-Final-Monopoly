@@ -24,7 +24,7 @@ public class Utility extends Square {
 	}
 
 	@Override
-	public void landedOn(Player player) {
+	public void landedOn(Player player) throws IllegalArgumentException {
 		if (owner != null && !player.equals(owner)) {
 			player.subtractBalance(player.roll() * (owner.getUtilCount() > 1 ? 10 : 4));
 		}

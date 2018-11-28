@@ -66,19 +66,19 @@ public class Player {
 	}
 
 	public void buyBuilding(Property toBuyOn, int numberOfBuildings) {
-		for(int i = 0; i < numberOfBuildings; i++) {
+		for (int i = 0; i < numberOfBuildings; i++) {
 			try {
 				this.subtractBalance(toBuyOn.getBuildingCost());
 				toBuyOn.buyBuilding();
 			} catch (IllegalArgumentException ex) {
-					System.out.println(ex.getMessage());
-					break;
-				}
+				System.out.println(ex.getMessage());
+				break;
+			}
 		}
 	}
 
 	public void sellBuilding(Property toSellFrom, int numberOfBuildings) {
-		for(int i = 0; i < numberOfBuildings; i++) {
+		for (int i = 0; i < numberOfBuildings; i++) {
 			try {
 				this.addBalance(toSellFrom.sellBuilding());
 			} catch (IllegalArgumentException ex) {

@@ -18,7 +18,7 @@ public class PlayerPayCard extends Card {
 	}
 
 	@Override
-	public void applyEffect(Player toApply) {
+	public void applyEffect(Player toApply) throws IllegalArgumentException{
 		if (payCurrent) {
 			payCurrent(toApply);
 		} else {
