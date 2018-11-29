@@ -16,4 +16,24 @@ public class ChanceSquare extends SpecialSquare {
 	public void applyEffect(Player toApply) {
 		board.drawCard(true);
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder result = new StringBuilder();
+		
+		result.append(makeRow(SEPARATOR, false));
+		result.append(makeRow(""));
+		result.append(makeRow("CHANCE"));
+		result.append(makeRow(SEPARATOR));
+		result.append(makeRow(""));
+		result.append(makeRow("╔═══╗"));
+		result.append(makeRow("║╔═╗║"));
+		result.append(makeRow("╚╝╔╝║"));
+		result.append(makeRow("──║╔╝"));
+		result.append(makeRow("──╔╗"));
+		result.append(makeRow("──╚╝"));
+		result.append(makeRow(SEPARATOR));
+
+		return result.toString();
+	}
 }

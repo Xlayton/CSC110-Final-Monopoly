@@ -17,4 +17,24 @@ public class GoToJailSquare extends SpecialSquare {
 		board.moveTo(toApply, board.getLocation("Jail"), false);
 		toApply.setJailed(true);
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder result = new StringBuilder();
+		
+		result.append(makeRow(SEPARATOR, false));
+		result.append(makeRow("GO TO JAIL"));
+		result.append(makeRow("               ,"));
+		result.append(makeRow(" __  _.-\"` `'-. "));
+		result.append(makeRow("/||\\'._ __{}_(  "));
+		result.append(makeRow("||||  |'--.__\\  "));
+		result.append(makeRow("|  L.(   -\\-|   "));
+		result.append(makeRow("\\ .-' |   _ |   "));
+		result.append(makeRow("| |   )\\___/    "));
+		result.append(makeRow("|  \\-'`:._]     "));
+		result.append(makeRow("\\__/;      '-.  "));
+		result.append(makeRow(SEPARATOR));
+
+		return result.toString();
+	}
 }
