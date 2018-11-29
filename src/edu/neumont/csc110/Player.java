@@ -107,6 +107,10 @@ public class Player {
 	public void setJailed(boolean isJailed) {
 		this.isJailed = isJailed;
 	}
+	
+	public void getProperties() {
+		return;
+	}
 
 	public double getRailroadCount() {
 		return railroadCount;
@@ -115,4 +119,5 @@ public class Player {
 	public int getUtilCount() {
 		return utilityCount;
 	}
+	
 }
