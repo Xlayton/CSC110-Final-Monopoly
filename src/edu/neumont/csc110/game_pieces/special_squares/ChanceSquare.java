@@ -26,12 +26,12 @@ public class ChanceSquare extends SpecialSquare {
 		result.append(makeRow("CHANCE"));
 		result.append(makeRow(SEPARATOR));
 		result.append(makeRow(""));
-		result.append(makeRow("╔═══╗"));
-		result.append(makeRow("║╔═╗║"));
-		result.append(makeRow("╚╝╔╝║"));
-		result.append(makeRow("──║╔╝"));
-		result.append(makeRow("──╔╗"));
-		result.append(makeRow("──╚╝"));
+		result.append(makeRow(" ___ "));
+		result.append(makeRow("/   \\"));
+		result.append(makeRow("`   |"));
+		result.append(makeRow("   / "));
+		result.append(makeRow("  |  "));
+		result.append(makeRow("  .  "));
 		result.append(makeRow(SEPARATOR));
 
 		return result.toString();
