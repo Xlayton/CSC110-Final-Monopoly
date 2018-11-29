@@ -62,16 +62,31 @@ public class Player {
 		return (new Random().nextInt(6) + 1) + (new Random().nextInt(6) + 1);
 	}
 
-	public void mortgage(TitleDeed toMortgage) {
-
+	public void mortgage(OwnableSquare toMortgage) {
+		this.addBalance(toMortgage.mortgage());
 	}
 
 	public void buyBuilding(TitleDeed toBuyOn, int numberOfBuildings) {
-
+		for(int i = 0; i < numberOfBuildings; i++) {
+			try {
+				this.subtractBalance(toBuyOn.getBuildingCost());
+				toBuyOn.buyBuilding();
+			} catch (IllegalArgumentException ex) {
+					System.out.println(ex.getMessage());
+					break;
+				}
+		}
 	}
 
 	public void sellBuilding(TitleDeed toSellFrom, int numberOfBuildings) {
-
+		for(int i = 0; i < numberOfBuildings; i++) {
+			try {
+				this.addBalance(toSellFrom.sellBuilding());
+			} catch (IllegalArgumentException ex) {
+				System.out.println(ex.getMessage());
+				break;
+			}
+		}
 	}
 
 	public int getHouseCount() {
