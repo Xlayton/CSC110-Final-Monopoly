@@ -3,13 +3,14 @@ package edu.neumont.csc110;
 import java.util.ArrayList;
 import java.util.Random;
 import edu.neumont.csc110.game_pieces.Piece;
-import edu.neumont.csc110.game_pieces.Property;
+import edu.neumont.csc110.game_pieces.TitleDeed;
+import edu.neumont.csc110.game_pieces_abstract.OwnableSquare;
 
 public class Player {
 	public static Player player;
 	private final String name;
 	private final Piece piece;
-	private final ArrayList<Property> properties;
+	private final ArrayList<OwnableSquare> properties;
 
 	private int houseCount, hotelCount, jailBreakCount, railroadCount, utilityCount, balance;
 	private boolean isJailed;
@@ -61,7 +62,7 @@ public class Player {
 		return (new Random().nextInt(6) + 1) + (new Random().nextInt(6) + 1);
 	}
 
-	public void mortgage(Property toMortgage) {
+	public void mortgage(OwnableSquare toMortgage) {
 		this.addBalance(toMortgage.mortgage());
 	}
 
@@ -107,7 +108,7 @@ public class Player {
 	public void setJailed(boolean isJailed) {
 		this.isJailed = isJailed;
 	}
-	
+
 	public void getProperties() {
 		return;
 	}
@@ -119,5 +120,30 @@ public class Player {
 	public int getUtilCount() {
 		return utilityCount;
 	}
-	
+
+	public void removeRailroad() {
+		railroadCount--;
+	}
+
+	public void addRailroad() {
+		railroadCount++;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public int getWorth() {
+		int worth = balance;
+
+		for (OwnableSquare property : properties) {
+			worth += property.getPrice();
+			if (property instanceof TitleDeed) {
+				worth += (((TitleDeed) property).getBuildingCount()
+						* ((TitleDeed) property).getBuildingCost());
+			}
+		}
+
+		return worth;
+	}
 }

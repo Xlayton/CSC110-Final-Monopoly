@@ -1,9 +1,10 @@
 package edu.neumont.csc110.game_pieces;
 
 import edu.neumont.csc110.Player;
+import edu.neumont.csc110.game_pieces_abstract.OwnableSquare;
 import edu.neumont.csc110.game_pieces_abstract.Square;
 
-public class Property extends Square {
+public class TitleDeed extends OwnableSquare {
 	public enum Color {
 		BROWN,
 		CYAN,
@@ -13,28 +14,20 @@ public class Property extends Square {
 		YELLLOW,
 		GREEN,
 		BLUE;
-		
-		@Override
-		public String toString() {
-			StringBuilder result = new StringBuilder(String.valueOf(this).toLowerCase());
-			result.replace(0, 1, Character.toUpperCase(result.charAt(0)) + "");
-			return result.toString();
-		}
 	}
 
 	private final Color color;
 	private final int[] rents;
-	private final int price, buildingCost;
+	private final int buildingCost;
 
 	private Player owner;
 	private int buildingCount;
-	private boolean isMortgaged, monopolized;
+	private boolean monopolized;
 
-	public Property(String name, Color color, int price, int baseRent, int oneHouse, int twoHouse,
+	public TitleDeed(String name, Color color, int price, int baseRent, int oneHouse, int twoHouse,
 			int threeHouse, int fourHouse, int hotel, int buildingCost) {
-		super(name);
+		super(name, price);
 		this.color = color;
-		this.price = price;
 		this.buildingCost = buildingCost;
 
 		rents = new int[6];
@@ -46,57 +39,10 @@ public class Property extends Square {
 		rents[5] = hotel;
 
 		buildingCount = 0;
-		isMortgaged = false;
-		owner = null;
-	}
-
-	public void setOwnership(Player owner) {
-		this.owner = owner;
-	}
-
-	public boolean isOwned() {
-		return getOwner() != null;
-	}
-
-	public Player getOwner() {
-		return owner;
-	}
-
-	public int mortgage() {
-		isMortgaged = true;
-		return price / 2;
-	}
-
-	public int getUnmortgagePrice() {
-		return (price / 2) + ((price / 2) / 10);
-	}
-
-	public void unmortgage() {
-		isMortgaged = false;
 	}
 
 	public void setMonopolized(boolean monopolized) {
 		this.monopolized = monopolized;
-	}
-
-	public boolean isMortgaged() {
-		return isMortgaged;
-	}
-
-	public int getRent() {
-		if (isMortgaged()) {
-			return 0;
-		} else {
-			if (buildingCount == 0 && monopolized) {
-				return rents[0] * 2;
-			} else {
-				return rents[buildingCount];
-			}
-		}
-	}
-
-	public int getBuildingCost() {
-		return buildingCost;
 	}
 
 	public void buyBuilding() throws IllegalArgumentException {
@@ -126,7 +72,28 @@ public class Property extends Square {
 
 		return buildingCost / 2;
 	}
+
+	@Override
+	public int getRent(Player player) {
+		if (isMortgaged || (isOwned() && player.equals(owner))) {
+			return 0;
+		} else {
+			if (buildingCount == 0 && monopolized) {
+				return rents[0] * 2;
+			} else {
+				return rents[buildingCount];
+			}
+		}
+	}
+
+	public int getBuildingCost() {
+		return buildingCost;
+	}
 	
+	public int getBuildingCount() {
+		return buildingCount;
+	}
+
 	public Color getColor() {
 		return color;
 	}
@@ -134,9 +101,35 @@ public class Property extends Square {
 	@Override
 	public void landedOn(Player player) {
 		if (isOwned() && !player.equals(owner)) {
-			player.subtractBalance(getRent());
+			player.subtractBalance(getRent(player));
 		} else if (!isOwned()) {
 			return;
 		}
+	}
+
+	public static void main(String[] args) {
+		for (Square s : Square.getSquares(null)) {
+			System.out.println(s);
+		}
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder result = new StringBuilder();
+
+		result.append(makeRow(SEPARATOR, false));
+		result.append(makeRow(""));
+		result.append(makeRow(color.toString()));
+		result.append(makeRow(SEPARATOR));
+		result.append(makeRow(""));
+		result.append(makeRow(super.getName()));
+		result.append(makeRow(""));
+		result.append(makeRow(""));
+		result.append(makeRow(""));
+		result.append(makeRow(""));
+		result.append(makeRow(isOwned() ? owner.getName() + ": $" + getRent(null) : "$" + price));
+		result.append(makeRow(SEPARATOR));
+
+		return result.toString();
 	}
 }

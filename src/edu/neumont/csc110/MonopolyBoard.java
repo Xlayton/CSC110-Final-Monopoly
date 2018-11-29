@@ -3,7 +3,7 @@ package edu.neumont.csc110;
 import edu.neumont.csc110.game_pieces.ChanceCardList;
 import edu.neumont.csc110.game_pieces.CommunityChestCardList;
 import edu.neumont.csc110.game_pieces.Piece;
-import edu.neumont.csc110.game_pieces.Property;
+import edu.neumont.csc110.game_pieces.TitleDeed;
 import edu.neumont.csc110.game_pieces_abstract.Card;
 import edu.neumont.csc110.game_pieces_abstract.Square;
 
@@ -78,7 +78,7 @@ public class MonopolyBoard {
 	 * @param player - the player purchasing the property
 	 * @param toBuy - the property being purchased
 	 */
-	public void buyProperty(Player player, Property toBuy) {
+	public void buyProperty(Player player, TitleDeed toBuy) {
 
 	}
 

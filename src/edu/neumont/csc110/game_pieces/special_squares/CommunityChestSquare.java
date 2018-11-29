@@ -16,4 +16,24 @@ public class CommunityChestSquare extends SpecialSquare {
 	public void applyEffect(Player toApply) {
 		board.drawCard(false);
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder result = new StringBuilder();
+		
+		result.append(makeRow(SEPARATOR, false));
+		result.append(makeRow("COMMUNITY CHEST"));
+		result.append(makeRow(SEPARATOR));
+		result.append(makeRow("  __________  "));
+		result.append(makeRow(" /\\____;;___\\ "));
+		result.append(makeRow("| /         / "));
+		result.append(makeRow("`.         .  "));
+		result.append(makeRow(" |\\         \\ "));
+		result.append(makeRow(" | |---------|"));
+		result.append(makeRow(" \\ |         |"));
+		result.append(makeRow("  \\|_________|"));
+		result.append(makeRow(SEPARATOR));
+
+		return result.toString();
+	}
 }
