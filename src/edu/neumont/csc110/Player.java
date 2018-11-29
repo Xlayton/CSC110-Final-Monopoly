@@ -66,7 +66,7 @@ public class Player {
 		this.addBalance(toMortgage.mortgage());
 	}
 
-	public void buyBuilding(Property toBuyOn, int numberOfBuildings) {
+	public void buyBuilding(TitleDeed toBuyOn, int numberOfBuildings) {
 		for (int i = 0; i < numberOfBuildings; i++) {
 			try {
 				this.subtractBalance(toBuyOn.getBuildingCost());
@@ -78,7 +78,7 @@ public class Player {
 		}
 	}
 
-	public void sellBuilding(Property toSellFrom, int numberOfBuildings) {
+	public void sellBuilding(TitleDeed toSellFrom, int numberOfBuildings) {
 		for (int i = 0; i < numberOfBuildings; i++) {
 			try {
 				this.addBalance(toSellFrom.sellBuilding());
