@@ -16,18 +16,13 @@ public class Utility extends OwnableSquare {
 			return player.roll() * (owner.getUtilCount() == 1 ? 4 : 10);
 		}
 	}
-
 	@Override
-	public void landedOn(Player player) {
-		player.subtractBalance(getRent(player));
-	}
-
-	@Override
-<<<<<<< HEAD
 	public void landedOn(Player player) throws IllegalArgumentException {
 		if (owner != null && !player.equals(owner)) {
 			player.subtractBalance(player.roll() * (owner.getUtilCount() > 1 ? 10 : 4));
-=======
+		}
+	}
+	
 	public String toString() {
 		StringBuilder result = new StringBuilder();
 
@@ -49,7 +44,6 @@ public class Utility extends OwnableSquare {
 			result.append(makeRow("  / \\  "));
 			result.append(makeRow(" (   ) "));
 			result.append(makeRow("  `-'  "));
->>>>>>> master
 		}
 		result.append(makeRow(isOwned()
 				? owner.getName() + ": " + (owner.getUtilCount() == 1 ? 4 : 10) + " times dice roll"
