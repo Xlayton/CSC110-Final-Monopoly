@@ -15,4 +15,9 @@ public class Piece {
 	public String toString() {
 		return this.getArt();
 	}
+	
+	@Override
+	public boolean equals(Object anotherPiece) {
+		return art == ((Piece) anotherPiece).art;
+	}
 }

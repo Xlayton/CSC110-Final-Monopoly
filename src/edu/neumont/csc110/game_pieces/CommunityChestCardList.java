@@ -11,7 +11,6 @@ import edu.neumont.csc110.game_pieces.card_types.TravelCard;
 import edu.neumont.csc110.game_pieces_abstract.Card;
 
 public class CommunityChestCardList {
-
 	public static Card[] getCommunityChestCards(MonopolyBoard board, Player[] players) {
 		Card[] cards = new Card[16];
 

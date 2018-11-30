@@ -58,7 +58,7 @@ public class RelativeTravelCard extends Card {
 		int[] allUtil = {12, 28};
 		int workingnumber = 0;
 		int lowestNumber = Integer.MAX_VALUE;
-		int getPieceLocation = board.getLocationIndex(pieceAt);
+		int getPieceLocation = board.getLocationIndex(pieceAt.getName());
 
 		for (int i = 0; i < allUtil.length; i++) {
 			if (allUtil[i] < getPieceLocation) {
