@@ -142,4 +142,9 @@ public class Player {
 
 		return worth;
 	}
+	
+	@Override
+	public boolean equals(Object anotherPlayer) {
+		return name.equals(((Player) anotherPlayer).name);
+	}
 }
