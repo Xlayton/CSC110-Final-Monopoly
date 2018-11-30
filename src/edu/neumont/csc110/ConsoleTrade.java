@@ -42,7 +42,7 @@ public class ConsoleTrade extends Trade {
 							counterOfferDelete(currentWant);
 							break;
 						case ADD:
-							counterOfferAdd(currentWant);
+							counterOfferAdd(currentWant, current.getDeedArrayList());
 							break;
 						}
 					} else {
@@ -51,7 +51,7 @@ public class ConsoleTrade extends Trade {
 							counterOfferDelete(toTradeWant);
 							break;
 						case ADD:
-							counterOfferAdd(toTradeWant);
+							counterOfferAdd(toTradeWant, current.getDeedArrayList());
 							break;
 						}
 					}

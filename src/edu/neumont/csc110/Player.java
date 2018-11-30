@@ -107,10 +107,6 @@ public class Player {
 	public void setJailed(boolean isJailed) {
 		this.isJailed = isJailed;
 	}
-
-	public OwnableSquare[] getTitleDeeds() {
-		return titleDeeds.toArray(new OwnableSquare[titleDeeds.size()]);
-	}
 	
 	public void addTitleDeeds(ArrayList<OwnableSquare> newDeeds) {
 		for(int i = 0; i < newDeeds.size(); i++) {
@@ -158,7 +154,7 @@ public class Player {
 		return worth;
 	}
 
-	private ArrayList<OwnableSquare> getDeedArrayList() {
+	public ArrayList<OwnableSquare> getDeedArrayList() {
 		return titleDeeds;
 	}
 
