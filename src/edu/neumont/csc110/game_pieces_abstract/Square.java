@@ -80,12 +80,12 @@ public abstract class Square implements Comparable<Square> {
 		squares[24] =
 				new TitleDeed("Illinois Avenue", Color.RED, 240, 20, 100, 300, 750, 925, 1100, 150);
 		squares[25] = new Railroad("B. & O. Railroad");
-		squares[26] = new TitleDeed("Atlantic Avenue", Color.YELLLOW, 260, 22, 110, 330, 800, 975,
+		squares[26] = new TitleDeed("Atlantic Avenue", Color.YELLOW, 260, 22, 110, 330, 800, 975,
 				1150, 150);
-		squares[27] = new TitleDeed("Ventnor Avenue", Color.YELLLOW, 260, 22, 110, 330, 800, 975,
+		squares[27] = new TitleDeed("Ventnor Avenue", Color.YELLOW, 260, 22, 110, 330, 800, 975,
 				1150, 150);
 		squares[28] = new Utility("Water Works");
-		squares[29] = new TitleDeed("Marvin Gardens", Color.YELLLOW, 280, 24, 120, 360, 850, 1025,
+		squares[29] = new TitleDeed("Marvin Gardens", Color.YELLOW, 280, 24, 120, 360, 850, 1025,
 				1200, 150);
 		squares[30] = new GoToJailSquare(board);
 		squares[31] = new TitleDeed("Pacific Avenue", Color.GREEN, 300, 26, 130, 390, 900, 1100,

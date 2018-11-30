@@ -11,7 +11,7 @@ public class TitleDeed extends OwnableSquare {
 		MAGENTA,
 		ORANGE,
 		RED,
-		YELLLOW,
+		YELLOW,
 		GREEN,
 		BLUE;
 	}
