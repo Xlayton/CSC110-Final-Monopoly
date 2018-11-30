@@ -7,10 +7,9 @@ import edu.neumont.csc110.game_pieces.TitleDeed;
 import edu.neumont.csc110.game_pieces_abstract.OwnableSquare;
 
 public class Player {
-	public static Player player;
 	private final String name;
 	private final Piece piece;
-	private final ArrayList<OwnableSquare> properties;
+	private final ArrayList<OwnableSquare> titleDeeds;
 
 	private int houseCount, hotelCount, jailBreakCount, railroadCount, utilityCount, balance;
 	private boolean isJailed;
@@ -24,7 +23,7 @@ public class Player {
 		this.piece = piece;
 		this.balance = initBalance;
 		this.jailBreakCount = 0;
-		properties = new ArrayList<>();
+		titleDeeds = new ArrayList<>();
 	}
 
 	public void subtractBalance(int amount) {
@@ -109,8 +108,8 @@ public class Player {
 		this.isJailed = isJailed;
 	}
 
-	public void getProperties() {
-		return;
+	public OwnableSquare[] getTitleDeeds() {
+		return titleDeeds.toArray(new OwnableSquare[titleDeeds.size()]);
 	}
 
 	public double getRailroadCount() {
@@ -136,7 +135,7 @@ public class Player {
 	public int getWorth() {
 		int worth = balance;
 
-		for (OwnableSquare property : properties) {
+		for (OwnableSquare property : titleDeeds) {
 			worth += property.getPrice();
 			if (property instanceof TitleDeed) {
 				worth += (((TitleDeed) property).getBuildingCount()
@@ -145,5 +144,14 @@ public class Player {
 		}
 
 		return worth;
+	}
+
+	private ArrayList<OwnableSquare> getDeedArrayList() {
+		return titleDeeds;
+	}
+
+	@Override
+	public boolean equals(Object anotherPlayer) {
+		return name.equals(((Player) anotherPlayer).name);
 	}
 }
