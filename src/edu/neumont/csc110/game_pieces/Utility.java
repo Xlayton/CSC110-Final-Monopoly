@@ -16,13 +16,13 @@ public class Utility extends OwnableSquare {
 			return player.roll() * (owner.getUtilCount() == 1 ? 4 : 10);
 		}
 	}
-
 	@Override
-	public void landedOn(Player player) {
-		player.subtractBalance(getRent(player));
+	public void landedOn(Player player) throws IllegalArgumentException {
+		if (owner != null && !player.equals(owner)) {
+			player.subtractBalance(player.roll() * (owner.getUtilCount() > 1 ? 10 : 4));
+		}
 	}
-
-	@Override
+	
 	public String toString() {
 		StringBuilder result = new StringBuilder();
 

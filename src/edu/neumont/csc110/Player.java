@@ -7,10 +7,9 @@ import edu.neumont.csc110.game_pieces.TitleDeed;
 import edu.neumont.csc110.game_pieces_abstract.OwnableSquare;
 
 public class Player {
-	public static Player player;
 	private final String name;
 	private final Piece piece;
-	private final ArrayList<OwnableSquare> properties;
+	private final ArrayList<OwnableSquare> titleDeeds;
 
 	private int houseCount, hotelCount, jailBreakCount, railroadCount, utilityCount, balance;
 	private boolean isJailed;
@@ -24,7 +23,7 @@ public class Player {
 		this.piece = piece;
 		this.balance = initBalance;
 		this.jailBreakCount = 0;
-		properties = new ArrayList<>();
+		titleDeeds = new ArrayList<>();
 	}
 
 	public void subtractBalance(int amount) {
@@ -67,19 +66,19 @@ public class Player {
 	}
 
 	public void buyBuilding(TitleDeed toBuyOn, int numberOfBuildings) {
-		for(int i = 0; i < numberOfBuildings; i++) {
+		for (int i = 0; i < numberOfBuildings; i++) {
 			try {
 				this.subtractBalance(toBuyOn.getBuildingCost());
 				toBuyOn.buyBuilding();
 			} catch (IllegalArgumentException ex) {
-					System.out.println(ex.getMessage());
-					break;
-				}
+				System.out.println(ex.getMessage());
+				break;
+			}
 		}
 	}
 
 	public void sellBuilding(TitleDeed toSellFrom, int numberOfBuildings) {
-		for(int i = 0; i < numberOfBuildings; i++) {
+		for (int i = 0; i < numberOfBuildings; i++) {
 			try {
 				this.addBalance(toSellFrom.sellBuilding());
 			} catch (IllegalArgumentException ex) {
@@ -109,6 +108,22 @@ public class Player {
 		this.isJailed = isJailed;
 	}
 
+	public OwnableSquare[] getTitleDeeds() {
+		return titleDeeds.toArray(new OwnableSquare[titleDeeds.size()]);
+	}
+	
+	public void addTitleDeeds(ArrayList<OwnableSquare> newDeeds) {
+		for(int i = 0; i < newDeeds.size(); i++) {
+			titleDeeds.add(newDeeds.get(i));
+		}
+	}
+	
+	public void removeTitleDeeds(ArrayList<OwnableSquare> oldDeeds) {
+		for(int i = 0; i < oldDeeds.size(); i++) {
+			titleDeeds.remove(oldDeeds.get(i));
+		}
+	}
+
 	public double getRailroadCount() {
 		return railroadCount;
 	}
@@ -132,7 +147,7 @@ public class Player {
 	public int getWorth() {
 		int worth = balance;
 
-		for (OwnableSquare property : properties) {
+		for (OwnableSquare property : titleDeeds) {
 			worth += property.getPrice();
 			if (property instanceof TitleDeed) {
 				worth += (((TitleDeed) property).getBuildingCount()
@@ -142,7 +157,11 @@ public class Player {
 
 		return worth;
 	}
-	
+
+	private ArrayList<OwnableSquare> getDeedArrayList() {
+		return titleDeeds;
+	}
+
 	@Override
 	public boolean equals(Object anotherPlayer) {
 		return name.equals(((Player) anotherPlayer).name);
