@@ -111,6 +111,18 @@ public class Player {
 	public OwnableSquare[] getTitleDeeds() {
 		return titleDeeds.toArray(new OwnableSquare[titleDeeds.size()]);
 	}
+	
+	public void addTitleDeeds(ArrayList<OwnableSquare> newDeeds) {
+		for(int i = 0; i < newDeeds.size(); i++) {
+			titleDeeds.add(newDeeds.get(i));
+		}
+	}
+	
+	public void removeTitleDeeds(ArrayList<OwnableSquare> oldDeeds) {
+		for(int i = 0; i < oldDeeds.size(); i++) {
+			titleDeeds.remove(oldDeeds.get(i));
+		}
+	}
 
 	public double getRailroadCount() {
 		return railroadCount;
