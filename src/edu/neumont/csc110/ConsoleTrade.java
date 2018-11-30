@@ -33,24 +33,27 @@ public class ConsoleTrade extends Trade {
 				isAgree = true;
 				break;
 			case COUNTER_OFFER:
-				Player toChange = getChangeDecision();
-				if (toChange.equals(current)) {
-					switch (getCounterDecision()) {
-					case DELETE:
-						counterOfferDelete(currentWant);
-						break;
-					case ADD:
-						counterOfferAdd(currentWant);
-						break;
-					}
-				} else {
-					switch (getCounterDecision()) {
-					case DELETE:
-						counterOfferDelete(toTradeWant);
-						break;
-					case ADD:
-						counterOfferAdd(toTradeWant);
-						break;
+				boolean isOpen = true;
+				while (isOpen) {
+					Player toChange = getChangeDecision();
+					if (toChange.equals(current)) {
+						switch (getCounterDecision()) {
+						case DELETE:
+							counterOfferDelete(currentWant);
+							break;
+						case ADD:
+							counterOfferAdd(currentWant);
+							break;
+						}
+					} else {
+						switch (getCounterDecision()) {
+						case DELETE:
+							counterOfferDelete(toTradeWant);
+							break;
+						case ADD:
+							counterOfferAdd(toTradeWant);
+							break;
+						}
 					}
 				}
 				break;
@@ -88,24 +91,62 @@ public class ConsoleTrade extends Trade {
 		return chosenTradeItems;
 	}
 
-	// TODO ADD FUNCTIONALITY
 	private void commenceTrade(ArrayList<OwnableSquare> currentWant,
 			ArrayList<OwnableSquare> giveToTrade) {
-
+		current.addTitleDeeds(currentWant);
+		current.removeTitleDeeds(giveToTrade);
+		current.addTitleDeeds(giveToTrade);
+		current.removeTitleDeeds(currentWant);
 
 	}
-	//TODO ADD FUNCTIONALITY
+
 	private ArrayList<OwnableSquare> counterOfferDelete(ArrayList<OwnableSquare> deletingFrom) {
-
-		
-		
-		return null;
+		boolean isGoing = true;
+		ArrayList<String> propertyNames = new ArrayList<>();
+		for (OwnableSquare e : deletingFrom) {
+			propertyNames.add(e.getName());
+		}
+		while (isGoing) {
+			int selection = ConsoleUI.promptForMenuSelection(
+					propertyNames.toArray(new String[propertyNames.size()]), "Done");
+			System.out.println("What do you want to get rid of?");
+			if (selection == 0) {
+				isGoing = false;
+				break;
+			} else {
+				propertyNames.remove(selection);
+				deletingFrom.remove(selection);
+			}
+		}
+		return deletingFrom;
 	}
-	//TODO ADD FUNCTIONALITY
-	private ArrayList<OwnableSquare> counterOfferAdd(ArrayList<OwnableSquare> addingTo) {
 
-		ArrayList<OwnableSquare> otherOwnedProperites = new ArrayList<>();
-		return null;
+	// TODO ADD FUNCTIONALITY
+	private ArrayList<OwnableSquare> counterOfferAdd(ArrayList<OwnableSquare> addingTo, ArrayList<OwnableSquare> allProperties){
+		ArrayList<OwnableSquare> otherOwnedProperties = new ArrayList<>();
+		ArrayList<String> otherPropertyNames = new ArrayList<>();
+		boolean isChoosing = true;
+		
+		for(OwnableSquare e : allProperties) {
+			if(!addingTo.contains(e)) {
+				otherOwnedProperties.add(e);
+				otherPropertyNames.add(e.getName());
+			}
+		}
+		
+		while(isChoosing) {
+			int selection = ConsoleUI.promptForMenuSelection(otherPropertyNames.toArray(new String[otherPropertyNames.size()]), "Done");
+			if(selection == 0) {
+				isChoosing =false;
+				break;
+			} else {
+				addingTo.add(otherOwnedProperties.get(selection));
+				otherOwnedProperties.remove(selection);
+			}
+		}
+		
+		return addingTo;
+		
 	}
 
 	private TradeOption getFinalDecision(ArrayList<OwnableSquare> currentWant,
