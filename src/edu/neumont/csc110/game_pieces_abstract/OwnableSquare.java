@@ -58,6 +58,7 @@ public abstract class OwnableSquare extends Square {
 		} else if (!isOwned()) {
 			if (player.getBalance() >= price) {
 				setOwnership(player);
+				player.addProperties(this);
 				player.subtractBalance(price);
 			}
 			return "Sold " + getName() + " to " + player.getName() + " for $" + price;
