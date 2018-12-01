@@ -32,44 +32,37 @@ public class RelativeTravelCard extends Card {
 	}
 
 	private void moveToRailRoad(Player toApply) {
-		Square pieceAt = board.getPieceLocation(toApply.getPiece());
-		Square closestRail = null;
-		int[] moveRailRoad = {5, 15, 25, 35};
-		int workingnumber = 0;
-		int lowestNumber = Integer.MAX_VALUE;
-		int getPieceLocation = board.getLocationIndex(pieceAt);
-
-		for (int i = 0; i < moveRailRoad.length; i++) {
-			if (moveRailRoad[i] < getPieceLocation) {
-				continue;
-			}
-			workingnumber = moveRailRoad[i] - getPieceLocation;
-			if (workingnumber < lowestNumber) {
-				lowestNumber = workingnumber;
-				closestRail = board.squareAtIndex(moveRailRoad[i]);
-			}
-		}
-		board.moveTo(toApply, closestRail, true);
+		int[] railroadIndices = {
+			board.getLocationIndex("Reading Railroad"),
+			board.getLocationIndex("Pennsylvania Railroad"),
+			board.getLocationIndex("B. & O. Railroad"),
+			board.getLocationIndex("Short Line")	
+		};
+		moveTo(toApply, railroadIndices);
 	}
 
 	private void moveToUtility(Player toApply) {
-		Square pieceAt = board.getPieceLocation(toApply.getPiece());
-		Square closestUtil = null;
-		int[] allUtil = {12, 28};
-		int workingnumber = 0;
-		int lowestNumber = Integer.MAX_VALUE;
-		int getPieceLocation = board.getLocationIndex(pieceAt);
+		int[] utilIndices = {
+			board.getLocationIndex("Electric Company"),
+			board.getLocationIndex("Water Works")	
+		};
+		moveTo(toApply, utilIndices);
+	}
 
-		for (int i = 0; i < allUtil.length; i++) {
-			if (allUtil[i] < getPieceLocation) {
+	private void moveTo(Player toApply, int[] possibleLocations) {
+		Square pieceAt = board.getPieceLocation(toApply.getPiece());
+		Square closest = null;
+		int getPieceLocation = board.getLocationIndex(pieceAt);
+	
+		for (int i = 0; i <= possibleLocations.length; i++) {
+			if (i < possibleLocations.length && possibleLocations[i] < getPieceLocation) {
 				continue;
 			}
-			workingnumber = allUtil[i] - getPieceLocation;
-			if (workingnumber < lowestNumber) {
-				lowestNumber = workingnumber;
-				closestUtil = board.squareAtIndex(allUtil[i]);
-			}
+	
+			closest =
+					board.squareAtIndex(possibleLocations[i < possibleLocations.length ? i : 0]);
+			break;
 		}
-		board.moveTo(toApply, closestUtil, true);
+		board.moveTo(toApply, closest, true);
 	}
 }

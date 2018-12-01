@@ -9,8 +9,8 @@ public class FreeParkingSquare extends SpecialSquare {
 	}
 
 	@Override
-	public void applyEffect(Player toApply) {
-		return;
+	public String applyEffect(Player toApply) {
+		return "";
 	}
 	
 	@Override

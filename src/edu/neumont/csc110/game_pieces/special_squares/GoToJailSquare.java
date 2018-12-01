@@ -13,9 +13,10 @@ public class GoToJailSquare extends SpecialSquare {
 	}
 
 	@Override
-	public void applyEffect(Player toApply) {
+	public String applyEffect(Player toApply) {
 		board.moveTo(toApply, board.getLocation("Jail"), false);
 		toApply.setJailed(true);
+		return toApply.getName() + " sent directly to jail, without passing go.";
 	}
 	
 	@Override

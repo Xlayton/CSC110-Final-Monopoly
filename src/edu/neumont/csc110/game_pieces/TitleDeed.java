@@ -2,7 +2,6 @@ package edu.neumont.csc110.game_pieces;
 
 import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces_abstract.OwnableSquare;
-import edu.neumont.csc110.game_pieces_abstract.Square;
 
 public class TitleDeed extends OwnableSquare {
 	public enum Color {
@@ -20,7 +19,6 @@ public class TitleDeed extends OwnableSquare {
 	private final int[] rents;
 	private final int buildingCost;
 
-	private Player owner;
 	private int buildingCount;
 	private boolean monopolized;
 
@@ -75,6 +73,14 @@ public class TitleDeed extends OwnableSquare {
 
 	@Override
 	public int getRent(Player player) {
+		if (player == null) {
+			if (buildingCount == 0 && monopolized) {
+				return rents[0] * 2;
+			} else {
+				return rents[buildingCount];
+			}
+		}
+		
 		if (isMortgaged || (isOwned() && player.equals(owner))) {
 			return 0;
 		} else {
@@ -96,21 +102,6 @@ public class TitleDeed extends OwnableSquare {
 
 	public Color getColor() {
 		return color;
-	}
-
-	@Override
-	public void landedOn(Player player) {
-		if (isOwned() && !player.equals(owner)) {
-			player.subtractBalance(getRent(player));
-		} else if (!isOwned()) {
-			return;
-		}
-	}
-
-	public static void main(String[] args) {
-		for (Square s : Square.getSquares(null)) {
-			System.out.println(s);
-		}
 	}
 
 	@Override

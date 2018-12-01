@@ -51,5 +51,18 @@ public abstract class OwnableSquare extends Square {
 	}
 
 	@Override
-	public abstract void landedOn(Player player);
+	public String landedOn(Player player) {
+		if (isOwned() && !player.equals(owner)) {
+			player.subtractBalance(getRent(player));
+			return "Paid rent of $" + getRent(player) + " to " + owner.getName();
+		} else if (!isOwned()) {
+			if (player.getBalance() >= price) {
+				setOwnership(player);
+				player.subtractBalance(price);
+			}
+			return "Sold " + getName() + " to " + player.getName() + " for $" + price;
+		} else {
+			return "";
+		}
+	}
 }

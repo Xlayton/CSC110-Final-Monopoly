@@ -91,6 +91,11 @@ public class ConsoleTrade extends Trade {
 		return chosenTradeItems;
 	}
 
+	private OwnableSquare[] getOwnedLocations(Player toTrade2) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	private void commenceTrade(ArrayList<OwnableSquare> currentWant,
 			ArrayList<OwnableSquare> giveToTrade) {
 		current.addTitleDeeds(currentWant);

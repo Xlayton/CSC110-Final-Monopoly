@@ -12,8 +12,9 @@ public class LuxuryTaxSquare extends SpecialSquare {
 	}
 
 	@Override
-	public void applyEffect(Player player) {
+	public String applyEffect(Player player) {
 		player.subtractBalance(taxAmount);
+		return "Taxed " + player.getName() + " by " + taxAmount;
 	}
 	
 	@Override

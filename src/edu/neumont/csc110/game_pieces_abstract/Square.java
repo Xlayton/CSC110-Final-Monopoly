@@ -24,7 +24,7 @@ public abstract class Square implements Comparable<Square> {
 		this.name = name;
 	}
 
-	public abstract void landedOn(Player player);
+	public abstract String landedOn(Player player);
 
 	public String getName() {
 		return name;
