@@ -56,7 +56,7 @@ public abstract class Square implements Comparable<Square> {
 		squares[9] =
 				new TitleDeed("Connecticut Avenue", Color.CYAN, 120, 8, 40, 100, 300, 450, 600, 50);
 		squares[10] = new JailSquare();
-		squares[11] = new TitleDeed("St.Charles Place", Color.MAGENTA, 140, 10, 50, 150, 450, 625,
+		squares[11] = new TitleDeed("St. Charles Place", Color.MAGENTA, 140, 10, 50, 150, 450, 625,
 				750, 100);
 		squares[12] = new Utility("Electric Company");
 		squares[13] =
@@ -73,7 +73,7 @@ public abstract class Square implements Comparable<Square> {
 				1000, 100);
 		squares[20] = new FreeParkingSquare();
 		squares[21] =
-				new TitleDeed("KentuckyAvenue", Color.RED, 220, 18, 90, 250, 700, 875, 1050, 150);
+				new TitleDeed("Kentucky Avenue", Color.RED, 220, 18, 90, 250, 700, 875, 1050, 150);
 		squares[22] = new ChanceSquare(board);
 		squares[23] =
 				new TitleDeed("Indiana Avenue", Color.RED, 220, 18, 90, 250, 700, 875, 1050, 150);

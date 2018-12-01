@@ -167,6 +167,7 @@ public class Player implements Iterable<OwnableSquare> {
 	}
 
 	public OwnableSquare[] getProperties() {
+		properties.sort(null);
 		return properties.toArray(new OwnableSquare[0]);
 	}
 	
