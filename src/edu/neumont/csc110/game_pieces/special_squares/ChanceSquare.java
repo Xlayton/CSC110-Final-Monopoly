@@ -21,7 +21,7 @@ public class ChanceSquare extends SpecialSquare {
 	public String applyEffect(Player toApply) {
 		Card drawn = board.drawCard(true);
 		drawn.applyEffect(toApply);
-		return drawn.getFlavorText();
+		return drawn.toString();
 	}
 	
 	@Override
