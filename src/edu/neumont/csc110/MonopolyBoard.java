@@ -50,6 +50,9 @@ public class MonopolyBoard {
 	public ArrayList<String> movePiece(Player player, int distance) {
 		int currentLocation = getLocationIndex(getPieceLocation(player.getPiece()));
 		int targetLocation = currentLocation + distance;
+		if (targetLocation >= locations.length) {
+			targetLocation -= locations.length;
+		}
 		return moveTo(player, locations[targetLocation].getSquare(), true);
 	}
 
@@ -70,6 +73,7 @@ public class MonopolyBoard {
 			if (locations[i].hasPiece(player.getPiece())) {
 				locations[i].takePiece(player.getPiece());
 				currentIndex = i;
+				break;
 			}
 		}
 
@@ -85,6 +89,7 @@ public class MonopolyBoard {
 					effects.add(player.getName() + " passed or landed on go and gains $200");
 					player.addBalance(200);
 				}
+				break;
 			}
 		}
 		

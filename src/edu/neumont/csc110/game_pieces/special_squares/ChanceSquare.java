@@ -6,11 +6,15 @@ import edu.neumont.csc110.game_pieces_abstract.Card;
 import edu.neumont.csc110.game_pieces_abstract.SpecialSquare;
 
 public class ChanceSquare extends SpecialSquare {
+	private static int chanceSquareCount = 0;
+	
 	private final MonopolyBoard board;
+	private final int count;
 
 	public ChanceSquare(MonopolyBoard board) {
 		super("Chance");
 		this.board = board;
+		count = ++chanceSquareCount;
 	}
 
 	@Override
@@ -18,6 +22,14 @@ public class ChanceSquare extends SpecialSquare {
 		Card drawn = board.drawCard(true);
 		drawn.applyEffect(toApply);
 		return drawn.getFlavorText();
+	}
+	
+	@Override
+	public boolean equals(Object anotherChanceSquare) {
+		if (!(anotherChanceSquare instanceof ChanceSquare)) {
+			return false;
+		}
+		return this.count == ((ChanceSquare) anotherChanceSquare).count;
 	}
 	
 	@Override
