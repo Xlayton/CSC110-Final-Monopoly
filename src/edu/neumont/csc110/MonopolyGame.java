@@ -65,15 +65,7 @@ public class MonopolyGame {
 
 			TurnChoice choice = printMenu();
 			if (choice == null) {
-				if (ConsoleUI.promptForBool("Are you sure? y/n", "y", "n")) {
-					bankruptPlayer(currentPlayer);
-					if (players.size() == 1) {
-						endGame();
-						break;
-					}
-					nextTurn();
-					continue;
-				}
+				nextTurn();
 			} else {
 				switch (choice) {
 				case ESCAPE:
@@ -87,8 +79,16 @@ public class MonopolyGame {
 					break;
 				case TRADE:
 					break;
-				case END:
-					nextTurn();
+				case SURRENDER:
+					if (ConsoleUI.promptForBool("Are you sure? y/n", "y", "n")) {
+						bankruptPlayer(currentPlayer);
+						if (players.size() == 1) {
+							endGame();
+							gameRunning = false;
+						}
+						nextTurn();
+						continue;
+					}
 					break;
 				}
 			}
@@ -167,8 +167,11 @@ public class MonopolyGame {
 			menuOptions.remove(TurnChoice.ROLL);
 		}
 
-		return ConsoleUI.promptForMenuSelection(menuOptions.toArray(new TurnChoice[0]),
-				"Surrender");
+		if (currentPlayerHasRolled) {
+			return ConsoleUI.promptForMenuSelection(menuOptions.toArray(new TurnChoice[0]), "End Turn");
+		} else {
+			return ConsoleUI.promptForMenuSelection(menuOptions.toArray(new TurnChoice[0]), false);
+		}
 	}
 
 	private void printPlayerLocation(Player player) {
@@ -252,7 +255,7 @@ public class MonopolyGame {
 		ESCAPE("Get out of Jail"),
 		IMPROVE("Buy or sell improvements"),
 		MORTGAGE("Mortgage or unmortgage property"),
-		END("End Turn");
+		SURRENDER("Give Up");
 
 		private final String desc;
 
