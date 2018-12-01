@@ -1,12 +1,13 @@
 package edu.neumont.csc110;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 import edu.neumont.csc110.game_pieces.Piece;
 import edu.neumont.csc110.game_pieces.TitleDeed;
 import edu.neumont.csc110.game_pieces_abstract.OwnableSquare;
 
-public class Player {
+public class Player implements Iterable<OwnableSquare> {
 	private final String name;
 	private final Piece piece;
 	private final ArrayList<OwnableSquare> properties;
@@ -37,30 +38,6 @@ public class Player {
 		balance += amount;
 	}
 
-	public boolean isBankrupt() {
-		return false;
-	}
-
-	public boolean hasJailBreak() {
-		return jailBreakCount > 0;
-	}
-
-	public boolean jailBreak() {
-		if (hasJailBreak()) {
-			jailBreakCount--;
-			return true;
-		}
-		return false;
-	}
-
-	public void giveJailBreak() {
-		jailBreakCount++;
-	}
-
-	public int roll() {
-		return (new Random().nextInt(6) + 1) + (new Random().nextInt(6) + 1);
-	}
-
 	public void mortgage(OwnableSquare toMortgage) {
 		this.addBalance(toMortgage.mortgage());
 	}
@@ -88,6 +65,34 @@ public class Player {
 		}
 	}
 
+	public void removeRailroad() {
+		railroadCount--;
+	}
+
+	public void addRailroad() {
+		railroadCount++;
+	}
+
+	public void setJailed(boolean isJailed) {
+		this.isJailed = isJailed;
+	}
+
+	public void giveJailBreak() {
+		jailBreakCount++;
+	}
+
+	public boolean jailBreak() {
+		if (hasJailBreak()) {
+			jailBreakCount--;
+			return true;
+		}
+		return false;
+	}
+
+	public int roll() {
+		return (new Random().nextInt(6) + 1) + (new Random().nextInt(6) + 1);
+	}
+
 	public int getHouseCount() {
 		return houseCount;
 	}
@@ -100,12 +105,20 @@ public class Player {
 		return piece;
 	}
 
+	public boolean hasJailBreak() {
+		return jailBreakCount > 0;
+	}
+
 	public boolean isJailed() {
 		return isJailed;
 	}
 
-	public void setJailed(boolean isJailed) {
-		this.isJailed = isJailed;
+	public boolean isBankrupt() {
+		return false;
+	}
+
+	public boolean hasMonopoly() {
+		return false;
 	}
 
 	public double getRailroadCount() {
@@ -116,21 +129,13 @@ public class Player {
 		return utilityCount;
 	}
 
-	public void removeRailroad() {
-		railroadCount--;
-	}
-
-	public void addRailroad() {
-		railroadCount++;
-	}
-
-	public String getName() {
-		return name;
+	public int getBalance() {
+		return balance;
 	}
 
 	public int getWorth() {
 		int worth = balance;
-
+	
 		for (OwnableSquare property : properties) {
 			worth += property.getPrice();
 			if (property instanceof TitleDeed) {
@@ -138,12 +143,26 @@ public class Player {
 						* ((TitleDeed) property).getBuildingCost());
 			}
 		}
-
+	
 		return worth;
 	}
-	
+
+	public String getName() {
+		return name;
+	}
+
 	@Override
 	public boolean equals(Object anotherPlayer) {
 		return name.equals(((Player) anotherPlayer).name);
+	}
+	
+	@Override
+	public String toString() {
+		return name + ", $" + balance;
+	}
+
+	@Override
+	public Iterator<OwnableSquare> iterator() {
+		return properties.iterator();
 	}
 }
