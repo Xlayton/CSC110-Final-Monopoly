@@ -1,5 +1,6 @@
 package edu.neumont.csc110;
 
+import java.util.ArrayList;
 import edu.neumont.csc110.game_pieces.ChanceCardList;
 import edu.neumont.csc110.game_pieces.CommunityChestCardList;
 import edu.neumont.csc110.game_pieces.Piece;
@@ -30,6 +31,9 @@ public class MonopolyBoard {
 		for (int i = 0; i < locations.length; i++) {
 			locations[i] = new BoardLocation(Square.getSquares(this)[i]);
 		}
+		for (Player p : players) {
+			locations[0].putPiece(p.getPiece());
+		}
 		(chanceDeck = new Deck(ChanceCardList.getChanceCards(this, players))).shuffle();;
 		(communityChestDeck =
 				new Deck(CommunityChestCardList.getCommunityChestCards(this, players))).shuffle();;
@@ -40,11 +44,13 @@ public class MonopolyBoard {
 	 * 
 	 * @param player - the player who owns the piece to move
 	 * @param distance - how far to move it
+	 * 
+	 * @return all of the effects that applied to the player
 	 */
-	public void movePiece(Player player, int distance) {
+	public ArrayList<String> movePiece(Player player, int distance) {
 		int currentLocation = getLocationIndex(getPieceLocation(player.getPiece()));
 		int targetLocation = currentLocation + distance;
-		moveTo(player, locations[targetLocation].getSquare(), true);
+		return moveTo(player, locations[targetLocation].getSquare(), true);
 	}
 
 	/**
@@ -53,29 +59,36 @@ public class MonopolyBoard {
 	 * @param player - the player who owns the piece to move
 	 * @param location - the location to move the piece to
 	 * @param shouldPassGo - whether the player should collect $200 if their piece passes go
+	 * 
+	 * @return all of the effects that applied to the player
 	 */
-	public void moveTo(Player player, Square location, boolean shouldPassGo) {
+	public ArrayList<String> moveTo(Player player, Square location, boolean shouldPassGo) {
+		ArrayList<String> effects = new ArrayList<>();
 		int currentIndex = -1;
-		
+
 		for (int i = 0; i < locations.length; i++) {
 			if (locations[i].hasPiece(player.getPiece())) {
 				locations[i].takePiece(player.getPiece());
 				currentIndex = i;
 			}
 		}
-		
+
 		if (currentIndex < 0) {
-			return;
+			return effects;
 		}
-		
+
 		for (int i = 0; i < locations.length; i++) {
 			if (locations[i].getSquare().equals(location)) {
 				locations[i].putPiece(player.getPiece());
+				effects.add(locations[i].getSquare().landedOn(player));
 				if (i < currentIndex && shouldPassGo) {
+					effects.add(player.getName() + " passed or landed on go and gains $200");
 					player.addBalance(200);
 				}
 			}
 		}
+		
+		return effects;
 	}
 
 	/**
@@ -95,7 +108,7 @@ public class MonopolyBoard {
 				return location.getSquare();
 			}
 		}
-	
+
 		return null;
 	}
 
@@ -105,7 +118,7 @@ public class MonopolyBoard {
 				return location.getSquare();
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -121,7 +134,7 @@ public class MonopolyBoard {
 		}
 		return -1;
 	}
-	
+
 	public int getLocationIndex(Square location) {
 		for (int i = 0; i < locations.length; i++) {
 			if (locations[i].getSquare().equals(location)) {
@@ -147,26 +160,26 @@ public class MonopolyBoard {
 		}
 		return toDrawFrom.draw();
 	}
-	
+
 	public String getPrintablePlayerLocation(Player player) {
 		StringBuilder result = new StringBuilder();
-		
+
 		int pIndex = getLocationIndex(getPieceLocation(player.getPiece()));
-		
-		if (pIndex == 0) {
-			result.append(locations[locations.length - 1] + "\n");
-		} else {
-			result.append(locations[pIndex - 1] + "\n");
-		}
-		
+
+		// if (pIndex == 0) {
+		// result.append(locations[locations.length - 1] + "\n");
+		// } else {
+		// result.append(locations[pIndex - 1] + "\n");
+		// }
+
 		result.append(locations[pIndex] + "\n");
-		
-		if (pIndex == locations.length - 1) {
-			result.append(locations[0] + "\n");
-		} else {
-			result.append(locations[pIndex + 1] + "\n");
-		}
-		
+
+		// if (pIndex == locations.length - 1) {
+		// result.append(locations[0] + "\n");
+		// } else {
+		// result.append(locations[pIndex + 1] + "\n");
+		// }
+
 		return result.toString();
 	}
 }

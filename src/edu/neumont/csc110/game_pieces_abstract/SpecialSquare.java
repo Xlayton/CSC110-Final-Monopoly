@@ -7,10 +7,10 @@ public abstract class SpecialSquare extends Square {
 		super(name);
 	}
 
-	public abstract void applyEffect(Player player);
+	public abstract String applyEffect(Player player);
 
 	@Override
-	public final void landedOn(Player player) {
-		this.applyEffect(player);
+	public final String landedOn(Player player) {
+		return this.applyEffect(player);
 	}
 }

@@ -9,14 +9,15 @@ public class JailSquare extends SpecialSquare {
 	}
 
 	@Override
-	public void applyEffect(Player toApply) {
-		return;
+	public String applyEffect(Player toApply) {
+		return toApply.isJailed() ? toApply.getName() + " is jailed!"
+				: toApply.getName() + " is just visiting.";
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder();
-		
+
 		result.append(makeRow(SEPARATOR, false));
 		result.append(makeRow(""));
 		result.append(makeRow("JUST VISITING"));

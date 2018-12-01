@@ -9,18 +9,22 @@ public class IncomeTaxSquare extends SpecialSquare {
 	}
 
 	@Override
-	public void applyEffect(Player player) {
+	public String applyEffect(Player player) {
 		if ((player.getWorth() / 10) < 200) {
+			String result = "Taxed " + player.getName() + " for 10% of their worth, a total of $"
+					+ (player.getWorth() / 10);
 			player.subtractBalance(player.getWorth() / 10);
+			return result;
 		} else {
 			player.subtractBalance(200);
+			return "Taxed " + player.getName() + " for $200";
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder();
-		
+
 		result.append(makeRow(SEPARATOR, false));
 		result.append(makeRow(""));
 		result.append(makeRow(super.getName()));

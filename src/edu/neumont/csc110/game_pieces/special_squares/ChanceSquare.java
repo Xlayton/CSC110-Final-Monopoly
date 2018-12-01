@@ -2,6 +2,7 @@ package edu.neumont.csc110.game_pieces.special_squares;
 
 import edu.neumont.csc110.MonopolyBoard;
 import edu.neumont.csc110.Player;
+import edu.neumont.csc110.game_pieces_abstract.Card;
 import edu.neumont.csc110.game_pieces_abstract.SpecialSquare;
 
 public class ChanceSquare extends SpecialSquare {
@@ -13,8 +14,10 @@ public class ChanceSquare extends SpecialSquare {
 	}
 
 	@Override
-	public void applyEffect(Player toApply) {
-		board.drawCard(true);
+	public String applyEffect(Player toApply) {
+		Card drawn = board.drawCard(true);
+		drawn.applyEffect(toApply);
+		return drawn.getFlavorText();
 	}
 	
 	@Override

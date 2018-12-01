@@ -19,17 +19,13 @@ public class Railroad extends OwnableSquare {
 
 	@Override
 	public int getRent(Player player) {
+		if (player == null) {
+			return 25 * (int) Math.pow(2, owner.getRailroadCount() - 1);
+		}
 		if (isMortgaged || !isOwned() || (isOwned() && player.equals(owner))) {
 			return 0;
 		} else {
 			return 25 * (int) Math.pow(2, owner.getRailroadCount() - 1);
-		}
-	}
-
-	@Override
-	public void landedOn(Player player) {
-		if (owner != null && !player.equals(owner)) {
-			player.subtractBalance(25 * (int) Math.pow(2, owner.getRailroadCount() - 1));
 		}
 	}
 

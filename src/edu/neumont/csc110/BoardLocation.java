@@ -38,7 +38,11 @@ public class BoardLocation implements Iterable<Piece> {
 	
 	@Override
 	public String toString() {
-		String result = square.toString() + "\n";
+		String result = square.toString() + "On " + square.getName() + ": ";
+		if (piecesOnSquare.isEmpty()) {
+			return result + "no one";
+		}
+		
 		for (int i = 0; i < piecesOnSquare.size(); i++) {
 			result += piecesOnSquare.get(i) + (i != piecesOnSquare.size() - 1 ? ", " : "");
 		}

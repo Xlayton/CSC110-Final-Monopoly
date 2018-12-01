@@ -73,6 +73,14 @@ public class Player implements Iterable<OwnableSquare> {
 		railroadCount++;
 	}
 
+	public void removeUtil() {
+		utilityCount--;
+	}
+	
+	public void addUtil() {
+		utilityCount++;
+	}
+
 	public void setJailed(boolean isJailed) {
 		this.isJailed = isJailed;
 	}

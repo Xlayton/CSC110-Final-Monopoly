@@ -9,8 +9,8 @@ public class GoSquare extends SpecialSquare {
 	}
 
 	@Override
-	public void applyEffect(Player toApply) {
-		toApply.addBalance(200);
+	public String applyEffect(Player toApply) {
+		return "";
 	}
 	
 	@Override
