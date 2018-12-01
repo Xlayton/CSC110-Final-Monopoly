@@ -42,7 +42,7 @@ public class ConsoleTrade extends Trade {
 							counterOfferDelete(currentWant);
 							break;
 						case ADD:
-							counterOfferAdd(currentWant, current.getDeedArrayList());
+							counterOfferAdd(currentWant, current.getProperties());
 							break;
 						}
 					} else {
@@ -51,7 +51,7 @@ public class ConsoleTrade extends Trade {
 							counterOfferDelete(toTradeWant);
 							break;
 						case ADD:
-							counterOfferAdd(toTradeWant, current.getDeedArrayList());
+							counterOfferAdd(toTradeWant, current.getProperties());
 							break;
 						}
 					}
@@ -98,10 +98,10 @@ public class ConsoleTrade extends Trade {
 
 	private void commenceTrade(ArrayList<OwnableSquare> currentWant,
 			ArrayList<OwnableSquare> giveToTrade) {
-		current.addTitleDeeds(currentWant);
-		current.removeTitleDeeds(giveToTrade);
-		current.addTitleDeeds(giveToTrade);
-		current.removeTitleDeeds(currentWant);
+		current.addProperties(currentWant.toArray(new OwnableSquare[0]));
+		current.removeProperties(giveToTrade.toArray(new OwnableSquare[0]));
+		current.addProperties(giveToTrade.toArray(new OwnableSquare[0]));
+		current.removeProperties(currentWant.toArray(new OwnableSquare[0]));
 
 	}
 
@@ -127,12 +127,12 @@ public class ConsoleTrade extends Trade {
 	}
 
 	// TODO ADD FUNCTIONALITY
-	private ArrayList<OwnableSquare> counterOfferAdd(ArrayList<OwnableSquare> addingTo, ArrayList<OwnableSquare> allProperties){
+	private ArrayList<OwnableSquare> counterOfferAdd(ArrayList<OwnableSquare> addingTo, OwnableSquare[] ownableSquares){
 		ArrayList<OwnableSquare> otherOwnedProperties = new ArrayList<>();
 		ArrayList<String> otherPropertyNames = new ArrayList<>();
 		boolean isChoosing = true;
 		
-		for(OwnableSquare e : allProperties) {
+		for(OwnableSquare e : ownableSquares) {
 			if(!addingTo.contains(e)) {
 				otherOwnedProperties.add(e);
 				otherPropertyNames.add(e.getName());

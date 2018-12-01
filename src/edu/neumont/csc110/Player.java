@@ -129,15 +129,15 @@ public class Player implements Iterable<OwnableSquare> {
 		return false;
 	}
 	
-	public void addTitleDeeds(ArrayList<OwnableSquare> newDeeds) {
-		for(int i = 0; i < newDeeds.size(); i++) {
-			properties.add(newDeeds.get(i));
+	public void addProperties(OwnableSquare... newDeeds) {
+		for(OwnableSquare deed : newDeeds) {
+			properties.add(deed);
 		}
 	}
 	
-	public void removeTitleDeeds(ArrayList<OwnableSquare> oldDeeds) {
-		for(int i = 0; i < oldDeeds.size(); i++) {
-			properties.remove(oldDeeds.get(i));
+	public void removeProperties(OwnableSquare... oldDeeds) {
+		for(OwnableSquare deed : oldDeeds) {
+			properties.remove(deed);
 		}
 	}
 
@@ -166,8 +166,8 @@ public class Player implements Iterable<OwnableSquare> {
 		return worth;
 	}
 
-	public ArrayList<OwnableSquare> getDeedArrayList() {
-		return properties;
+	public OwnableSquare[] getProperties() {
+		return properties.toArray(new OwnableSquare[0]);
 	}
 	
 	public String getName() {
