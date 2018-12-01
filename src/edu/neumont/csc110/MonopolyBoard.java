@@ -84,6 +84,7 @@ public class MonopolyBoard {
 		for (int i = 0; i < locations.length; i++) {
 			if (locations[i].getSquare().equals(location)) {
 				locations[i].putPiece(player.getPiece());
+				effects.add(player.getName() + " landed on " + location.getName());
 				effects.add(locations[i].getSquare().landedOn(player));
 				if (i < currentIndex && shouldPassGo) {
 					effects.add(player.getName() + " passed or landed on go and gains $200");
