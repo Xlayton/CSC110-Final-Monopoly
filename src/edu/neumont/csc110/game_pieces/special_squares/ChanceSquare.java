@@ -7,7 +7,7 @@ import edu.neumont.csc110.game_pieces_abstract.SpecialSquare;
 
 public class ChanceSquare extends SpecialSquare {
 	private static int chanceSquareCount = 0;
-	
+
 	private final MonopolyBoard board;
 	private final int count;
 
@@ -23,7 +23,7 @@ public class ChanceSquare extends SpecialSquare {
 		drawn.applyEffect(toApply);
 		return drawn.toString();
 	}
-	
+
 	@Override
 	public boolean equals(Object anotherChanceSquare) {
 		if (!(anotherChanceSquare instanceof ChanceSquare)) {
@@ -31,11 +31,11 @@ public class ChanceSquare extends SpecialSquare {
 		}
 		return this.count == ((ChanceSquare) anotherChanceSquare).count;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder();
-		
+
 		result.append(makeRow(SEPARATOR, false));
 		result.append(makeRow(""));
 		result.append(makeRow("CHANCE"));
