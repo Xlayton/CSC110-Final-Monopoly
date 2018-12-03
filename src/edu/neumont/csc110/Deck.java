@@ -8,14 +8,20 @@ import edu.neumont.csc110.game_pieces_abstract.Card;
 
 public class Deck implements Iterable<Card> {
 	private final ArrayList<Card> my_cards;
-
+/**
+ * 
+ * @param initialCards - 
+ */
 	public Deck(Card... initialCards) {
 		my_cards = new ArrayList<>();
 		for (Card c : initialCards) {
 			my_cards.add(c);
 		}
 	}
-
+/**
+ * 
+ * @param card - 
+ */
 	public void add(Card card) {
 		my_cards.add(card);
 	}

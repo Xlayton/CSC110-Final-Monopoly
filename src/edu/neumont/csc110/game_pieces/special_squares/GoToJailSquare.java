@@ -6,7 +6,10 @@ import edu.neumont.csc110.game_pieces_abstract.SpecialSquare;
 
 public class GoToJailSquare extends SpecialSquare {
 	private final MonopolyBoard board;
-
+/**
+ * 
+ * @param board - the board game
+ */
 	public GoToJailSquare(MonopolyBoard board) {
 		super("Go to Jail");
 		this.board = board;

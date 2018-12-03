@@ -6,7 +6,10 @@ import edu.neumont.csc110.game_pieces_abstract.SpecialSquare;
 
 public class ChanceSquare extends SpecialSquare {
 	private final MonopolyBoard board;
-
+/**
+ * 
+ * @param board - board for the game
+ */
 	public ChanceSquare(MonopolyBoard board) {
 		super("Chance");
 		this.board = board;
@@ -16,7 +19,7 @@ public class ChanceSquare extends SpecialSquare {
 	public void applyEffect(Player toApply) {
 		board.drawCard(true);
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder();

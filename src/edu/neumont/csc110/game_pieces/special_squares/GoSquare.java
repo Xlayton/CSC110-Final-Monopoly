@@ -7,7 +7,9 @@ public class GoSquare extends SpecialSquare {
 	public GoSquare() {
 		super("Go");
 	}
-
+/**
+ * @param addBalance - will add 200 to the players balance
+ */
 	@Override
 	public void applyEffect(Player toApply) {
 		toApply.addBalance(200);

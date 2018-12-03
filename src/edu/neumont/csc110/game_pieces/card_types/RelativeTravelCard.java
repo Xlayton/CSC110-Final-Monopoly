@@ -8,7 +8,13 @@ import edu.neumont.csc110.game_pieces_abstract.Square;
 public class RelativeTravelCard extends Card {
 	private final MonopolyBoard board;
 	private final String location;
-
+/**
+ * 
+ * @param flavorText - description of a card
+ * @param isChance - chance deck of cards
+ * @param board - game board. what the players are on
+ * @param location - where the players are at
+ */
 	public RelativeTravelCard(String flavorText, boolean isChance, MonopolyBoard board,
 			String location) {
 		super(flavorText, isChance);
@@ -30,7 +36,10 @@ public class RelativeTravelCard extends Card {
 			break;
 		}
 	}
-
+/**
+ * 
+ * @param toApply - where the players piece is at 
+ */
 	private void moveToRailRoad(Player toApply) {
 		Square pieceAt = board.getPieceLocation(toApply.getPiece());
 		Square closestRail = null;
@@ -51,7 +60,6 @@ public class RelativeTravelCard extends Card {
 		}
 		board.moveTo(toApply, closestRail, true);
 	}
-
 	private void moveToUtility(Player toApply) {
 		Square pieceAt = board.getPieceLocation(toApply.getPiece());
 		Square closestUtil = null;

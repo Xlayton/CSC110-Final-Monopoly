@@ -5,6 +5,7 @@ import edu.neumont.csc110.game_pieces_abstract.OwnableSquare;
 import edu.neumont.csc110.game_pieces_abstract.Square;
 
 public class TitleDeed extends OwnableSquare {
+	
 	public enum Color {
 		BROWN,
 		CYAN,

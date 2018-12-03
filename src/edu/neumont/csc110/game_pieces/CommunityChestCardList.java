@@ -11,7 +11,12 @@ import edu.neumont.csc110.game_pieces.card_types.TravelCard;
 import edu.neumont.csc110.game_pieces_abstract.Card;
 
 public class CommunityChestCardList {
-
+/**
+ * all the cards for community chest that a player has to pick
+ * @param board - the board of the game
+ * @param players - the people playing
+ * @return - goes back through the deck
+ */
 	public static Card[] getCommunityChestCards(MonopolyBoard board, Player[] players) {
 		Card[] cards = new Card[16];
 
