@@ -16,7 +16,7 @@ public class Utility extends OwnableSquare {
 		this.owner = owner;
 		owner.addUtil();
 	}
-	
+
 	@Override
 	public int getRent(Player player) {
 		if (player == null) {
@@ -28,8 +28,9 @@ public class Utility extends OwnableSquare {
 			return 25 * (int) Math.pow(2, owner.getRailroadCount() - 1);
 		}
 	}
+
 	@Override
-	
+
 	public String toString() {
 		StringBuilder result = new StringBuilder();
 

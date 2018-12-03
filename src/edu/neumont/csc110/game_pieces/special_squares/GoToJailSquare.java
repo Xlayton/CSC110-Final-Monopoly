@@ -18,11 +18,11 @@ public class GoToJailSquare extends SpecialSquare {
 		toApply.setJailed(true);
 		return toApply.getName() + " sent directly to jail, without passing go.";
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder();
-		
+
 		result.append(makeRow(SEPARATOR, false));
 		result.append(makeRow("GO TO JAIL"));
 		result.append(makeRow("               ,"));

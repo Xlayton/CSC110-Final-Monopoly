@@ -16,11 +16,11 @@ public class LuxuryTaxSquare extends SpecialSquare {
 		player.subtractBalance(taxAmount);
 		return "Taxed " + player.getName() + " by " + taxAmount;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder();
-		
+
 		result.append(makeRow(SEPARATOR, false));
 		result.append(makeRow(""));
 		result.append(makeRow(super.getName()));

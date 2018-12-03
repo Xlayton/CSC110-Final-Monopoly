@@ -4,10 +4,10 @@ import edu.neumont.csc110.Player;
 
 public abstract class OwnableSquare extends Square {
 	protected final int price;
-	
+
 	protected Player owner;
 	protected boolean isMortgaged;
-	
+
 	protected OwnableSquare(String name, int buyPrice) {
 		super(name);
 		price = buyPrice;
@@ -41,7 +41,7 @@ public abstract class OwnableSquare extends Square {
 	}
 
 	public abstract int getRent(Player player);
-	
+
 	public int getPrice() {
 		return price;
 	}

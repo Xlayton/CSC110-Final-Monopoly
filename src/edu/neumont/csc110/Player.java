@@ -13,7 +13,7 @@ public class Player implements Iterable<OwnableSquare> {
 	private final ArrayList<OwnableSquare> properties;
 
 	private int houseCount, hotelCount, jailBreakCount, railroadCount, utilityCount, balance;
-	private boolean isJailed;
+	private boolean isJailed, isAuctioning;
 
 	public Player(String name, Piece piece) {
 		this(name, piece, 1500);
@@ -76,7 +76,7 @@ public class Player implements Iterable<OwnableSquare> {
 	public void removeUtil() {
 		utilityCount--;
 	}
-	
+
 	public void addUtil() {
 		utilityCount++;
 	}
@@ -128,15 +128,15 @@ public class Player implements Iterable<OwnableSquare> {
 	public boolean hasMonopoly() {
 		return false;
 	}
-	
+
 	public void addProperties(OwnableSquare... newDeeds) {
-		for(OwnableSquare deed : newDeeds) {
+		for (OwnableSquare deed : newDeeds) {
 			properties.add(deed);
 		}
 	}
-	
+
 	public void removeProperties(OwnableSquare... oldDeeds) {
-		for(OwnableSquare deed : oldDeeds) {
+		for (OwnableSquare deed : oldDeeds) {
 			properties.remove(deed);
 		}
 	}
@@ -162,7 +162,7 @@ public class Player implements Iterable<OwnableSquare> {
 						* ((TitleDeed) property).getBuildingCost());
 			}
 		}
-	
+
 		return worth;
 	}
 
@@ -170,16 +170,20 @@ public class Player implements Iterable<OwnableSquare> {
 		properties.sort(null);
 		return properties.toArray(new OwnableSquare[0]);
 	}
-	
+
 	public String getName() {
 		return name;
+	}
+
+	public boolean getIsAuctioning() {
+		return isAuctioning;
 	}
 
 	@Override
 	public boolean equals(Object anotherPlayer) {
 		return name.equals(((Player) anotherPlayer).name);
 	}
-	
+
 	@Override
 	public String toString() {
 		return name + ", $" + balance;

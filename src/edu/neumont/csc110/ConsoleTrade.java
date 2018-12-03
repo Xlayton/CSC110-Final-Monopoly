@@ -127,31 +127,33 @@ public class ConsoleTrade extends Trade {
 	}
 
 	// TODO ADD FUNCTIONALITY
-	private ArrayList<OwnableSquare> counterOfferAdd(ArrayList<OwnableSquare> addingTo, OwnableSquare[] ownableSquares){
+	private ArrayList<OwnableSquare> counterOfferAdd(ArrayList<OwnableSquare> addingTo,
+			OwnableSquare[] ownableSquares) {
 		ArrayList<OwnableSquare> otherOwnedProperties = new ArrayList<>();
 		ArrayList<String> otherPropertyNames = new ArrayList<>();
 		boolean isChoosing = true;
-		
-		for(OwnableSquare e : ownableSquares) {
-			if(!addingTo.contains(e)) {
+
+		for (OwnableSquare e : ownableSquares) {
+			if (!addingTo.contains(e)) {
 				otherOwnedProperties.add(e);
 				otherPropertyNames.add(e.getName());
 			}
 		}
-		
-		while(isChoosing) {
-			int selection = ConsoleUI.promptForMenuSelection(otherPropertyNames.toArray(new String[otherPropertyNames.size()]), "Done");
-			if(selection == 0) {
-				isChoosing =false;
+
+		while (isChoosing) {
+			int selection = ConsoleUI.promptForMenuSelection(
+					otherPropertyNames.toArray(new String[otherPropertyNames.size()]), "Done");
+			if (selection == 0) {
+				isChoosing = false;
 				break;
 			} else {
 				addingTo.add(otherOwnedProperties.get(selection));
 				otherOwnedProperties.remove(selection);
 			}
 		}
-		
+
 		return addingTo;
-		
+
 	}
 
 	private TradeOption getFinalDecision(ArrayList<OwnableSquare> currentWant,

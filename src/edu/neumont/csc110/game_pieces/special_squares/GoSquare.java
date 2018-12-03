@@ -12,11 +12,11 @@ public class GoSquare extends SpecialSquare {
 	public String applyEffect(Player toApply) {
 		return "";
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder();
-		
+
 		result.append(makeRow(SEPARATOR, false));
 		result.append(makeRow(""));
 		result.append(makeRow(""));
