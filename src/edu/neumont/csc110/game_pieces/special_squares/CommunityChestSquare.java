@@ -7,7 +7,7 @@ import edu.neumont.csc110.game_pieces_abstract.SpecialSquare;
 
 public class CommunityChestSquare extends SpecialSquare {
 	private static int chestSquareCount = 0;
-	
+
 	private final MonopolyBoard board;
 	private final int count;
 
@@ -23,7 +23,7 @@ public class CommunityChestSquare extends SpecialSquare {
 		drawn.applyEffect(toApply);
 		return drawn.toString();
 	}
-	
+
 	@Override
 	public boolean equals(Object anotherChestSquare) {
 		if (!(anotherChestSquare instanceof CommunityChestSquare)) {
@@ -31,11 +31,11 @@ public class CommunityChestSquare extends SpecialSquare {
 		}
 		return this.count == ((CommunityChestSquare) anotherChestSquare).count;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder();
-		
+
 		result.append(makeRow(SEPARATOR, false));
 		result.append(makeRow("COMMUNITY CHEST"));
 		result.append(makeRow(SEPARATOR));

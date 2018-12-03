@@ -93,7 +93,7 @@ public class MonopolyBoard {
 				break;
 			}
 		}
-		
+
 		return effects;
 	}
 

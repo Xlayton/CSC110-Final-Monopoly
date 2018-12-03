@@ -16,7 +16,7 @@ import edu.neumont.csc110.game_pieces.special_squares.LuxuryTaxSquare;
 
 public abstract class Square implements Comparable<Square> {
 	private final String name;
-	
+
 	protected static final String SEPARATOR = "__________________________";
 	protected static final int ROW_IN_LENGTH = 26;
 
@@ -50,7 +50,8 @@ public abstract class Square implements Comparable<Square> {
 		squares[3] = new TitleDeed("Baltic Avenue", Color.BROWN, 60, 4, 20, 60, 180, 320, 450, 50);
 		squares[4] = new LuxuryTaxSquare("Income Tax", 200);
 		squares[5] = new Railroad("Reading Railroad");
-		squares[6] = new TitleDeed("Oriental Avenue", Color.CYAN, 100, 6, 30, 90, 270, 400, 550, 50);
+		squares[6] =
+				new TitleDeed("Oriental Avenue", Color.CYAN, 100, 6, 30, 90, 270, 400, 550, 50);
 		squares[7] = new ChanceSquare(board);
 		squares[8] = new TitleDeed("Vermont Avenue", Color.CYAN, 100, 6, 30, 90, 270, 400, 550, 50);
 		squares[9] =
@@ -64,8 +65,8 @@ public abstract class Square implements Comparable<Square> {
 		squares[14] = new TitleDeed("Virginia Avenue", Color.MAGENTA, 160, 12, 60, 180, 500, 700,
 				900, 100);
 		squares[15] = new Railroad("Pennsylvania Railroad");
-		squares[16] =
-				new TitleDeed("St. James Place", Color.ORANGE, 180, 14, 70, 200, 550, 750, 950, 100);
+		squares[16] = new TitleDeed("St. James Place", Color.ORANGE, 180, 14, 70, 200, 550, 750,
+				950, 100);
 		squares[17] = new CommunityChestSquare(board);
 		squares[18] = new TitleDeed("Tennessee Avenue", Color.ORANGE, 190, 14, 70, 200, 550, 750,
 				950, 100);

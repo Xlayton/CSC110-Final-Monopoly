@@ -13,7 +13,7 @@ public class Player implements Iterable<OwnableSquare> {
 	private final ArrayList<OwnableSquare> properties;
 
 	private int houseCount, hotelCount, jailBreakCount, railroadCount, utilityCount, balance, escapeAttempts;
-	private boolean isJailed;
+	private boolean isJailed, isAuctioning;
 
 	public Player(String name, Piece piece) {
 		this(name, piece, 1500);
@@ -108,8 +108,8 @@ public class Player implements Iterable<OwnableSquare> {
 	}
 
 	public int[] roll() {
-//		return new int[] {(new Random().nextInt(6) + 1), (new Random().nextInt(6) + 1)};
-		return new int[] {1, 1};
+		return new int[] {(new Random().nextInt(6) + 1), (new Random().nextInt(6) + 1)};
+//		return new int[] {1, 1};
 	}
 
 	public int getHouseCount() {
@@ -188,6 +188,10 @@ public class Player implements Iterable<OwnableSquare> {
 
 	public int getEscapeAttempts() {
 		return escapeAttempts;
+	}
+
+	public boolean isAuctioning() {
+		return isAuctioning;
 	}
 
 	@Override
