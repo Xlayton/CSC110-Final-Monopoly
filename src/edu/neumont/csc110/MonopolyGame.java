@@ -14,16 +14,18 @@ public class MonopolyGame {
 	private ArrayList<Player> players;
 	private ArrayList<String> playerNames;
 	private Player currentPlayer;
-	private int currentPlayerIndex;
-	private boolean currentPlayerHasRolled;
+	private int currentPlayerIndex, doubleCount;
+	private boolean currentPlayerHasRolled, jailedThisTurn;
 
 	public MonopolyGame() {
 		players = new ArrayList<>();
 		playerNames = new ArrayList<>();
 		initGame();
 		currentPlayerIndex = 0;
+		doubleCount = 0;
 		currentPlayer = players.get(currentPlayerIndex);
 		currentPlayerHasRolled = false;
+		jailedThisTurn = false;
 		board = new MonopolyBoard(players.toArray(new Player[0]));
 	}
 
@@ -74,10 +76,13 @@ public class MonopolyGame {
 					}
 					nextTurn();
 					continue;
+				} else {
+					continue;
 				}
 			}
 			switch (choice) {
 			case ESCAPE:
+				getOutOfJail();
 				break;
 			case IMPROVE:
 				break;
@@ -96,7 +101,9 @@ public class MonopolyGame {
 					System.out.println("You don't own any properties");
 				}
 				for (OwnableSquare property : currentPlayer.getProperties()) {
-					System.out.println(property.getName());
+					System.out.println(property.getName() + (property instanceof TitleDeed
+							? " (" + ((TitleDeed) property).getColor() + ")"
+							: ""));
 					System.out.println(" -Rent: $"
 							+ (property.isMortgaged() ? "Mortgaged" : property.getRent(null)));
 					if (property instanceof TitleDeed) {
@@ -117,16 +124,119 @@ public class MonopolyGame {
 		} while (gameRunning);
 	}
 
-	private void playerMove() {
-		int distance = currentPlayer.roll();
-		System.out.println(currentPlayer.getName() + " rolled a " + distance);
-		for (String s : board.movePiece(currentPlayer, distance)) {
-			System.out.println(s);
+	private TurnChoice printMenu() {
+		ArrayList<TurnChoice> menuOptions = TurnChoice.mutableValues();
+	
+		if (!currentPlayer.isJailed()) {
+			menuOptions.remove(TurnChoice.ESCAPE);
+		} else {
+			menuOptions.remove(TurnChoice.ROLL);
+			if (!jailedThisTurn) {
+				menuOptions.remove(TurnChoice.END);
+			}
 		}
-		currentPlayerHasRolled = true;
+	
+		if (!currentPlayer.hasMonopoly()) {
+			menuOptions.remove(TurnChoice.IMPROVE);
+		}
+	
+		if (currentPlayerHasRolled) {
+			menuOptions.remove(TurnChoice.ROLL);
+		} else if (!currentPlayerHasRolled) {
+			menuOptions.remove(TurnChoice.END);
+		}
+	
+		return ConsoleUI.promptForMenuSelection(menuOptions.toArray(new TurnChoice[0]), "Give Up");
 	}
 
-	private void endGame() {}
+	private EscapeChoice printEscapeMenu() {
+		ArrayList<EscapeChoice> menuOptions = EscapeChoice.mutableValues();
+	
+		if (jailedThisTurn || currentPlayerHasRolled) {
+			menuOptions.remove(EscapeChoice.ROLL);
+		}
+	
+		if (!currentPlayer.hasJailBreak()) {
+			menuOptions.remove(EscapeChoice.CARD);
+		}
+	
+		if (currentPlayer.getBalance() < 50) {
+			menuOptions.remove(EscapeChoice.PAY);
+		}
+	
+		return ConsoleUI.promptForMenuSelection(menuOptions.toArray(new EscapeChoice[0]),
+				"Return to Main");
+	}
+
+	private void printPlayerLocation(Player player) {
+		System.out.println(board.getPrintablePlayerLocation(currentPlayer));
+	}
+
+	private void playerMove() {
+		int[] rolls = currentPlayer.roll();
+		System.out
+				.print(currentPlayer.getName() + " rolled " + rolls[0] + " and " + rolls[1] + ".");
+		if (rolls[0] == rolls[1]) {
+			System.out.println(" Doubles!");
+			doubleCount++;
+			if (doubleCount == 3) {
+				System.out.println("3 doubles? Jailtime!");
+				currentPlayer.setJailed(true);
+				for (String s : board.moveTo(currentPlayer, board.getLocation("Jail"), false)) {
+					System.out.println(s);
+				}
+				doubleCount = 0;
+				currentPlayerHasRolled = true;
+				jailedThisTurn = true;
+				return;
+			}
+		} else {
+			System.out.println();
+			currentPlayerHasRolled = true;
+			doubleCount = 0;
+		}
+		for (String s : board.movePiece(currentPlayer, rolls[0] + rolls[1])) {
+			System.out.println(s);
+		}
+	}
+
+	private void getOutOfJail() {
+		EscapeChoice choice = printEscapeMenu();
+
+		if (choice == null) {
+			return;
+		}
+
+		switch (choice) {
+		case CARD:
+			currentPlayer.jailBreak();
+			currentPlayer.resetEscapeAttempts();
+			break;
+		case PAY:
+			currentPlayer.subtractBalance(50);
+			currentPlayer.setJailed(false);
+			currentPlayer.resetEscapeAttempts();
+			break;
+		case ROLL:
+			int[] rolls = currentPlayer.roll();
+			System.out.println("Rolled " + rolls[0] + " and " + rolls[1]);
+			if (rolls[0] == rolls[1]) {
+				currentPlayer.setJailed(false);
+				System.out.println("You did it! Moving " + (rolls[0] + rolls[1]));
+				for (String s : board.movePiece(currentPlayer, rolls[0] + rolls[1])) {
+					System.out.println(s);
+				} ;
+				currentPlayer.resetEscapeAttempts();
+				return;
+			} else {
+				currentPlayer.addEscapeAttempt();
+				System.out.println("You failed. You have " + (3 - currentPlayer.getEscapeAttempts())
+						+ " attempts remaining.");
+			}
+			break;
+		}
+		System.out.println("You're out of jail!");
+	}
 
 	private void nextTurn() {
 		currentPlayerIndex++;
@@ -135,7 +245,10 @@ public class MonopolyGame {
 		}
 		currentPlayer = players.get(currentPlayerIndex);
 		currentPlayerHasRolled = false;
+		jailedThisTurn = false;
 	}
+
+	private void endGame() {}
 
 	private void bankruptPlayer(Player toBankrupt) {
 		bankruptPlayer(toBankrupt, null);
@@ -173,30 +286,6 @@ public class MonopolyGame {
 	}
 
 	private void auction(OwnableSquare s) {}
-
-	private TurnChoice printMenu() {
-		ArrayList<TurnChoice> menuOptions = TurnChoice.mutableValues();
-
-		if (!currentPlayer.isJailed()) {
-			menuOptions.remove(TurnChoice.ESCAPE);
-		}
-
-		if (!currentPlayer.hasMonopoly()) {
-			menuOptions.remove(TurnChoice.IMPROVE);
-		}
-
-		if (currentPlayerHasRolled) {
-			menuOptions.remove(TurnChoice.ROLL);
-		} else {
-			menuOptions.remove(TurnChoice.END);
-		}
-
-		return ConsoleUI.promptForMenuSelection(menuOptions.toArray(new TurnChoice[0]), "Give Up");
-	}
-
-	private void printPlayerLocation(Player player) {
-		System.out.println(board.getPrintablePlayerLocation(currentPlayer));
-	}
 
 	private void initGame() {
 		System.out.println("Welcome to Console Monopoly!");
@@ -272,11 +361,11 @@ public class MonopolyGame {
 	private enum TurnChoice implements MenuOption {
 		ROLL("Roll to Move"),
 		END("End Turn"),
+		ESCAPE("Get Out of Jail"),
+		INFO("View Properties"),
 		TRADE("Trade with Another Player"),
-		ESCAPE("Get out of Jail"),
-		IMPROVE("Buy or sell improvements"),
-		MORTGAGE("Mortgage or unmortgage property"),
-		INFO("View Properties");
+		IMPROVE("Buy or Sell Improvements"),
+		MORTGAGE("Mortgage or Unmortgage Property"),;
 
 		private final String desc;
 
@@ -292,6 +381,31 @@ public class MonopolyGame {
 			ArrayList<TurnChoice> values = new ArrayList<>();
 			for (TurnChoice t : TurnChoice.values()) {
 				values.add(t);
+			}
+			return values;
+		}
+	}
+
+	private enum EscapeChoice implements MenuOption {
+		ROLL("Roll Doubles to Escape"),
+		PAY("Pay $50 to Get Out"),
+		CARD("Use a Get Out of Jail Free Card");
+
+		private final String desc;
+
+		private EscapeChoice(String desc) {
+			this.desc = desc;
+		}
+
+		@Override
+		public String getDesc() {
+			return desc;
+		}
+
+		public static ArrayList<EscapeChoice> mutableValues() {
+			ArrayList<EscapeChoice> values = new ArrayList<>();
+			for (EscapeChoice e : EscapeChoice.values()) {
+				values.add(e);
 			}
 			return values;
 		}

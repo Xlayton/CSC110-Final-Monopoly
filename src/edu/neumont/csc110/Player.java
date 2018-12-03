@@ -12,7 +12,7 @@ public class Player implements Iterable<OwnableSquare> {
 	private final Piece piece;
 	private final ArrayList<OwnableSquare> properties;
 
-	private int houseCount, hotelCount, jailBreakCount, railroadCount, utilityCount, balance;
+	private int houseCount, hotelCount, jailBreakCount, railroadCount, utilityCount, balance, escapeAttempts;
 	private boolean isJailed;
 
 	public Player(String name, Piece piece) {
@@ -24,6 +24,7 @@ public class Player implements Iterable<OwnableSquare> {
 		this.piece = piece;
 		this.balance = initBalance;
 		this.jailBreakCount = 0;
+		this.escapeAttempts = 0;
 		properties = new ArrayList<>();
 	}
 
@@ -76,9 +77,17 @@ public class Player implements Iterable<OwnableSquare> {
 	public void removeUtil() {
 		utilityCount--;
 	}
-	
+
 	public void addUtil() {
 		utilityCount++;
+	}
+
+	public void addEscapeAttempt() {
+		escapeAttempts++;
+	}
+	
+	public void resetEscapeAttempts() {
+		this.escapeAttempts = 0;
 	}
 
 	public void setJailed(boolean isJailed) {
@@ -92,13 +101,15 @@ public class Player implements Iterable<OwnableSquare> {
 	public boolean jailBreak() {
 		if (hasJailBreak()) {
 			jailBreakCount--;
+			isJailed = false;
 			return true;
 		}
 		return false;
 	}
 
-	public int roll() {
-		return (new Random().nextInt(6) + 1) + (new Random().nextInt(6) + 1);
+	public int[] roll() {
+//		return new int[] {(new Random().nextInt(6) + 1), (new Random().nextInt(6) + 1)};
+		return new int[] {1, 1};
 	}
 
 	public int getHouseCount() {
@@ -128,15 +139,15 @@ public class Player implements Iterable<OwnableSquare> {
 	public boolean hasMonopoly() {
 		return false;
 	}
-	
+
 	public void addProperties(OwnableSquare... newDeeds) {
-		for(OwnableSquare deed : newDeeds) {
+		for (OwnableSquare deed : newDeeds) {
 			properties.add(deed);
 		}
 	}
-	
+
 	public void removeProperties(OwnableSquare... oldDeeds) {
-		for(OwnableSquare deed : oldDeeds) {
+		for (OwnableSquare deed : oldDeeds) {
 			properties.remove(deed);
 		}
 	}
@@ -162,7 +173,7 @@ public class Player implements Iterable<OwnableSquare> {
 						* ((TitleDeed) property).getBuildingCost());
 			}
 		}
-	
+
 		return worth;
 	}
 
@@ -170,16 +181,20 @@ public class Player implements Iterable<OwnableSquare> {
 		properties.sort(null);
 		return properties.toArray(new OwnableSquare[0]);
 	}
-	
+
 	public String getName() {
 		return name;
+	}
+
+	public int getEscapeAttempts() {
+		return escapeAttempts;
 	}
 
 	@Override
 	public boolean equals(Object anotherPlayer) {
 		return name.equals(((Player) anotherPlayer).name);
 	}
-	
+
 	@Override
 	public String toString() {
 		return name + ", $" + balance;
