@@ -13,7 +13,8 @@ public class Player implements Iterable<OwnableSquare> {
 	private final Piece piece;
 	private final ArrayList<OwnableSquare> properties;
 
-	private int houseCount, hotelCount, jailBreakCount, railroadCount, utilityCount, balance, escapeAttempts;
+	private int houseCount, hotelCount, jailBreakCount, railroadCount, utilityCount, balance,
+			escapeAttempts;
 	private boolean isJailed, isAuctioning;
 
 	public Player(String name, Piece piece) {
@@ -90,7 +91,7 @@ public class Player implements Iterable<OwnableSquare> {
 	public void addEscapeAttempt() {
 		escapeAttempts++;
 	}
-	
+
 	public void resetEscapeAttempts() {
 		this.escapeAttempts = 0;
 	}
@@ -114,7 +115,6 @@ public class Player implements Iterable<OwnableSquare> {
 
 	public int[] roll() {
 		return new int[] {(new Random().nextInt(6) + 1), (new Random().nextInt(6) + 1)};
-//		return new int[] {1, 1};
 	}
 
 	public int getHouseCount() {
@@ -141,44 +141,30 @@ public class Player implements Iterable<OwnableSquare> {
 		return false;
 	}
 
-	public boolean hasMonopoly() {
-		Color previousColor = null;
-		Color currentColor = null;
-		int sameColorProperties = 0;
-		properties.sort(null);
-		for(OwnableSquare own : properties) {
-			if (own instanceof TitleDeed) {
-				TitleDeed t = (TitleDeed) own;
-				currentColor = t.getColor();
-				if(!currentColor.equals(previousColor)) {
-					sameColorProperties = 1;
-				} else {
-					sameColorProperties++;
+	public boolean isMonopolized(TitleDeed square) {
+		return isMonopolized(square.getColor());
+	}
+
+	public boolean isMonopolized(Color color) {
+		int monopolyCounter = 0;
+		for (OwnableSquare property : properties) {
+			if (property instanceof TitleDeed) {
+				TitleDeed deed = (TitleDeed) property;
+				if (deed.getColor().equals(color)) {
+					monopolyCounter++;
+					if (monopolyCounter == deed.getMonopolizedCount()) {
+						return true;
+					}
 				}
-				if(sameColorProperties == t.getMonopolizedCount()) {
-					return true;
-				}
-				previousColor = currentColor;
-			} else {
-				continue;
 			}
 		}
 		return false;
 	}
-	
-	public boolean isMonopolized(Color toCheck) {
-		int numColorOwned = 0;
-		for(OwnableSquare own : properties) {
-			if(own instanceof TitleDeed) {
-				TitleDeed t = (TitleDeed) own;
-				if(t.getColor().equals(toCheck)) {
-					numColorOwned++;
-				}
-				if(numColorOwned == t.getMonopolizedCount()) {
-					return true;
-				}
-			}else {
-				continue;
+
+	public boolean hasMonopoly() {
+		for (Color c : Color.values()) {
+			if (isMonopolized(c)) {
+				return true;
 			}
 		}
 		return false;

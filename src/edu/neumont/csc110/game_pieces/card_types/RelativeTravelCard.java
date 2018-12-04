@@ -60,20 +60,6 @@ public class RelativeTravelCard extends Card {
 			break;
 		}
 
-		int utilCount = 0;
-		if (closest.isOwned()) {
-			closest.getOwner().addRailroad();
-			utilCount = closest.getOwner().getUtilCount();
-			if (utilCount < 2) {
-				closest.getOwner().addUtil();
-			}
-		}
 		board.moveTo(toApply, closest, true);
-		if (closest.isOwned()) {
-			closest.getOwner().removeRailroad();
-			if (closest.getOwner().getUtilCount() > utilCount) {
-				closest.getOwner().removeUtil();
-			}
-		}
 	}
 }
