@@ -1,5 +1,6 @@
 package edu.neumont.csc110.game_pieces.special_squares;
 
+import edu.neumont.csc110.InsufficientFundsException;
 import edu.neumont.csc110.MonopolyBoard;
 import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces_abstract.Card;
@@ -22,7 +23,7 @@ public class ChanceSquare extends SpecialSquare {
 	}
 
 	@Override
-	public String applyEffect(Player toApply) {
+	public String applyEffect(Player toApply) throws InsufficientFundsException {
 		Card drawn = board.drawCard(true);
 		drawn.applyEffect(toApply);
 		return drawn.toString();

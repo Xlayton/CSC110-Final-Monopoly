@@ -1,5 +1,6 @@
 package edu.neumont.csc110.game_pieces.card_types;
 
+import edu.neumont.csc110.InsufficientFundsException;
 import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces_abstract.Card;
 
@@ -21,7 +22,7 @@ public class PayCard extends Card {
  * Subtracts from the players balance
  */
 	@Override
-	public void applyEffect(Player toApply) throws IllegalArgumentException {
+	public void applyEffect(Player toApply) throws InsufficientFundsException {
 		toApply.subtractBalance(payAmount);
 	}
 }

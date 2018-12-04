@@ -1,5 +1,6 @@
 package edu.neumont.csc110.game_pieces_abstract;
 
+import edu.neumont.csc110.InsufficientFundsException;
 import edu.neumont.csc110.Player;
 
 public abstract class Card {
@@ -23,7 +24,7 @@ public abstract class Card {
 	 * 
 	 * @param toApply
 	 */
-	public abstract void applyEffect(Player toApply);
+	public abstract void applyEffect(Player toApply) throws InsufficientFundsException;
 
 	@Override
 	public String toString() {

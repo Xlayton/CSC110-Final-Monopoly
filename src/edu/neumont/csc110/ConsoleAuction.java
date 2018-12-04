@@ -6,7 +6,7 @@ import edu.neumont.csc110.game_pieces_abstract.OwnableSquare;
 import interfaces.ConsoleUI;
 
 public class ConsoleAuction extends Auction {
-	
+
 	ArrayList<Player> playersInAuction = new ArrayList<>();
 
 	@Override
@@ -14,7 +14,7 @@ public class ConsoleAuction extends Auction {
 			Player toStart) {
 
 		int turnPlayerIndex = 0;
-		int workingPrice = 0;
+		int workingPrice = 1;
 		int originalPrice = toAuction.getPrice();
 
 		for (int i = 0; i < allPlayers.size(); i++) {
@@ -25,20 +25,19 @@ public class ConsoleAuction extends Auction {
 		}
 
 		while (playersInAuction.size() > 1) {
-			System.out.println(playersInAuction.get(turnPlayerIndex) + " it's your turn!");
-			String[] options = new String[] {"Leave Auction", "Bid" };
-			int selection = ConsoleUI.promptForMenuSelection(options,false);
-			switch(selection) {
-			case 1:
+			System.out.println(
+					playersInAuction.get(turnPlayerIndex).getName() + " it's your bid! You have $"
+							+ playersInAuction.get(turnPlayerIndex).getBalance());
+			System.out.println("The bid is at $" + workingPrice);
+			int selection = ConsoleUI.promptForMenuSelection(new String[] {"Bid"}, "Leave Auction");
+			if (selection == 0) {
 				playersInAuction.remove(turnPlayerIndex);
+				turnPlayerIndex %= playersInAuction.size();
+			} else {
+				workingPrice =
+						doTurn(playersInAuction.get(turnPlayerIndex), workingPrice, originalPrice);
 				turnPlayerIndex++;
 				turnPlayerIndex %= playersInAuction.size();
-				continue;
-			case 2:
-				workingPrice = doTurn(playersInAuction.get(turnPlayerIndex), workingPrice, originalPrice);
-				turnPlayerIndex++;
-				turnPlayerIndex %= playersInAuction.size();
-				break;
 			}
 		}
 		buyProperty(playersInAuction.get(0), toAuction, workingPrice);
@@ -47,14 +46,16 @@ public class ConsoleAuction extends Auction {
 	private int doTurn(Player turnOf, int workingPrice, int originalPrice) {
 		boolean isValid = false;
 		int toBid = 0;
-		
-		System.out.println("Original Price: " + originalPrice + "\nCurrent Bid Price: " + workingPrice);
-		while(!isValid) {
+
+		System.out.println(
+				"Original Price: $" + originalPrice + "\nCurrent Bid Price: $" + workingPrice);
+		while (!isValid) {
 			try {
-				toBid = ConsoleUI.promptForInt("Enter amount to bid" , 1, (turnOf.getBalance() - workingPrice));
+				toBid = ConsoleUI.promptForInt("Enter amount to bid", 1,
+						(turnOf.getBalance() - workingPrice));
 				turnOf.subtractBalance(toBid);
-			} catch (IllegalArgumentException ex) {
-				if(ex.getMessage().equals("Min must be less than max!")) {
+			} catch (Exception ex) {
+				if (ex.getMessage().equals("Min must be less than max!")) {
 					System.out.println("You can no longer afford to bid");
 					playersInAuction.remove(turnOf);
 					return workingPrice;
@@ -65,11 +66,13 @@ public class ConsoleAuction extends Auction {
 			}
 			return (workingPrice + toBid);
 		}
-		return (workingPrice+toBid);
+		return (workingPrice + toBid);
 	}
-	
+
 	private void buyProperty(Player toGive, OwnableSquare toBuy, int finalPrice) {
+		System.out.println("Charging " + toGive.getName() + " $" + finalPrice);
 		toGive.addProperties(toBuy);
+		toBuy.setOwnership(toGive);
 		toGive.subtractBalance(finalPrice);
 	}
 }

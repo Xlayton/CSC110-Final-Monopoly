@@ -16,6 +16,7 @@ public class Player implements Iterable<OwnableSquare> {
 	private int houseCount, hotelCount, jailBreakCount, railroadCount, utilityCount, balance,
 			escapeAttempts;
 	private boolean isJailed, isAuctioning;
+	private boolean falseRoll;
 
 	public Player(String name, Piece piece) {
 		this(name, piece, 1500);
@@ -30,15 +31,27 @@ public class Player implements Iterable<OwnableSquare> {
 		properties = new ArrayList<>();
 	}
 
-	public void subtractBalance(int amount) {
+	public void subtractBalance(int amount) throws InsufficientFundsException {
+		subtractBalance(null, amount);
+	}
+	
+	public void subtractBalance(Player payTo, int amount) throws InsufficientFundsException {
 		if (amount > balance) {
-			throw new IllegalArgumentException("Insufficient funds");
+			throw new InsufficientFundsException("Insufficient funds", payTo, Math.abs(balance - amount));
 		}
 		balance -= amount;
 	}
 
 	public void addBalance(int amount) {
 		balance += amount;
+	}
+	
+	public ArrayList<OwnableSquare> copyProperties() {
+		ArrayList<OwnableSquare> results = new ArrayList<>();
+		for (OwnableSquare property : properties) {
+			results.add(property);
+		}
+		return results;
 	}
 
 	public void mortgage(OwnableSquare toMortgage) {
@@ -109,8 +122,17 @@ public class Player implements Iterable<OwnableSquare> {
 		return false;
 	}
 
+	public void setFalseRoll(boolean falseRoll) {
+		this.falseRoll = falseRoll;
+	}
+	
 	public int[] roll() {
-		return new int[] {(new Random().nextInt(6) + 1), (new Random().nextInt(6) + 1)};
+		if (!falseRoll) {
+			return new int[] {(new Random().nextInt(6) + 1), (new Random().nextInt(6) + 1)};
+		} else {
+			int roll = new Random().nextInt(6) + 1;
+			return new int[]  {roll, roll};
+		}
 	}
 
 	public int getHouseCount() {

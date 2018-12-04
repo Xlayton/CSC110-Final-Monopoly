@@ -1,5 +1,6 @@
 package edu.neumont.csc110.game_pieces_abstract;
 
+import edu.neumont.csc110.InsufficientFundsException;
 import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces.Railroad;
 import edu.neumont.csc110.game_pieces.TitleDeed;
@@ -76,19 +77,20 @@ public abstract class OwnableSquare extends Square {
 	public int getUnmortgagePrice() {
 		return (price / 2) + ((price / 2) / 10);
 	}
+	
+	public OwnableSquare copySquare() {
+		return this;
+	}
 
 	@Override
-	public String landedOn(Player player) {
-		if (isOwned() && !player.equals(owner)) {
-			player.subtractBalance(getRent(player));
-			return "Paid rent of $" + getRent(player) + " to " + owner.getName();
-		} else if (!isOwned()) {
-			if (player.getBalance() >= price) {
-				setOwnership(player);
-				player.addProperties(this);
-				player.subtractBalance(price);
-			}
-			return "Sold " + getName() + " to " + player.getName() + " for $" + price;
+	public String landedOn(Player player) throws InsufficientFundsException {
+		if (isOwned() && !player.equals(owner) && !isMortgaged()) {
+			player.subtractBalance(owner, getRent(player));
+			return player.getName() + " paid $" + getRent(player) + " to " + owner.getName();
+		} else if (isOwned() && player.equals(owner)) {
+			return "You own this square.";
+		} else if (isMortgaged) {
+			return "This square is mortgaged";
 		} else {
 			return "";
 		}

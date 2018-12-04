@@ -1,5 +1,6 @@
 package edu.neumont.csc110.game_pieces.special_squares;
 
+import edu.neumont.csc110.InsufficientFundsException;
 import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces_abstract.SpecialSquare;
 
@@ -9,7 +10,7 @@ public class IncomeTaxSquare extends SpecialSquare {
 	}
 
 	@Override
-	public String applyEffect(Player player) {
+	public String applyEffect(Player player) throws InsufficientFundsException {
 		if ((player.getWorth() / 10) < 200) {
 			String result = "Taxed " + player.getName() + " for 10% of their worth, a total of $"
 					+ (player.getWorth() / 10);

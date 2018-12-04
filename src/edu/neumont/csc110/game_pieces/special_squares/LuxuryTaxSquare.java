@@ -1,5 +1,6 @@
 package edu.neumont.csc110.game_pieces.special_squares;
 
+import edu.neumont.csc110.InsufficientFundsException;
 import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces_abstract.SpecialSquare;
 
@@ -16,9 +17,9 @@ public class LuxuryTaxSquare extends SpecialSquare {
 	}
 
 	@Override
-	public String applyEffect(Player player) {
+	public String applyEffect(Player player) throws InsufficientFundsException {
 		player.subtractBalance(taxAmount);
-		return "Taxed " + player.getName() + " by " + taxAmount;
+		return "Taxed " + player.getName() + " by $" + taxAmount;
 	}
 
 	@Override

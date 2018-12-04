@@ -1,5 +1,6 @@
 package edu.neumont.csc110.game_pieces_abstract;
 
+import edu.neumont.csc110.InsufficientFundsException;
 import edu.neumont.csc110.MonopolyBoard;
 import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces.TitleDeed;
@@ -28,7 +29,7 @@ public abstract class Square implements Comparable<Square> {
  * shows the players name when it is their turn
  * @return - show name
  */
-	public abstract String landedOn(Player player);
+	public abstract String landedOn(Player player) throws InsufficientFundsException;
 
 	public String getName() {
 		return name;

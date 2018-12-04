@@ -1,5 +1,6 @@
 package edu.neumont.csc110.game_pieces.card_types;
 
+import edu.neumont.csc110.InsufficientFundsException;
 import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces_abstract.Card;
 
@@ -27,36 +28,38 @@ public class PlayerPayCard extends Card {
  * player is paying the other player
  */
 	@Override
-	public void applyEffect(Player toApply) throws IllegalArgumentException {
+	public void applyEffect(Player toApply) throws InsufficientFundsException {
 		if (payCurrent) {
 			payCurrent(toApply);
 		} else {
 			payOthers(toApply);
 		}
 	}
+
 /**
  * 
  * @param toApply - is the player piece
  * @throws IllegalArgumentException - stops subtracting the money from balance
  */
-	private void payOthers(Player toApply) throws IllegalArgumentException {
+	private void payOthers(Player toApply) throws InsufficientFundsException {
 		for (Player p : allPlayers) {
 			if (p != toApply) {
-				toApply.subtractBalance(amtChange);
+				toApply.subtractBalance(p, amtChange);
 				p.addBalance(amtChange);
 			}
 		}
 	}
+	
 /**
  * 	
  * @param toApply - is the player piece
  * @throws IllegalArgumentException - subtracts balance and adds to other player
  */
-	private void payCurrent(Player toApply) throws IllegalArgumentException {
+	private void payCurrent(Player toApply) throws InsufficientFundsException {
 		for (Player p : allPlayers) {
 			if (p != toApply) {
 				toApply.addBalance(amtChange);
-				p.subtractBalance(amtChange);
+				p.subtractBalance(toApply, amtChange);
 			}
 		}
 	}
