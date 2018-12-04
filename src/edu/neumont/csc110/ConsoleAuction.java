@@ -54,7 +54,7 @@ public class ConsoleAuction extends Auction {
 				toBid = ConsoleUI.promptForInt("Enter amount to bid", 1,
 						(turnOf.getBalance() - workingPrice));
 				turnOf.subtractBalance(toBid);
-			} catch (IllegalArgumentException ex) {
+			} catch (Exception ex) {
 				if (ex.getMessage().equals("Min must be less than max!")) {
 					System.out.println("You can no longer afford to bid");
 					playersInAuction.remove(turnOf);

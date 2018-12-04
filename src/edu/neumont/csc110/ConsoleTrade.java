@@ -9,7 +9,7 @@ import interfaces.MenuOption;
 
 public class ConsoleTrade extends Trade {
 	private final Player initiatedTrade, toTradeWith;
-	
+
 	private ArrayList<OwnableSquare> requestedItems, offeredItems;
 	private int balanceRequested, balanceOffered;
 
@@ -64,21 +64,19 @@ public class ConsoleTrade extends Trade {
 			if (selection == -1) {
 				isOpen = false;
 				break;
-			}
-			else if (selection == placeNames.size() - 1) {
-				System.out.println("ADD MONEY");
+			} else if (selection == placeNames.size() - 1) {
 				boolean isValid = false;
-				while(!isValid) {
+				while (!isValid) {
 					System.out.println(pickingProperty.toString());
 					int amount = ConsoleUI.promptForInt("Enter Amount");
 					try {
 						pickingProperty.subtractBalance(amount);
 						pickingProperty.addBalance(amount);
-					} catch (IllegalArgumentException ex) {
+					} catch (InsufficientFundsException ex) {
 						System.out.println("Player doesn't have that much money");
 						continue;
 					}
-					if(pickingProperty.equals((Player) initiatedTrade)) {
+					if (pickingProperty.equals((Player) initiatedTrade)) {
 						balanceOffered += amount;
 					} else {
 						balanceRequested += amount;
@@ -100,12 +98,11 @@ public class ConsoleTrade extends Trade {
 		initiatedTrade.addProperties(requestedProperties.toArray(new OwnableSquare[0]));
 		initiatedTrade.removeProperties(giveToTrade.toArray(new OwnableSquare[0]));
 		initiatedTrade.addBalance(balanceRequested);
-		initiatedTrade.subtractBalance(balanceOffered);
+		initiatedTrade.subtractBalance(toTradeWith, balanceOffered);
 		toTradeWith.addProperties(giveToTrade.toArray(new OwnableSquare[0]));
 		toTradeWith.removeProperties(requestedProperties.toArray(new OwnableSquare[0]));
-		toTradeWith.subtractBalance(balanceRequested);
+		toTradeWith.subtractBalance(initiatedTrade, balanceRequested);
 		toTradeWith.addBalance(balanceOffered);
-
 	}
 
 	private TradeOption getFinalDecision(ArrayList<OwnableSquare> desiredProperties,
@@ -120,8 +117,8 @@ public class ConsoleTrade extends Trade {
 		}
 		System.out.println(initiatedTrade.getName() + " will receive: "
 				+ Arrays.toString(desiredPropertyNames) + " and $" + balanceRequested);
-		System.out.println(
-				toTradeWith.getName() + " will receive: " + Arrays.toString(givingProperties) + " and $" + balanceOffered);
+		System.out.println(toTradeWith.getName() + " will receive: "
+				+ Arrays.toString(givingProperties) + " and $" + balanceOffered);
 		System.out.println(toTradeWith.getName() + ", do you like these terms?");
 		return ConsoleUI.promptForMenuSelection(TradeOption.values(), false);
 	}

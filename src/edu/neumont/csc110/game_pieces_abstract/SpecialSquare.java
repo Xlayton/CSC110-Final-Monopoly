@@ -1,5 +1,6 @@
 package edu.neumont.csc110.game_pieces_abstract;
 
+import edu.neumont.csc110.InsufficientFundsException;
 import edu.neumont.csc110.Player;
 
 public abstract class SpecialSquare extends Square {
@@ -7,10 +8,10 @@ public abstract class SpecialSquare extends Square {
 		super(name);
 	}
 
-	public abstract String applyEffect(Player player);
+	public abstract String applyEffect(Player player) throws InsufficientFundsException;
 
 	@Override
-	public final String landedOn(Player player) {
+	public final String landedOn(Player player) throws InsufficientFundsException {
 		return this.applyEffect(player);
 	}
 }

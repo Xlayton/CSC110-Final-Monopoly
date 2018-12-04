@@ -34,14 +34,7 @@ public class MonopolyGame {
 	public void run() {
 		boolean gameRunning = true;
 
-		for (Player p : players) {
-			if (p.getName().equals("Monopoly!")) {
-				p.addProperties((OwnableSquare) board.getLocation("Park Place"),
-						(OwnableSquare) board.getLocation("Boardwalk"));
-				((OwnableSquare) board.getLocation("Park Place")).setOwnership(p);
-				((OwnableSquare) board.getLocation("Boardwalk")).setOwnership(p);
-			}
-		}
+		initSecretPlayers();
 
 		do {
 			printPlayerLocation(currentPlayer);
@@ -87,15 +80,37 @@ public class MonopolyGame {
 			default:
 				break;
 			}
-		} catch (IllegalArgumentException e) {
-			System.out.println(currentPlayer.getName() + " has bankrupted!");
-			bankruptPlayer(currentPlayer);
+		} catch (InsufficientFundsException e) {
+			System.out.println(currentPlayer.getName() + " can't afford to do that!");
+
+			int amountRaised = 0;
+			while (currentPlayer.getWorth() >= e.getAmountOver()) {
+				System.out.println("You need $" + (e.getAmountOver() - amountRaised) + " more");
+				mortgage();
+				sellHouses();
+			}
+			
+			if (amountRaised >= e.getAmountOver()) {
+				currentPlayer.subtractBalance(e.getBankruptingPlayer(), amountRaised);
+				return true;
+			}
+			
+			System.out.println(currentPlayer.getName() + " is bankrupt, and loses!");
+			if (e.getBankruptingPlayer() != null) {
+				System.out.println("Assets are transferred to " + e.getBankruptingPlayer().getName());
+			}
+			bankruptPlayer(currentPlayer, e.getBankruptingPlayer());
 			if (players.size() == 1) {
 				endGame();
 				return false;
 			}
 		}
 		return true;
+	}
+
+	private void sellHouses() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private void improve() {
@@ -107,7 +122,7 @@ public class MonopolyGame {
 		}
 	}
 
-	private void mortgage() {
+	private void mortgage() throws InsufficientFundsException {
 		ArrayList<String> properties = new ArrayList<>();
 		for (OwnableSquare s : currentPlayer.getProperties()) {
 			String str = s.getName() + " (";
@@ -237,7 +252,7 @@ public class MonopolyGame {
 		System.out.println(board.getPrintablePlayerLocation(currentPlayer));
 	}
 
-	private void playerMove() {
+	private void playerMove() throws InsufficientFundsException {
 		int[] rolls = currentPlayer.roll();
 		System.out
 				.print(currentPlayer.getName() + " rolled " + rolls[0] + " and " + rolls[1] + ".");
@@ -279,7 +294,7 @@ public class MonopolyGame {
 		}
 	}
 
-	private void getOutOfJail() {
+	private void getOutOfJail() throws InsufficientFundsException {
 		EscapeChoice choice = printEscapeMenu();
 
 		if (choice == null) {
@@ -298,6 +313,7 @@ public class MonopolyGame {
 			break;
 		case ROLL:
 			int[] rolls = currentPlayer.roll();
+			currentPlayerHasRolled = true;
 			System.out.println("Rolled " + rolls[0] + " and " + rolls[1]);
 			if (rolls[0] == rolls[1]) {
 				currentPlayer.setJailed(false);
@@ -311,8 +327,8 @@ public class MonopolyGame {
 				currentPlayer.addEscapeAttempt();
 				System.out.println("You failed. You have " + (3 - currentPlayer.getEscapeAttempts())
 						+ " attempts remaining.");
+				return;
 			}
-			break;
 		}
 		System.out.println("You're out of jail!");
 	}
@@ -343,17 +359,21 @@ public class MonopolyGame {
 				s.setOwnership(null);
 				auction(s);
 			} else {
-				if (s.isMortgaged()) {
-					System.out.println(bankruptingPlayer.getName()
-							+ " must pay 10% tax on mortgaged property " + s.getName());
-					bankruptingPlayer.subtractBalance(s.getPrice() / 10);
-					if (ConsoleUI.promptForBool(
-							"Unmortgage property now? It will cost you an additional $"
-									+ s.getPrice() + ". y/n",
-							"y", "n")) {
-						bankruptingPlayer.subtractBalance(s.getPrice());
-						s.unmortgage();
+				try {
+					if (s.isMortgaged()) {
+						System.out.println(bankruptingPlayer.getName()
+								+ " must pay 10% tax on mortgaged property " + s.getName());
+						bankruptingPlayer.subtractBalance(s.getPrice() / 10);
+						if (ConsoleUI.promptForBool(
+								"Unmortgage property now? It will cost you an additional $"
+										+ s.getPrice() + ". y/n",
+								"y", "n")) {
+							bankruptingPlayer.subtractBalance(s.getPrice());
+							s.unmortgage();
+						}
 					}
+				} catch (InsufficientFundsException e) {
+					System.out.println("You can't afford to do that!");
 				}
 				s.setOwnership(bankruptingPlayer);
 				bankruptingPlayer.addBalance(bankruptingPlayer.getBalance());
@@ -383,6 +403,28 @@ public class MonopolyGame {
 			playerNames.add(name);
 		}
 		initPieces();
+	}
+
+	private void initSecretPlayers() {
+		for (Player p : players) {
+			if (p.getName().equals("Monopoly!")) {
+				p.addProperties((OwnableSquare) board.getLocation("Park Place"),
+						(OwnableSquare) board.getLocation("Boardwalk"));
+				((OwnableSquare) board.getLocation("Park Place")).setOwnership(p);
+				((OwnableSquare) board.getLocation("Boardwalk")).setOwnership(p);
+			} else if (p.getName().equals("Jailbait!")) {
+				p.setJailed(true);
+				p.giveJailBreak();
+				p.setFalseRoll(true);
+				board.moveTo(p, board.getLocation("Jail"), false);
+			} else if (p.getName().equals("Broke!")) {
+				try {
+					p.subtractBalance(1499);
+				} catch (InsufficientFundsException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	private void initPieces() {
