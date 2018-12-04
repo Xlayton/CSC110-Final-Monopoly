@@ -1,6 +1,7 @@
 package edu.neumont.csc110;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 import edu.neumont.csc110.game_pieces.Piece;
 import edu.neumont.csc110.game_pieces.TitleDeed;
@@ -95,6 +96,8 @@ public class MonopolyGame {
 				nextTurn();
 				break;
 			case TRADE:
+				trade();
+				
 				break;
 			case INFO:
 				if (currentPlayer.getProperties().length == 0) {
@@ -122,6 +125,28 @@ public class MonopolyGame {
 				break;
 			}
 		} while (gameRunning);
+	}
+
+	private void trade() {
+		Player tradingPlayer;
+		HashMap<Integer, Player> tradingPlayers = new HashMap<>();
+		ArrayList<String> names = new ArrayList<>();
+		for (int i = 0, j = 1; i < players.size(); i++, j++) {
+			if (players.get(i).equals(currentPlayer)) {
+				j--;
+				continue;
+			}
+			tradingPlayers.put(j, players.get(i));
+			names.add(players.get(i).getName());
+		}
+		System.out.println("Enter player to trade with");
+		int choice = ConsoleUI.promptForMenuSelection(names.toArray(new String[0]), "Back");
+		if (choice == 0) {
+			return;
+		} else {
+			tradingPlayer = tradingPlayers.get(choice);
+			new ConsoleTrade(currentPlayer, tradingPlayer).startTrade();
+		}
 	}
 
 	private TurnChoice printMenu() {

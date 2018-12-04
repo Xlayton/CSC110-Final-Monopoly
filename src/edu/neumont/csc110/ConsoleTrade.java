@@ -1,6 +1,7 @@
 package edu.neumont.csc110;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import edu.neumont.csc110.game_pieces_abstract.OwnableSquare;
 import edu.neumont.csc110.game_pieces_abstract.Trade;
 import interfaces.ConsoleUI;
@@ -8,15 +9,11 @@ import interfaces.MenuOption;
 
 public class ConsoleTrade extends Trade {
 	private final Player current, toTrade;
-	private final OwnableSquare[] currentDeeds, toTradeDeeds;
 	private ArrayList<OwnableSquare> currentWant, toTradeWant;
 
-	public ConsoleTrade(Player current, Player toTrade, OwnableSquare[] currentDeeds,
-			OwnableSquare[] toStartDeeds) {
+	public ConsoleTrade(Player current, Player toTrade) {
 		this.current = current;
 		this.toTrade = toTrade;
-		this.currentDeeds = getOwnedLocations(current);
-		this.toTradeDeeds = getOwnedLocations(toTrade);
 		this.currentWant = new ArrayList<>();
 		this.toTradeWant = new ArrayList<>();
 	}
@@ -59,49 +56,46 @@ public class ConsoleTrade extends Trade {
 				break;
 			case DECLINE:
 				isAgree = true;
+				break;
 			}
 		}
 	}
 
 
 
-	private ArrayList<OwnableSquare> chooseDeedsToTrade(Player toTrade) {
+	private ArrayList<OwnableSquare> chooseDeedsToTrade(Player pickingProperty) {
 		boolean isOpen = true;
 		ArrayList<String> placeNames = new ArrayList<>();
 		ArrayList<OwnableSquare> locationsToChooseFrom = new ArrayList<>();
 		ArrayList<OwnableSquare> chosenTradeItems = new ArrayList<>();
 		int selection = placeNames.size() + 1;
 
-		for (OwnableSquare s : getOwnedLocations(toTrade)) {
+		for (OwnableSquare s : pickingProperty.getProperties()) {
 			placeNames.add(s.getName());
 			locationsToChooseFrom.add(s);
 		}
 		while (isOpen) {
+			System.out.println("Pick a property from " + pickingProperty.getName());
 			selection = ConsoleUI.promptForMenuSelection(placeNames.toArray(new String[0]), "Done");
 			if (selection == 0) {
 				isOpen = false;
 				break;
 			} else {
-				placeNames.remove(selection);
-				chosenTradeItems.add(getOwnedLocations(toTrade)[selection]);
-				locationsToChooseFrom.remove(selection);
+				chosenTradeItems.add(locationsToChooseFrom.get(selection - 1));
+				placeNames.remove(selection - 1);
+				locationsToChooseFrom.remove(selection - 1);
 			}
 		}
 
 		return chosenTradeItems;
 	}
 
-	private OwnableSquare[] getOwnedLocations(Player toTrade2) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private void commenceTrade(ArrayList<OwnableSquare> currentWant,
+	private void commenceTrade(ArrayList<OwnableSquare> requestedProperties,
 			ArrayList<OwnableSquare> giveToTrade) {
-		current.addProperties(currentWant.toArray(new OwnableSquare[0]));
+		current.addProperties(requestedProperties.toArray(new OwnableSquare[0]));
 		current.removeProperties(giveToTrade.toArray(new OwnableSquare[0]));
 		current.addProperties(giveToTrade.toArray(new OwnableSquare[0]));
-		current.removeProperties(currentWant.toArray(new OwnableSquare[0]));
+		current.removeProperties(requestedProperties.toArray(new OwnableSquare[0]));
 
 	}
 
@@ -112,6 +106,7 @@ public class ConsoleTrade extends Trade {
 			propertyNames.add(e.getName());
 		}
 		while (isGoing) {
+			System.out.println("Choose a property to delete: ");
 			int selection = ConsoleUI.promptForMenuSelection(
 					propertyNames.toArray(new String[propertyNames.size()]), "Done");
 			System.out.println("What do you want to get rid of?");
@@ -126,7 +121,6 @@ public class ConsoleTrade extends Trade {
 		return deletingFrom;
 	}
 
-	// TODO ADD FUNCTIONALITY
 	private ArrayList<OwnableSquare> counterOfferAdd(ArrayList<OwnableSquare> addingTo,
 			OwnableSquare[] ownableSquares) {
 		ArrayList<OwnableSquare> otherOwnedProperties = new ArrayList<>();
@@ -141,6 +135,7 @@ public class ConsoleTrade extends Trade {
 		}
 
 		while (isChoosing) {
+			System.out.println("Choose properties to add: ");
 			int selection = ConsoleUI.promptForMenuSelection(
 					otherPropertyNames.toArray(new String[otherPropertyNames.size()]), "Done");
 			if (selection == 0) {
@@ -156,11 +151,19 @@ public class ConsoleTrade extends Trade {
 
 	}
 
-	private TradeOption getFinalDecision(ArrayList<OwnableSquare> currentWant,
+	private TradeOption getFinalDecision(ArrayList<OwnableSquare> desiredProperties,
 			ArrayList<OwnableSquare> giveToTrade) {
-		System.out.println(current.getName() + " will give: " + currentWant);
-		System.out.println(toTrade.getName() + " will give: " + giveToTrade);
-		System.out.println("Do you like these terms?");
+		String[] desiredPropertyNames = new String[desiredProperties.size()];
+		for (int i = 0; i < desiredPropertyNames.length; i++) {
+			desiredPropertyNames[i] = desiredProperties.get(i).getName();
+		}
+		String[] givingProperties = new String[giveToTrade.size()];
+		for (int i = 0; i < givingProperties.length; i++) {
+			givingProperties[i] = giveToTrade.get(i).getName();
+		}
+		System.out.println(current.getName() + " will give: " + Arrays.toString(desiredPropertyNames));
+		System.out.println(toTrade.getName() + " will give: " + Arrays.toString(givingProperties));
+		System.out.println(current.getName() + ", do you like these terms?");
 		return ConsoleUI.promptForMenuSelection(TradeOption.values());
 	}
 
