@@ -1,6 +1,9 @@
 package edu.neumont.csc110.game_pieces_abstract;
 
 import edu.neumont.csc110.Player;
+import edu.neumont.csc110.game_pieces.Railroad;
+import edu.neumont.csc110.game_pieces.TitleDeed;
+import edu.neumont.csc110.game_pieces.Utility;
 
 public abstract class OwnableSquare extends Square {
 	protected final int price;
@@ -64,6 +67,33 @@ public abstract class OwnableSquare extends Square {
 			return "Sold " + getName() + " to " + player.getName() + " for $" + price;
 		} else {
 			return "";
+		}
+	}
+	
+	@Override
+	public int compareTo(Square anotherSquare) {
+		if (!(anotherSquare instanceof OwnableSquare)) {
+			return 1;
+		} else if (anotherSquare instanceof TitleDeed) {
+			if (!(this instanceof TitleDeed)) {
+				return -1;
+			} else {
+				return getName().compareTo(anotherSquare.getName());
+			}
+		} else if (anotherSquare instanceof Railroad) {
+			if (this instanceof TitleDeed) {
+				return 1;
+			} else if (this instanceof Utility) {
+				return -1;
+			} else {
+				return getName().compareTo(anotherSquare.getName());
+			}
+		} else {
+			if (this instanceof TitleDeed || this instanceof Railroad) {
+				return 1;
+			} else {
+				return getName().compareTo(anotherSquare.getName());
+			}
 		}
 	}
 }
