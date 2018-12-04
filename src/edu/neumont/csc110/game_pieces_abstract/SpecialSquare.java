@@ -10,16 +10,14 @@ public abstract class SpecialSquare extends Square {
 	protected SpecialSquare(String name) {
 		super(name);
 	}
-/**
- * 
- * @param player - piece of the player
- */
-	public abstract void applyEffect(Player player);
+	
 /**
  * what square the player will land on
  */
+	public abstract String applyEffect(Player player);
+
 	@Override
-	public final void landedOn(Player player) {
-		this.applyEffect(player);
+	public final String landedOn(Player player) {
+		return this.applyEffect(player);
 	}
 }

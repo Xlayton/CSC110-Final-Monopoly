@@ -3,10 +3,10 @@ package edu.neumont.csc110.game_pieces;
 import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces_abstract.OwnableSquare;
 import edu.neumont.csc110.game_pieces_abstract.Square;
+import interfaces.MenuOption;
 
 public class TitleDeed extends OwnableSquare {
-	
-	public enum Color {
+	public enum Color implements MenuOption {
 		BROWN,
 		CYAN,
 		MAGENTA,
@@ -15,21 +15,32 @@ public class TitleDeed extends OwnableSquare {
 		YELLOW,
 		GREEN,
 		BLUE;
+
+		@Override
+		public String getDesc() {
+			return String.valueOf(this);
+		}
 	}
 
 	private final Color color;
 	private final int[] rents;
 	private final int buildingCost;
+	private final int monopolizedCount;
 
-	private Player owner;
 	private int buildingCount;
-	private boolean monopolized;
 
 	public TitleDeed(String name, Color color, int price, int baseRent, int oneHouse, int twoHouse,
 			int threeHouse, int fourHouse, int hotel, int buildingCost) {
+		this(name, color, price, baseRent, oneHouse, twoHouse, threeHouse, fourHouse, hotel,
+				buildingCost, false);
+	}
+
+	public TitleDeed(String name, Color color, int price, int baseRent, int oneHouse, int twoHouse,
+			int threeHouse, int fourHouse, int hotel, int buildingCost, boolean twoMonopoly) {
 		super(name, price);
 		this.color = color;
 		this.buildingCost = buildingCost;
+		monopolizedCount = twoMonopoly ? 2 : 3;
 
 		rents = new int[6];
 		rents[0] = baseRent;
@@ -40,10 +51,6 @@ public class TitleDeed extends OwnableSquare {
 		rents[5] = hotel;
 
 		buildingCount = 0;
-	}
-
-	public void setMonopolized(boolean monopolized) {
-		this.monopolized = monopolized;
 	}
 
 	public void buyBuilding() throws IllegalArgumentException {
@@ -76,10 +83,18 @@ public class TitleDeed extends OwnableSquare {
 
 	@Override
 	public int getRent(Player player) {
+		if (player == null) {
+			if (buildingCount == 0 && (isOwned() && owner.isMonopolized(this))) {
+				return rents[0] * 2;
+			} else {
+				return rents[buildingCount];
+			}
+		}
+
 		if (isMortgaged || (isOwned() && player.equals(owner))) {
 			return 0;
 		} else {
-			if (buildingCount == 0 && monopolized) {
+			if (buildingCount == 0 && (isOwned() && owner.isMonopolized(this))) {
 				return rents[0] * 2;
 			} else {
 				return rents[buildingCount];
@@ -90,7 +105,7 @@ public class TitleDeed extends OwnableSquare {
 	public int getBuildingCost() {
 		return buildingCost;
 	}
-	
+
 	public int getBuildingCount() {
 		return buildingCount;
 	}
@@ -99,18 +114,22 @@ public class TitleDeed extends OwnableSquare {
 		return color;
 	}
 
-	@Override
-	public void landedOn(Player player) {
-		if (isOwned() && !player.equals(owner)) {
-			player.subtractBalance(getRent(player));
-		} else if (!isOwned()) {
-			return;
-		}
+	public int getMonopolizedCount() {
+		return monopolizedCount;
 	}
 
-	public static void main(String[] args) {
-		for (Square s : Square.getSquares(null)) {
-			System.out.println(s);
+	@Override
+	public int compareTo(Square anotherSquare) {
+		if (!(anotherSquare instanceof OwnableSquare)) {
+			return 1;
+		} else if (!(anotherSquare instanceof TitleDeed)) {
+			return 1;
+		} else {
+			if (color == (((TitleDeed) anotherSquare).color)) {
+				return super.compareTo(anotherSquare);
+			} else {
+				return color.compareTo((((TitleDeed) anotherSquare).color));
+			}
 		}
 	}
 

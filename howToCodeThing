@@ -1,0 +1,26 @@
+TRADING
+-----------
+
+
+Player wants to trade
+	-Selects player they want to trade with  
+			--Display players as numbered options(array index), choose from the numbers
+	-Selects property(ies)/balance to trade 
+			--Display all property names(and colors?) of player in a numbered list, add option to trade money to end of that list. 
+	-Selects property(ies)/balance they want from the other player
+			--Display all property names(and colors?) of other player in a numbered list, add option to trade money to end of that list. 
+	
+Other Player Gets trade request
+	-Says its ok
+		-Trade commences. Ownership of property(ies) changes sides.
+				--Mortgaged properties stay mortgaged
+				--Buildings sold BEFORE ownership change
+				--Change owner var in property to reflect change made.
+				--Any currency traded subtracted from one, and added to the other.
+	-Counter Offers
+		-Other player can remove parts of requested trade and/or add new ones.
+				--Same as the original trade
+		-Trade goes back to player one
+				--A while loop?
+		-repeat
+				-- ^^

@@ -1,19 +1,21 @@
 package edu.neumont.csc110;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 import edu.neumont.csc110.game_pieces.Piece;
 import edu.neumont.csc110.game_pieces.TitleDeed;
+import edu.neumont.csc110.game_pieces.TitleDeed.Color;
 import edu.neumont.csc110.game_pieces_abstract.OwnableSquare;
 
-public class Player {
-	public static Player player;
+public class Player implements Iterable<OwnableSquare> {
 	private final String name;
 	private final Piece piece;
 	private final ArrayList<OwnableSquare> properties;
 
-	private int houseCount, hotelCount, jailBreakCount, railroadCount, utilityCount, balance;
-	private boolean isJailed;
+	private int houseCount, hotelCount, jailBreakCount, railroadCount, utilityCount, balance,
+			escapeAttempts;
+	private boolean isJailed, isAuctioning;
 
 	public Player(String name, Piece piece) {
 		this(name, piece, 1500);
@@ -24,6 +26,7 @@ public class Player {
 		this.piece = piece;
 		this.balance = initBalance;
 		this.jailBreakCount = 0;
+		this.escapeAttempts = 0;
 		properties = new ArrayList<>();
 	}
 
@@ -38,48 +41,24 @@ public class Player {
 		balance += amount;
 	}
 
-	public boolean isBankrupt() {
-		return false;
-	}
-
-	public boolean hasJailBreak() {
-		return jailBreakCount > 0;
-	}
-
-	public boolean jailBreak() {
-		if (hasJailBreak()) {
-			jailBreakCount--;
-			return true;
-		}
-		return false;
-	}
-
-	public void giveJailBreak() {
-		jailBreakCount++;
-	}
-
-	public int roll() {
-		return (new Random().nextInt(6) + 1) + (new Random().nextInt(6) + 1);
-	}
-
 	public void mortgage(OwnableSquare toMortgage) {
 		this.addBalance(toMortgage.mortgage());
 	}
 
 	public void buyBuilding(TitleDeed toBuyOn, int numberOfBuildings) {
-		for(int i = 0; i < numberOfBuildings; i++) {
+		for (int i = 0; i < numberOfBuildings; i++) {
 			try {
 				this.subtractBalance(toBuyOn.getBuildingCost());
 				toBuyOn.buyBuilding();
 			} catch (IllegalArgumentException ex) {
-					System.out.println(ex.getMessage());
-					break;
-				}
+				System.out.println(ex.getMessage());
+				break;
+			}
 		}
 	}
 
 	public void sellBuilding(TitleDeed toSellFrom, int numberOfBuildings) {
-		for(int i = 0; i < numberOfBuildings; i++) {
+		for (int i = 0; i < numberOfBuildings; i++) {
 			try {
 				this.addBalance(toSellFrom.sellBuilding());
 			} catch (IllegalArgumentException ex) {
@@ -87,6 +66,51 @@ public class Player {
 				break;
 			}
 		}
+	}
+
+	public void removeRailroad() {
+		railroadCount--;
+	}
+
+	public void addRailroad() {
+		railroadCount++;
+	}
+
+	public void removeUtil() {
+		utilityCount--;
+	}
+
+	public void addUtil() {
+		utilityCount++;
+	}
+
+	public void addEscapeAttempt() {
+		escapeAttempts++;
+	}
+
+	public void resetEscapeAttempts() {
+		this.escapeAttempts = 0;
+	}
+
+	public void setJailed(boolean isJailed) {
+		this.isJailed = isJailed;
+	}
+
+	public void giveJailBreak() {
+		jailBreakCount++;
+	}
+
+	public boolean jailBreak() {
+		if (hasJailBreak()) {
+			jailBreakCount--;
+			isJailed = false;
+			return true;
+		}
+		return false;
+	}
+
+	public int[] roll() {
+		return new int[] {(new Random().nextInt(6) + 1), (new Random().nextInt(6) + 1)};
 	}
 
 	public int getHouseCount() {
@@ -101,12 +125,57 @@ public class Player {
 		return piece;
 	}
 
+	public boolean hasJailBreak() {
+		return jailBreakCount > 0;
+	}
+
 	public boolean isJailed() {
 		return isJailed;
 	}
 
-	public void setJailed(boolean isJailed) {
-		this.isJailed = isJailed;
+	public boolean isBankrupt() {
+		return false;
+	}
+
+	public boolean isMonopolized(TitleDeed square) {
+		return isMonopolized(square.getColor());
+	}
+
+	public boolean isMonopolized(Color color) {
+		int monopolyCounter = 0;
+		for (OwnableSquare property : properties) {
+			if (property instanceof TitleDeed) {
+				TitleDeed deed = (TitleDeed) property;
+				if (deed.getColor().equals(color)) {
+					monopolyCounter++;
+					if (monopolyCounter == deed.getMonopolizedCount()) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean hasMonopoly() {
+		for (Color c : Color.values()) {
+			if (isMonopolized(c)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void addProperties(OwnableSquare... newDeeds) {
+		for (OwnableSquare deed : newDeeds) {
+			properties.add(deed);
+		}
+	}
+
+	public void removeProperties(OwnableSquare... oldDeeds) {
+		for (OwnableSquare deed : oldDeeds) {
+			properties.remove(deed);
+		}
 	}
 
 	public double getRailroadCount() {
@@ -117,21 +186,12 @@ public class Player {
 		return utilityCount;
 	}
 
-	public void removeRailroad() {
-		railroadCount--;
-	}
-
-	public void addRailroad() {
-		railroadCount++;
-	}
-
-	public String getName() {
-		return name;
+	public int getBalance() {
+		return balance;
 	}
 
 	public int getWorth() {
 		int worth = balance;
-
 		for (OwnableSquare property : properties) {
 			worth += property.getPrice();
 			if (property instanceof TitleDeed) {
@@ -141,5 +201,37 @@ public class Player {
 		}
 
 		return worth;
+	}
+
+	public OwnableSquare[] getProperties() {
+		properties.sort(null);
+		return properties.toArray(new OwnableSquare[0]);
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public int getEscapeAttempts() {
+		return escapeAttempts;
+	}
+
+	public boolean isAuctioning() {
+		return isAuctioning;
+	}
+
+	@Override
+	public boolean equals(Object anotherPlayer) {
+		return name.equals(((Player) anotherPlayer).name);
+	}
+
+	@Override
+	public String toString() {
+		return name + ", $" + balance;
+	}
+
+	@Override
+	public Iterator<OwnableSquare> iterator() {
+		return properties.iterator();
 	}
 }

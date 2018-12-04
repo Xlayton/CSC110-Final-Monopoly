@@ -11,14 +11,14 @@ public class GoSquare extends SpecialSquare {
  * @param addBalance - will add 200 to the players balance
  */
 	@Override
-	public void applyEffect(Player toApply) {
-		toApply.addBalance(200);
+	public String applyEffect(Player toApply) {
+		return "";
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder();
-		
+
 		result.append(makeRow(SEPARATOR, false));
 		result.append(makeRow(""));
 		result.append(makeRow(""));

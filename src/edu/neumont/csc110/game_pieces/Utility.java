@@ -13,20 +13,28 @@ public class Utility extends OwnableSquare {
 	}
 
 	@Override
+	public void setOwnership(Player owner) {
+		if (isOwned()) {
+			owner.removeUtil();
+		}
+		this.owner = owner;
+		owner.addUtil();
+	}
+
+	@Override
 	public int getRent(Player player) {
+		if (player == null) {
+			return 25 * (int) Math.pow(2, owner.getRailroadCount() - 1);
+		}
 		if (isMortgaged || !isOwned() || (isOwned() && player.equals(owner))) {
 			return 0;
 		} else {
-			return player.roll() * (owner.getUtilCount() == 1 ? 4 : 10);
+			return 25 * (int) Math.pow(2, owner.getRailroadCount() - 1);
 		}
 	}
 
 	@Override
-	public void landedOn(Player player) {
-		player.subtractBalance(getRent(player));
-	}
 
-	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder();
 
