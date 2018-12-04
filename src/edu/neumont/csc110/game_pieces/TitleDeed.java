@@ -19,15 +19,23 @@ public class TitleDeed extends OwnableSquare {
 	private final Color color;
 	private final int[] rents;
 	private final int buildingCost;
+	private final int monopolizedCount;
 
 	private int buildingCount;
 	private boolean monopolized;
 
 	public TitleDeed(String name, Color color, int price, int baseRent, int oneHouse, int twoHouse,
 			int threeHouse, int fourHouse, int hotel, int buildingCost) {
+		this(name, color, price, baseRent, oneHouse, twoHouse, threeHouse, fourHouse, hotel,
+				buildingCost, false);
+	}
+
+	public TitleDeed(String name, Color color, int price, int baseRent, int oneHouse, int twoHouse,
+			int threeHouse, int fourHouse, int hotel, int buildingCost, boolean twoMonopoly) {
 		super(name, price);
 		this.color = color;
 		this.buildingCost = buildingCost;
+		monopolizedCount = twoMonopoly ? 2 : 3;
 
 		rents = new int[6];
 		rents[0] = baseRent;
@@ -103,6 +111,10 @@ public class TitleDeed extends OwnableSquare {
 
 	public Color getColor() {
 		return color;
+	}
+
+	public int getMonopolizedCount() {
+		return monopolizedCount;
 	}
 
 	@Override
