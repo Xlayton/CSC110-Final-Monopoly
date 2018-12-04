@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Random;
 import edu.neumont.csc110.game_pieces.Piece;
 import edu.neumont.csc110.game_pieces.TitleDeed;
+import edu.neumont.csc110.game_pieces.TitleDeed.Color;
 import edu.neumont.csc110.game_pieces_abstract.OwnableSquare;
 
 public class Player implements Iterable<OwnableSquare> {
@@ -137,6 +138,45 @@ public class Player implements Iterable<OwnableSquare> {
 	}
 
 	public boolean hasMonopoly() {
+		Color previousColor = null;
+		Color currentColor = null;
+		int sameColorProperties = 0;
+		properties.sort(null);
+		for(OwnableSquare own : properties) {
+			if (own instanceof TitleDeed) {
+				TitleDeed t = (TitleDeed) own;
+				currentColor = t.getColor();
+				if(!currentColor.equals(previousColor)) {
+					sameColorProperties = 1;
+				} else {
+					sameColorProperties++;
+				}
+				if(sameColorProperties == t.getMonopolizedCount()) {
+					return true;
+				}
+				previousColor = currentColor;
+			} else {
+				continue;
+			}
+		}
+		return false;
+	}
+	
+	public boolean isMonopolized(Color toCheck) {
+		int numColorOwned = 0;
+		for(OwnableSquare own : properties) {
+			if(own instanceof TitleDeed) {
+				TitleDeed t = (TitleDeed) own;
+				if(t.getColor().equals(toCheck)) {
+					numColorOwned++;
+				}
+				if(numColorOwned == t.getMonopolizedCount()) {
+					return true;
+				}
+			}else {
+				continue;
+			}
+		}
 		return false;
 	}
 
