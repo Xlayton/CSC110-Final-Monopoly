@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Random;
 import edu.neumont.csc110.game_pieces.Piece;
 import edu.neumont.csc110.game_pieces.TitleDeed;
+import edu.neumont.csc110.game_pieces.TitleDeed.Color;
 import edu.neumont.csc110.game_pieces_abstract.OwnableSquare;
 
 public class Player implements Iterable<OwnableSquare> {
@@ -12,7 +13,8 @@ public class Player implements Iterable<OwnableSquare> {
 	private final Piece piece;
 	private final ArrayList<OwnableSquare> properties;
 
-	private int houseCount, hotelCount, jailBreakCount, railroadCount, utilityCount, balance, escapeAttempts;
+	private int houseCount, hotelCount, jailBreakCount, railroadCount, utilityCount, balance,
+			escapeAttempts;
 	private boolean isJailed, isAuctioning;
 
 	public Player(String name, Piece piece) {
@@ -85,7 +87,7 @@ public class Player implements Iterable<OwnableSquare> {
 	public void addEscapeAttempt() {
 		escapeAttempts++;
 	}
-	
+
 	public void resetEscapeAttempts() {
 		this.escapeAttempts = 0;
 	}
@@ -109,7 +111,6 @@ public class Player implements Iterable<OwnableSquare> {
 
 	public int[] roll() {
 		return new int[] {(new Random().nextInt(6) + 1), (new Random().nextInt(6) + 1)};
-//		return new int[] {1, 1};
 	}
 
 	public int getHouseCount() {
@@ -136,7 +137,32 @@ public class Player implements Iterable<OwnableSquare> {
 		return false;
 	}
 
+	public boolean isMonopolized(TitleDeed square) {
+		return isMonopolized(square.getColor());
+	}
+
+	public boolean isMonopolized(Color color) {
+		int monopolyCounter = 0;
+		for (OwnableSquare property : properties) {
+			if (property instanceof TitleDeed) {
+				TitleDeed deed = (TitleDeed) property;
+				if (deed.getColor().equals(color)) {
+					monopolyCounter++;
+					if (monopolyCounter == deed.getMonopolizedCount()) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
 	public boolean hasMonopoly() {
+		for (Color c : Color.values()) {
+			if (isMonopolized(c)) {
+				return true;
+			}
+		}
 		return false;
 	}
 

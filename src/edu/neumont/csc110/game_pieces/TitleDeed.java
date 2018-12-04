@@ -3,9 +3,10 @@ package edu.neumont.csc110.game_pieces;
 import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces_abstract.OwnableSquare;
 import edu.neumont.csc110.game_pieces_abstract.Square;
+import interfaces.MenuOption;
 
 public class TitleDeed extends OwnableSquare {
-	public enum Color {
+	public enum Color implements MenuOption {
 		BROWN,
 		CYAN,
 		MAGENTA,
@@ -14,6 +15,11 @@ public class TitleDeed extends OwnableSquare {
 		YELLOW,
 		GREEN,
 		BLUE;
+
+		@Override
+		public String getDesc() {
+			return String.valueOf(this);
+		}
 	}
 
 	private final Color color;
@@ -22,7 +28,6 @@ public class TitleDeed extends OwnableSquare {
 	private final int monopolizedCount;
 
 	private int buildingCount;
-	private boolean monopolized;
 
 	public TitleDeed(String name, Color color, int price, int baseRent, int oneHouse, int twoHouse,
 			int threeHouse, int fourHouse, int hotel, int buildingCost) {
@@ -46,10 +51,6 @@ public class TitleDeed extends OwnableSquare {
 		rents[5] = hotel;
 
 		buildingCount = 0;
-	}
-
-	public void setMonopolized(boolean monopolized) {
-		this.monopolized = monopolized;
 	}
 
 	public void buyBuilding() throws IllegalArgumentException {
@@ -83,7 +84,7 @@ public class TitleDeed extends OwnableSquare {
 	@Override
 	public int getRent(Player player) {
 		if (player == null) {
-			if (buildingCount == 0 && monopolized) {
+			if (buildingCount == 0 && (isOwned() && owner.isMonopolized(this))) {
 				return rents[0] * 2;
 			} else {
 				return rents[buildingCount];
@@ -93,7 +94,7 @@ public class TitleDeed extends OwnableSquare {
 		if (isMortgaged || (isOwned() && player.equals(owner))) {
 			return 0;
 		} else {
-			if (buildingCount == 0 && monopolized) {
+			if (buildingCount == 0 && (isOwned() && owner.isMonopolized(this))) {
 				return rents[0] * 2;
 			} else {
 				return rents[buildingCount];

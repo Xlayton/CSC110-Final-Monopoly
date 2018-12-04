@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Random;
 import edu.neumont.csc110.game_pieces.Piece;
 import edu.neumont.csc110.game_pieces.TitleDeed;
+import edu.neumont.csc110.game_pieces.TitleDeed.Color;
 import edu.neumont.csc110.game_pieces_abstract.OwnableSquare;
 import interfaces.ConsoleUI;
 import interfaces.MenuOption;
@@ -62,69 +63,134 @@ public class MonopolyGame {
 
 		boolean gameRunning = true;
 
+		for (Player p : players) {
+			if (p.getName().equals("Monopoly!")) {
+				p.addProperties((OwnableSquare) board.getLocation("Park Place"),
+						(OwnableSquare) board.getLocation("Boardwalk"));
+				((OwnableSquare) board.getLocation("Park Place")).setOwnership(p);
+				((OwnableSquare) board.getLocation("Boardwalk")).setOwnership(p);
+			}
+		}
+
 		do {
 			printPlayerLocation(currentPlayer);
 			System.out.println(currentPlayer.getName() + "'s turn");
 			System.out.println(currentPlayer);
 
-			TurnChoice choice = printMenu();
-			if (choice == null) {
-				if (ConsoleUI.promptForBool("Are you sure? y/n", "y", "n")) {
-					bankruptPlayer(currentPlayer);
+			try {
+				TurnChoice choice = printMenu();
+				if (choice == null) {
+					surrender();
 					if (players.size() == 1) {
 						endGame();
 						gameRunning = false;
 					}
+					continue;
+				}
+				switch (choice) {
+				case ESCAPE:
+					getOutOfJail();
+					break;
+				case IMPROVE:
+					improve();
+					break;
+				case MORTGAGE:
+					mortgage();
+					break;
+				case ROLL:
+					playerMove();
+					break;
+				case END:
 					nextTurn();
-					continue;
-				} else {
-					continue;
+					break;
+				case TRADE:
+					trade();
+					break;
+				case INFO:
+					propertyInfo();
+					break;
+				default:
+					break;
 				}
-			}
-			switch (choice) {
-			case ESCAPE:
-				getOutOfJail();
-				break;
-			case IMPROVE:
-				break;
-			case MORTGAGE:
-				break;
-			case ROLL:
-				playerMove();
-				break;
-			case END:
-				nextTurn();
-				break;
-			case TRADE:
-				trade();
-				
-				break;
-			case INFO:
-				if (currentPlayer.getProperties().length == 0) {
-					System.out.println("You don't own any properties");
+			} catch (IllegalArgumentException e) {
+				System.out.println(currentPlayer.getName() + " has bankrupted!");
+				bankruptPlayer(currentPlayer);
+				if (players.size() == 1) {
+					endGame();
+					gameRunning = false;
 				}
-				for (OwnableSquare property : currentPlayer.getProperties()) {
-					System.out.println(property.getName() + (property instanceof TitleDeed
-							? " (" + ((TitleDeed) property).getColor() + ")"
-							: ""));
-					System.out.println(" -Rent: $"
-							+ (property.isMortgaged() ? "Mortgaged" : property.getRent(null)));
-					if (property instanceof TitleDeed) {
-						System.out.println(
-								" -Houses: " + (((TitleDeed) property).getBuildingCount() < 5
-										? ((TitleDeed) property).getBuildingCount()
-										: 0));
-						System.out.println(" -Hotels: "
-								+ (((TitleDeed) property).getBuildingCount() == 5 ? 1 : 0));
-						System.out.println(
-								" -Cost to Improve: $" + ((TitleDeed) property).getBuildingCost());
-					}
-				}
-				break;
-			default:
-				break;
 			}
 		} while (gameRunning);
+	}
+
+	private void improve() {
+		ArrayList<Color> monopolizedColors = new ArrayList<>();
+		for (Color c : Color.values()) {
+			if (currentPlayer.isMonopolized(c)) {
+				monopolizedColors.add(c);
+			}
+		}
+		
+	}
+
+	private void mortgage() {
+		ArrayList<String> properties = new ArrayList<>();
+		for (OwnableSquare s : currentPlayer.getProperties()) {
+			String str = s.getName() + " (";
+			str += s.isMortgaged() ? "unmortgage: pay $" : "mortgage: gain $";
+			str += s.isMortgaged() ? s.getUnmortgagePrice() : (s.getPrice() / 2);
+			str += ")";
+			properties.add(str);
+		}
+		System.out.println("Select a property to mortgage");
+		int property = ConsoleUI.promptForMenuSelection(properties.toArray(new String[0]));
+		if (property != 0) {
+			if (currentPlayer.getProperties()[property - 1].isMortgaged()) {
+				if (currentPlayer.getBalance() >= currentPlayer.getProperties()[property - 1]
+						.getUnmortgagePrice()) {
+					currentPlayer.subtractBalance(
+							currentPlayer.getProperties()[property - 1].getUnmortgagePrice());
+					currentPlayer.getProperties()[property - 1].unmortgage();
+				} else {
+					System.out.println("You can't afford to unmortgage that!");
+				}
+			} else {
+				currentPlayer.addBalance(currentPlayer.getProperties()[property - 1].mortgage());
+			}
+		}
+	}
+
+	private void surrender() {
+		if (ConsoleUI.promptForBool("Are you sure? y/n", "y", "n")) {
+			bankruptPlayer(currentPlayer);
+			nextTurn();
+		}
+	}
+
+	private void propertyInfo() {
+		if (currentPlayer.getProperties().length == 0) {
+			System.out.println("You don't own any properties");
+		}
+		for (OwnableSquare property : currentPlayer.getProperties()) {
+			System.out.print(property.getName());
+			if (property instanceof TitleDeed) {
+				TitleDeed deed = (TitleDeed) property;
+				System.out.println(" (" + deed.getColor() + ")");
+				System.out.print(
+						currentPlayer.isMonopolized(deed.getColor()) ? "-MONOPOLIZED\n" : "");
+			} else {
+				System.out.println();
+			}
+			System.out.println(" -Rent: "
+					+ (property.isMortgaged() ? "Mortgaged" : "$" + property.getRent(null)));
+			if (property instanceof TitleDeed) {
+				TitleDeed deed = (TitleDeed) property;
+				System.out.println(
+						" -Houses: " + (deed.getBuildingCount() < 5 ? deed.getBuildingCount() : 0));
+				System.out.println(" -Hotels: " + (deed.getBuildingCount() == 5 ? 1 : 0));
+				System.out.println(" -Cost to Improve: $" + deed.getBuildingCost());
+			}
+		}
 	}
 
 	private void trade() {
@@ -151,7 +217,7 @@ public class MonopolyGame {
 
 	private TurnChoice printMenu() {
 		ArrayList<TurnChoice> menuOptions = TurnChoice.mutableValues();
-	
+
 		if (!currentPlayer.isJailed()) {
 			menuOptions.remove(TurnChoice.ESCAPE);
 		} else {
@@ -160,35 +226,35 @@ public class MonopolyGame {
 				menuOptions.remove(TurnChoice.END);
 			}
 		}
-	
+
 		if (!currentPlayer.hasMonopoly()) {
 			menuOptions.remove(TurnChoice.IMPROVE);
 		}
-	
+
 		if (currentPlayerHasRolled) {
 			menuOptions.remove(TurnChoice.ROLL);
 		} else if (!currentPlayerHasRolled) {
 			menuOptions.remove(TurnChoice.END);
 		}
-	
+
 		return ConsoleUI.promptForMenuSelection(menuOptions.toArray(new TurnChoice[0]), "Give Up");
 	}
 
 	private EscapeChoice printEscapeMenu() {
 		ArrayList<EscapeChoice> menuOptions = EscapeChoice.mutableValues();
-	
+
 		if (jailedThisTurn || currentPlayerHasRolled) {
 			menuOptions.remove(EscapeChoice.ROLL);
 		}
-	
+
 		if (!currentPlayer.hasJailBreak()) {
 			menuOptions.remove(EscapeChoice.CARD);
 		}
-	
+
 		if (currentPlayer.getBalance() < 50) {
 			menuOptions.remove(EscapeChoice.PAY);
 		}
-	
+
 		return ConsoleUI.promptForMenuSelection(menuOptions.toArray(new EscapeChoice[0]),
 				"Return to Main");
 	}
