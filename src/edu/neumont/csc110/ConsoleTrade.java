@@ -55,6 +55,9 @@ public class ConsoleTrade extends Trade {
 				}
 				break;
 			case DECLINE:
+				System.out.println(current.getName() + " " + current.getProperties().toString());
+				currentWant.clear();
+				toTradeWant.clear();
 				isAgree = true;
 				break;
 			}
@@ -70,9 +73,9 @@ public class ConsoleTrade extends Trade {
 		ArrayList<OwnableSquare> chosenTradeItems = new ArrayList<>();
 		int selection = placeNames.size() + 1;
 
-		for (OwnableSquare s : pickingProperty.getProperties()) {
-			placeNames.add(s.getName());
-			locationsToChooseFrom.add(s);
+		for (OwnableSquare s : pickingProperty.copyProperties()) {
+			placeNames.add(s.copySquare().getName());
+			locationsToChooseFrom.add(s.copySquare());
 		}
 		while (isOpen) {
 			System.out.println("Pick a property from " + pickingProperty.getName());
@@ -94,8 +97,8 @@ public class ConsoleTrade extends Trade {
 			ArrayList<OwnableSquare> giveToTrade) {
 		current.addProperties(requestedProperties.toArray(new OwnableSquare[0]));
 		current.removeProperties(giveToTrade.toArray(new OwnableSquare[0]));
-		current.addProperties(giveToTrade.toArray(new OwnableSquare[0]));
-		current.removeProperties(requestedProperties.toArray(new OwnableSquare[0]));
+		toTrade.addProperties(giveToTrade.toArray(new OwnableSquare[0]));
+		toTrade.removeProperties(requestedProperties.toArray(new OwnableSquare[0]));
 
 	}
 

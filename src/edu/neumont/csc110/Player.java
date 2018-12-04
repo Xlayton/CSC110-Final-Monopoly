@@ -39,6 +39,10 @@ public class Player implements Iterable<OwnableSquare> {
 	public void addBalance(int amount) {
 		balance += amount;
 	}
+	
+	public ArrayList<OwnableSquare> copyProperties() {
+		return (ArrayList<OwnableSquare>) properties.clone();
+	}
 
 	public void mortgage(OwnableSquare toMortgage) {
 		this.addBalance(toMortgage.mortgage());

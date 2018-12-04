@@ -49,6 +49,10 @@ public abstract class OwnableSquare extends Square {
 	public int getUnmortgagePrice() {
 		return (price / 2) + ((price / 2) / 10);
 	}
+	
+	public OwnableSquare copySquare() {
+		return this;
+	}
 
 	@Override
 	public String landedOn(Player player) {
