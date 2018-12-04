@@ -1,5 +1,8 @@
 package edu.neumont.csc110;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -31,7 +34,7 @@ public class MonopolyGame {
 		board = new MonopolyBoard(players.toArray(new Player[0]));
 	}
 
-	public void run() {
+	public void run() throws IOException {
 		boolean gameRunning = true;
 
 		for (Player p : players) {
@@ -95,13 +98,30 @@ public class MonopolyGame {
 	}
 
 	private void improve() {
+		ArrayList<TitleDeed> colorProperties = new ArrayList<>();
 		ArrayList<Color> monopolizedColors = new ArrayList<>();
 		for (Color c : Color.values()) {
 			if (currentPlayer.isMonopolized(c)) {
 				monopolizedColors.add(c);
 			}
 		}
-		
+		boolean buying = ConsoleUI.promptForBool("Buy or sell", "Buy", "Sell");
+		if (buying) {
+			System.out.println("What colored property would you like to buy houses/hotels for?");
+			try {
+		    Color choice = ConsoleUI.promptForMenuSelection(monopolizedColors.toArray(new Color[monopolizedColors.size()]),false);
+		    for (OwnableSquare gettingProp : currentPlayer.getProperties()) {
+		    	if (gettingProp instanceof TitleDeed) {
+		    		if (((TitleDeed) gettingProp).getColor().equals(choice)) {
+		    			colorProperties.add((TitleDeed) gettingProp);
+		    			
+		    		}
+		    	}
+		    }
+			}catch(IllegalArgumentException boi) {
+				System.out.println(boi.getMessage());
+			}
+		}
 	}
 
 	private void mortgage() {
