@@ -32,35 +32,6 @@ public class MonopolyGame {
 	}
 
 	public void run() {
-		// prompt: trade, view, roll, jailed? get out of jail, has monopoly? make improvements,
-		// mortgage/unmortgage, surrender
-		// trade -
-		// run trade class
-		// view -
-		// displays all the player's ownables
-		// roll -
-		// roll the dice and move around the board that many spaces
-		// get out of jail -
-		// prompt: pay $50, has not rolled 3 times? roll for doubles, has jailbreak? jailbreak
-		// remove player from jail
-		// make improvements -
-		// has buildings to sell? prompt: buy, sell else just buy
-		// mortgage/unmortgage -
-		// yea
-		// surrender
-		// are you sure? y/n
-		// y -
-		// bankrupt player
-		// n -
-		// go back to main selection
-		// land on square -
-		// ownable? -
-		// owned? pay rent else prompt if buy
-		// return to main without roll
-		// landedOn() -
-		// return to main without roll
-		// next turn
-
 		boolean gameRunning = true;
 
 		for (Player p : players) {
@@ -77,50 +48,54 @@ public class MonopolyGame {
 			System.out.println(currentPlayer.getName() + "'s turn");
 			System.out.println(currentPlayer);
 
-			try {
-				TurnChoice choice = printMenu();
-				if (choice == null) {
-					surrender();
-					if (players.size() == 1) {
-						endGame();
-						gameRunning = false;
-					}
-					continue;
-				}
-				switch (choice) {
-				case ESCAPE:
-					getOutOfJail();
-					break;
-				case IMPROVE:
-					improve();
-					break;
-				case MORTGAGE:
-					mortgage();
-					break;
-				case ROLL:
-					playerMove();
-					break;
-				case END:
-					nextTurn();
-					break;
-				case TRADE:
-					trade();
-					break;
-				case INFO:
-					propertyInfo();
-					break;
-				default:
-					break;
-				}
-			} catch (IllegalArgumentException e) {
-				System.out.println(currentPlayer.getName() + " has bankrupted!");
-				bankruptPlayer(currentPlayer);
+			gameRunning = doSwitch();
+		} while (gameRunning);
+	}
+
+	private boolean doSwitch() {
+		try {
+			TurnChoice choice = printMenu();
+			if (choice == null) {
+				surrender();
 				if (players.size() == 1) {
 					endGame();
-					gameRunning = false;
+					return false;
 				}
 			}
-		} while (gameRunning);
+			switch (choice) {
+			case ESCAPE:
+				getOutOfJail();
+				break;
+			case IMPROVE:
+				improve();
+				break;
+			case MORTGAGE:
+				mortgage();
+				break;
+			case ROLL:
+				playerMove();
+				break;
+			case END:
+				nextTurn();
+				break;
+			case TRADE:
+				trade();
+				break;
+			case INFO:
+				propertyInfo();
+				break;
+			default:
+				break;
+			}
+		} catch (IllegalArgumentException e) {
+			System.out.println(currentPlayer.getName() + " has bankrupted!");
+			bankruptPlayer(currentPlayer);
+			if (players.size() == 1) {
+				endGame();
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private void improve() {
@@ -130,7 +105,6 @@ public class MonopolyGame {
 				monopolizedColors.add(c);
 			}
 		}
-		
 	}
 
 	private void mortgage() {
@@ -289,6 +263,20 @@ public class MonopolyGame {
 		for (String s : board.movePiece(currentPlayer, rolls[0] + rolls[1])) {
 			System.out.println(s);
 		}
+		if (board.getPieceLocation(currentPlayer.getPiece()) instanceof OwnableSquare) {
+			OwnableSquare toBuy = (OwnableSquare) board.getPieceLocation(currentPlayer.getPiece());
+			if (!toBuy.isOwned()) {
+				if (currentPlayer.getBalance() >= toBuy.getPrice() && ConsoleUI.promptForBool(
+						"Buy " + toBuy.getName() + " for $" + toBuy.getPrice() + "? Y/N", "Y",
+						"N")) {
+					currentPlayer.subtractBalance(toBuy.getPrice());
+					currentPlayer.addProperties(toBuy);
+					toBuy.setOwnership(currentPlayer);
+				} else {
+					new ConsoleAuction().startAuction(toBuy, players, currentPlayer);;
+				}
+			}
+		}
 	}
 
 	private void getOutOfJail() {
@@ -331,9 +319,7 @@ public class MonopolyGame {
 
 	private void nextTurn() {
 		currentPlayerIndex++;
-		if (currentPlayerIndex == players.size()) {
-			currentPlayerIndex = 0;
-		}
+		currentPlayerIndex %= players.size();
 		currentPlayer = players.get(currentPlayerIndex);
 		currentPlayerHasRolled = false;
 		jailedThisTurn = false;
@@ -374,6 +360,7 @@ public class MonopolyGame {
 			}
 		}
 		players.remove(toBankrupt);
+		currentPlayerIndex--;
 	}
 
 	private void auction(OwnableSquare s) {}
