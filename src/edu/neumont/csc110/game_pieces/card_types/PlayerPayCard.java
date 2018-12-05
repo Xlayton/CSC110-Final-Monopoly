@@ -9,7 +9,14 @@ public class PlayerPayCard extends Card {
 	private final boolean payCurrent;
 
 	private int amtChange;
-
+/**
+ * 
+ * @param flavorText - description of card
+ * @param isChance - chance card deck
+ * @param payingOthers - gives money to other players
+ * @param allPlayers - all the players in the game
+ * @param amtChange - amount the players balance change to
+ */
 	public PlayerPayCard(String flavorText, boolean isChance, boolean payingOthers,
 			Player[] allPlayers, int amtChange) {
 		super(flavorText, isChance);
@@ -17,7 +24,9 @@ public class PlayerPayCard extends Card {
 		this.allPlayers = allPlayers;
 		this.amtChange = amtChange;
 	}
-
+/**
+ * player is paying the other player
+ */
 	@Override
 	public void applyEffect(Player toApply) throws InsufficientFundsException {
 		if (payCurrent) {
@@ -27,6 +36,11 @@ public class PlayerPayCard extends Card {
 		}
 	}
 
+/**
+ * 
+ * @param toApply - is the player piece
+ * @throws IllegalArgumentException - stops subtracting the money from balance
+ */
 	private void payOthers(Player toApply) throws InsufficientFundsException {
 		for (Player p : allPlayers) {
 			if (p != toApply) {
@@ -35,7 +49,12 @@ public class PlayerPayCard extends Card {
 			}
 		}
 	}
-
+	
+/**
+ * 	
+ * @param toApply - is the player piece
+ * @throws IllegalArgumentException - subtracts balance and adds to other player
+ */
 	private void payCurrent(Player toApply) throws InsufficientFundsException {
 		for (Player p : allPlayers) {
 			if (p != toApply) {

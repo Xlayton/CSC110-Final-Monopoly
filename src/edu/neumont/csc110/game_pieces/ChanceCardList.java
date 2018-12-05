@@ -6,6 +6,12 @@ import edu.neumont.csc110.game_pieces.card_types.*;
 import edu.neumont.csc110.game_pieces_abstract.Card;
 
 public class ChanceCardList {
+	/**
+	 * 
+	 * @param board - is the board
+	 * @param players - the people playing the game
+	 * @return - goes back through the deck
+	 */
 	public static Card[] getChanceCards(MonopolyBoard board, Player[] players) {
 		Card[] cards = new Card[16];
 

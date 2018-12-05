@@ -24,7 +24,11 @@ public abstract class Square implements Comparable<Square> {
 	protected Square(String name) {
 		this.name = name;
 	}
-
+	
+/**
+ * shows the players name when it is their turn
+ * @return - show name
+ */
 	public abstract String landedOn(Player player) throws InsufficientFundsException;
 
 	public String getName() {
@@ -107,11 +111,20 @@ public abstract class Square implements Comparable<Square> {
 
 		return squares;
 	}
-
+/**
+ * 
+ * @param text
+ * @return
+ */
 	protected String makeRow(String text) {
 		return makeRow(text, true);
 	}
-
+/**
+ * 
+ * @param text
+ * @param withEdges
+ * @return
+ */
 	protected String makeRow(String text, boolean withEdges) {
 		StringBuilder result = new StringBuilder();
 		result.append(withEdges ? "|" : " ");
@@ -120,7 +133,12 @@ public abstract class Square implements Comparable<Square> {
 		result.append("\n");
 		return result.toString();
 	}
-
+/**
+ * 
+ * @param toPad
+ * @param length
+ * @return
+ */
 	protected String padWithSpaces(String toPad, int length) {
 		while (toPad.length() < length) {
 			toPad = toPad + " ";

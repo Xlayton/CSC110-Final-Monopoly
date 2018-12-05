@@ -20,6 +20,10 @@ public abstract class Card {
 		return flavorText;
 	}
 
+	/**
+	 * 
+	 * @param toApply
+	 */
 	public abstract void applyEffect(Player toApply) throws InsufficientFundsException;
 
 	@Override

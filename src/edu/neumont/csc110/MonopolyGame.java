@@ -82,12 +82,17 @@ public class MonopolyGame {
 			}
 		} catch (InsufficientFundsException e) {
 			System.out.println(currentPlayer.getName() + " can't afford to do that!");
-
+			ArrayList<Color> monopolizedColors = new ArrayList<>();
+			for (Color c : Color.values()) {
+				if (currentPlayer.isMonopolized(c)) {
+					monopolizedColors.add(c);
+				}
+			}
 			int amountRaised = 0;
 			while (currentPlayer.getWorth() >= e.getAmountOver()) {
 				System.out.println("You need $" + (e.getAmountOver() - amountRaised) + " more");
 				mortgage();
-				sellHouses();
+				sellHouses(monopolizedColors);
 			}
 
 			if (amountRaised >= e.getAmountOver()) {
@@ -109,9 +114,62 @@ public class MonopolyGame {
 		return true;
 	}
 
-	private void sellHouses() {
-		// TODO Auto-generated method stub
+	
+	private void buyHouses(ArrayList<Color> monopolizedColors) {
+		ArrayList<TitleDeed> colorProperties = new ArrayList<>();
+		ArrayList<String> colorPropertiesName = new ArrayList<>();
+		System.out.println("What colored property would you like to buy houses/hotels for?");
+			Color choice = ConsoleUI.promptForMenuSelection(
+					monopolizedColors.toArray(new Color[0]), false);
+			for (OwnableSquare gettingProp : currentPlayer.getProperties()) {
+				if (gettingProp instanceof TitleDeed) {
+					if (((TitleDeed) gettingProp).getColor().equals(choice)) {
+						colorProperties.add((TitleDeed) gettingProp);
+						colorPropertiesName.add(gettingProp.getName());
+					}
+				}
+			}
+			int toBuildOn = ConsoleUI.promptForMenuSelection(colorPropertiesName.toArray(new String[0]), false) - 1;
+			for(TitleDeed d : colorProperties) {
+				if(!d.equals((TitleDeed) colorProperties.get(toBuildOn))) {
+					if(d.getBuildingCount() >= colorProperties.get(toBuildOn).getBuildingCount()) {
+						System.out.println(colorProperties.get(toBuildOn).getBuildingCount());
+						try {
+							colorProperties.get(toBuildOn).buyBuilding();
+							currentPlayer.subtractBalance(colorProperties.get(toBuildOn).getBuildingCost());
+						}catch(IllegalArgumentException ex) {
+							System.out.println(ex.getMessage());
+						}
+					} else {
+						System.out.println(colorProperties.get(toBuildOn).getBuildingCount());
+						System.out.println("Buy property on a different square in the set first");
+					}
+				}
+			}
+	}
+	
+	
 
+	private void sellHouses(ArrayList<Color> monopolizedColors) {
+		ArrayList<TitleDeed> colorProperties = new ArrayList<>();
+		ArrayList<String> colorPropertiesName = new ArrayList<>();
+		System.out.println("What colored property would you like to sell houses/hotels for?");
+			Color choice = ConsoleUI.promptForMenuSelection(
+					monopolizedColors.toArray(new Color[0]), false);
+			for (OwnableSquare gettingProp : currentPlayer.getProperties()) {
+				if (gettingProp instanceof TitleDeed) {
+					if (((TitleDeed) gettingProp).getColor().equals(choice)) {
+						colorProperties.add((TitleDeed) gettingProp);
+						colorPropertiesName.add(gettingProp.getName());
+					}
+				}
+			}
+			try {
+			int toSellFrom = ConsoleUI.promptForMenuSelection(colorPropertiesName.toArray(new String[0]), false) - 1;
+			currentPlayer.addBalance(colorProperties.get(toSellFrom).sellBuilding());
+			} catch(IllegalArgumentException ex) {
+				System.out.println(ex.getMessage());
+			}
 	}
 
 	private void improve() {
@@ -120,6 +178,12 @@ public class MonopolyGame {
 			if (currentPlayer.isMonopolized(c)) {
 				monopolizedColors.add(c);
 			}
+		}
+		boolean buying = ConsoleUI.promptForBool("Buy or sell", "Buy", "Sell");
+		if (buying) {
+			buyHouses(monopolizedColors);
+		} else {
+			sellHouses(monopolizedColors);
 		}
 	}
 

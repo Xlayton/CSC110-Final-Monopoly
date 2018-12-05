@@ -4,10 +4,16 @@ import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces_abstract.OwnableSquare;
 
 public class Railroad extends OwnableSquare {
+	/**
+	 * 
+	 * @param name - name of players
+	 */
 	public Railroad(String name) {
 		super(name, 200);
 	}
-
+/**
+ * @param owner - the person who owns the property
+ */
 	@Override
 	public void setOwnership(Player owner) {
 		if (isOwned()) {

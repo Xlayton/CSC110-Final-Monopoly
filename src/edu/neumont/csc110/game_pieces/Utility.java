@@ -4,6 +4,10 @@ import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces_abstract.OwnableSquare;
 
 public class Utility extends OwnableSquare {
+	/**
+	 * 
+	 * @param name - name of players
+	 */
 	public Utility(String name) {
 		super(name, 150);
 	}

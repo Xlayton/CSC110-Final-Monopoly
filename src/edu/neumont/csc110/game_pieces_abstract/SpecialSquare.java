@@ -4,10 +4,17 @@ import edu.neumont.csc110.InsufficientFundsException;
 import edu.neumont.csc110.Player;
 
 public abstract class SpecialSquare extends Square {
+	/**
+	 * 
+	 * @param name - name of player
+	 */
 	protected SpecialSquare(String name) {
 		super(name);
 	}
-
+	
+/**
+ * what square the player will land on
+ */
 	public abstract String applyEffect(Player player) throws InsufficientFundsException;
 
 	@Override

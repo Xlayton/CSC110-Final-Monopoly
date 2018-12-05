@@ -11,7 +11,11 @@ public class ChanceSquare extends SpecialSquare {
 
 	private final MonopolyBoard board;
 	private final int count;
-
+	
+/**
+ * 
+ * @param board - board for the game
+ */
 	public ChanceSquare(MonopolyBoard board) {
 		super("Chance");
 		this.board = board;
