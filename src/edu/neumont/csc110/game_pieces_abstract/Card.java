@@ -23,6 +23,7 @@ public abstract class Card {
 	/**
 	 * 
 	 * @param toApply
+	 * @throws InsufficientFundsException 
 	 */
 	public abstract void applyEffect(Player toApply) throws InsufficientFundsException;
 

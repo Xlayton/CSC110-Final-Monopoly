@@ -11,10 +11,14 @@ public abstract class SpecialSquare extends Square {
 	protected SpecialSquare(String name) {
 		super(name);
 	}
-	
-/**
- * what square the player will land on
- */
+
+	/**
+	 * what square the player will land on
+	 * 
+	 * @param player
+	 * @return a String representing the effect applied to the player
+	 * @throws InsufficientFundsException
+	 */
 	public abstract String applyEffect(Player player) throws InsufficientFundsException;
 
 	@Override

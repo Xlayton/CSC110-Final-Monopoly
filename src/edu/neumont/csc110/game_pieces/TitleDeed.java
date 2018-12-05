@@ -58,9 +58,13 @@ public class TitleDeed extends OwnableSquare {
 			throw new IllegalArgumentException("Cannot improve past a hotel");
 		}
 		if (buildingCount == 4) {
-			Hotel.takeBuilding();
+			if (!Hotel.takeBuilding()) {
+				throw new IllegalArgumentException("There are no hotels left to buy!");
+			}
 		} else {
-			House.takeBuilding();
+			if (!House.takeBuilding()) {
+				throw new IllegalArgumentException("There are no houses left to buy!");
+			}
 		}
 		buildingCount++;
 	}
@@ -71,7 +75,11 @@ public class TitleDeed extends OwnableSquare {
 		}
 
 		if (buildingCount == 5) {
-			Hotel.returnBuilding();
+			try {
+				Hotel.returnBuilding();
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException("No houses to replace hotel with!");
+			}
 		} else {
 			House.returnBuilding();
 		}

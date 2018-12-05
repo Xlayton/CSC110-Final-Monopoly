@@ -18,66 +18,78 @@ public abstract class OwnableSquare extends Square {
 		owner = null;
 		isMortgaged = false;
 	}
-/**
- * 
- * @param owner - person who owns the property
- */
+
+	/**
+	 * 
+	 * @param owner - person who owns the property
+	 */
 	public void setOwnership(Player owner) {
 		this.owner = owner;
 	}
-/**
- * it is evaluating the mortgage price
- * @return - the price is half
- */
+
+	/**
+	 * it is evaluating the mortgage price
+	 * 
+	 * @return - the price is half
+	 */
 	public int mortgage() {
 		isMortgaged = true;
 		return price / 2;
 	}
-/**
- * a property is not mortgaged 
- */
+
+	/**
+	 * a property is not mortgaged
+	 */
 	public void unmortgage() {
 		isMortgaged = false;
 	}
-/**
- * property is not yet owned by player
- * @return - 
- */
+
+	/**
+	 * property is not yet owned by player
+	 * 
+	 * @return -
+	 */
 	public boolean isOwned() {
 		return getOwner() != null;
 	}
-/**
- * property that is mortgaged
- * @return - show that it is mortgaged
- */
+
+	/**
+	 * property that is mortgaged
+	 * 
+	 * @return - show that it is mortgaged
+	 */
 	public boolean isMortgaged() {
 		return isMortgaged;
 	}
-/**
- * 
- * @return - show owner
- */
+
+	/**
+	 * 
+	 * @return - show owner
+	 */
 	public Player getOwner() {
 		return owner;
 	}
-/**
- * 
- * @param player - the players piece
- * @return - get the price of rent from property
- */
+
+	/**
+	 * 
+	 * @param player - the players piece
+	 * @return - get the price of rent from property
+	 */
 	public abstract int getRent(Player player);
 
 	public int getPrice() {
 		return price;
 	}
-/**
- * getting the original price of a property
- * @return - making the original price of the property
- */
+
+	/**
+	 * getting the original price of a property
+	 * 
+	 * @return - making the original price of the property
+	 */
 	public int getUnmortgagePrice() {
 		return (price / 2) + ((price / 2) / 10);
 	}
-	
+
 	public OwnableSquare copySquare() {
 		return this;
 	}
@@ -86,6 +98,7 @@ public abstract class OwnableSquare extends Square {
 	public String landedOn(Player player) throws InsufficientFundsException {
 		if (isOwned() && !player.equals(owner) && !isMortgaged()) {
 			player.subtractBalance(owner, getRent(player));
+			owner.addBalance(getRent(player));
 			return player.getName() + " paid $" + getRent(player) + " to " + owner.getName();
 		} else if (isOwned() && player.equals(owner)) {
 			return "You own this square.";
@@ -95,7 +108,7 @@ public abstract class OwnableSquare extends Square {
 			return "";
 		}
 	}
-	
+
 	@Override
 	public int compareTo(Square anotherSquare) {
 		if (!(anotherSquare instanceof OwnableSquare)) {

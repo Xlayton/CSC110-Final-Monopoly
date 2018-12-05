@@ -6,11 +6,12 @@ import edu.neumont.csc110.game_pieces_abstract.SpecialSquare;
 
 public class LuxuryTaxSquare extends SpecialSquare {
 	private final int taxAmount;
-/**
- * 
- * @param name - name of player
- * @param taxAmount - how much player is going to pay
- */
+
+	/**
+	 * 
+	 * @param name - name of player
+	 * @param taxAmount - how much player is going to pay
+	 */
 	public LuxuryTaxSquare(String name, int taxAmount) {
 		super(name);
 		this.taxAmount = taxAmount;

@@ -24,11 +24,13 @@ public abstract class Square implements Comparable<Square> {
 	protected Square(String name) {
 		this.name = name;
 	}
-	
-/**
- * shows the players name when it is their turn
- * @return - show name
- */
+
+	/**
+	 * shows the players name when it is their turn
+	 * @param player - the player that landed on the square
+	 * @return - show name
+	 * @throws InsufficientFundsException 
+	 */
 	public abstract String landedOn(Player player) throws InsufficientFundsException;
 
 	public String getName() {
@@ -49,10 +51,11 @@ public abstract class Square implements Comparable<Square> {
 		Square[] squares = new Square[40];
 
 		squares[0] = new GoSquare();
-		squares[1] =
-				new TitleDeed("Mediterranean Avenue", Color.BROWN, 60, 2, 10, 30, 90, 160, 250, 50, true);
+		squares[1] = new TitleDeed("Mediterranean Avenue", Color.BROWN, 60, 2, 10, 30, 90, 160, 250,
+				50, true);
 		squares[2] = new CommunityChestSquare(board);
-		squares[3] = new TitleDeed("Baltic Avenue", Color.BROWN, 60, 4, 20, 60, 180, 320, 450, 50, true);
+		squares[3] =
+				new TitleDeed("Baltic Avenue", Color.BROWN, 60, 4, 20, 60, 180, 320, 450, 50, true);
 		squares[4] = new LuxuryTaxSquare("Income Tax", 200);
 		squares[5] = new Railroad("Reading Railroad");
 		squares[6] =
@@ -103,28 +106,30 @@ public abstract class Square implements Comparable<Square> {
 				1200, 1400, 200);
 		squares[35] = new Railroad("Short Line");
 		squares[36] = new ChanceSquare(board);
-		squares[37] =
-				new TitleDeed("Park Place", Color.BLUE, 350, 35, 175, 500, 1100, 1300, 1500, 200, true);
+		squares[37] = new TitleDeed("Park Place", Color.BLUE, 350, 35, 175, 500, 1100, 1300, 1500,
+				200, true);
 		squares[38] = new LuxuryTaxSquare("Luxuary Tax", 100);
-		squares[39] =
-				new TitleDeed("Boardwalk", Color.BLUE, 400, 50, 200, 600, 1400, 1700, 2000, 200, true);
+		squares[39] = new TitleDeed("Boardwalk", Color.BLUE, 400, 50, 200, 600, 1400, 1700, 2000,
+				200, true);
 
 		return squares;
 	}
-/**
- * 
- * @param text
- * @return
- */
+
+	/**
+	 * 
+	 * @param text
+	 * @return
+	 */
 	protected String makeRow(String text) {
 		return makeRow(text, true);
 	}
-/**
- * 
- * @param text
- * @param withEdges
- * @return
- */
+
+	/**
+	 * 
+	 * @param text
+	 * @param withEdges
+	 * @return
+	 */
 	protected String makeRow(String text, boolean withEdges) {
 		StringBuilder result = new StringBuilder();
 		result.append(withEdges ? "|" : " ");
@@ -133,12 +138,13 @@ public abstract class Square implements Comparable<Square> {
 		result.append("\n");
 		return result.toString();
 	}
-/**
- * 
- * @param toPad
- * @param length
- * @return
- */
+
+	/**
+	 * 
+	 * @param toPad
+	 * @param length
+	 * @return
+	 */
 	protected String padWithSpaces(String toPad, int length) {
 		while (toPad.length() < length) {
 			toPad = toPad + " ";

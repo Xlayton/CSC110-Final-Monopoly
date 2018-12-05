@@ -1,11 +1,10 @@
 package edu.neumont.csc110;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import edu.neumont.csc110.game_pieces.ChanceCardList;
 import edu.neumont.csc110.game_pieces.CommunityChestCardList;
-import edu.neumont.csc110.game_pieces.House;
 import edu.neumont.csc110.game_pieces.Piece;
-import edu.neumont.csc110.game_pieces.TitleDeed;
 import edu.neumont.csc110.game_pieces_abstract.Card;
 import edu.neumont.csc110.game_pieces_abstract.Square;
 
@@ -16,7 +15,7 @@ import edu.neumont.csc110.game_pieces_abstract.Square;
  * @author Clayton Schrumpf
  * @author Maya Shackleford
  */
-public class MonopolyBoard {
+public class MonopolyBoard implements Iterable<Square> {
 	private final BoardLocation[] locations;
 	private final Deck chanceDeck, communityChestDeck;
 	private final Player[] players;
@@ -177,5 +176,14 @@ public class MonopolyBoard {
 		// }
 
 		return result.toString();
+	}
+
+	@Override
+	public Iterator<Square> iterator() {
+		ArrayList<Square> squares = new ArrayList<>();
+		for (BoardLocation location : locations) {
+			squares.add(location.getSquare());
+		}
+		return squares.iterator();
 	}
 }

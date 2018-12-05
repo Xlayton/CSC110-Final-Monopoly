@@ -11,9 +11,10 @@ public class Railroad extends OwnableSquare {
 	public Railroad(String name) {
 		super(name, 200);
 	}
-/**
- * @param owner - the person who owns the property
- */
+
+	/**
+	 * @param owner - the person who owns the property
+	 */
 	@Override
 	public void setOwnership(Player owner) {
 		if (isOwned()) {

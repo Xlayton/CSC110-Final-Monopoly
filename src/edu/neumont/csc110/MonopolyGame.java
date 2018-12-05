@@ -7,6 +7,7 @@ import edu.neumont.csc110.game_pieces.Piece;
 import edu.neumont.csc110.game_pieces.TitleDeed;
 import edu.neumont.csc110.game_pieces.TitleDeed.Color;
 import edu.neumont.csc110.game_pieces_abstract.OwnableSquare;
+import edu.neumont.csc110.game_pieces_abstract.Square;
 import interfaces.ConsoleUI;
 import interfaces.MenuOption;
 
@@ -88,8 +89,21 @@ public class MonopolyGame {
 					monopolizedColors.add(c);
 				}
 			}
+
 			int amountRaised = 0;
-			while (currentPlayer.getWorth() >= e.getAmountOver()) {
+			int raisable = 0;
+
+			raisable += currentPlayer.getBalance();
+			for (OwnableSquare s : currentPlayer) {
+				raisable += s.getPrice() / 2;
+				if (s instanceof TitleDeed) {
+					raisable +=
+							(((TitleDeed) s).getBuildingCost() * ((TitleDeed) s).getBuildingCount())
+									/ 2;
+				}
+			}
+
+			while (raisable >= e.getAmountOver()) {
 				System.out.println("You need $" + (e.getAmountOver() - amountRaised) + " more");
 				mortgage();
 				sellHouses(monopolizedColors);
@@ -114,62 +128,88 @@ public class MonopolyGame {
 		return true;
 	}
 
-	
+
 	private void buyHouses(ArrayList<Color> monopolizedColors) {
 		ArrayList<TitleDeed> colorProperties = new ArrayList<>();
 		ArrayList<String> colorPropertiesName = new ArrayList<>();
 		System.out.println("What colored property would you like to buy houses/hotels for?");
-			Color choice = ConsoleUI.promptForMenuSelection(
-					monopolizedColors.toArray(new Color[0]), false);
-			for (OwnableSquare gettingProp : currentPlayer.getProperties()) {
-				if (gettingProp instanceof TitleDeed) {
-					if (((TitleDeed) gettingProp).getColor().equals(choice)) {
-						colorProperties.add((TitleDeed) gettingProp);
-						colorPropertiesName.add(gettingProp.getName());
-					}
+		Color choice =
+				ConsoleUI.promptForMenuSelection(monopolizedColors.toArray(new Color[0]), false);
+		for (OwnableSquare gettingProp : currentPlayer.getProperties()) {
+			if (gettingProp instanceof TitleDeed) {
+				if (((TitleDeed) gettingProp).getColor().equals(choice)) {
+					colorProperties.add((TitleDeed) gettingProp);
+					colorPropertiesName.add(gettingProp.getName());
 				}
 			}
-			int toBuildOn = ConsoleUI.promptForMenuSelection(colorPropertiesName.toArray(new String[0]), false) - 1;
-			for(TitleDeed d : colorProperties) {
-				if(!d.equals((TitleDeed) colorProperties.get(toBuildOn))) {
-					if(d.getBuildingCount() >= colorProperties.get(toBuildOn).getBuildingCount()) {
-						System.out.println(colorProperties.get(toBuildOn).getBuildingCount());
-						try {
-							colorProperties.get(toBuildOn).buyBuilding();
-							currentPlayer.subtractBalance(colorProperties.get(toBuildOn).getBuildingCost());
-						}catch(IllegalArgumentException ex) {
-							System.out.println(ex.getMessage());
-						}
-					} else {
-						System.out.println(colorProperties.get(toBuildOn).getBuildingCount());
-						System.out.println("Buy property on a different square in the set first");
+		}
+		System.out.println(
+				"Properties on this color cost $" + colorProperties.get(0).getBuildingCost());
+
+		int toBuildOn =
+				ConsoleUI.promptForMenuSelection(colorPropertiesName.toArray(new String[0]), false)
+						- 1;
+		for (TitleDeed d : colorProperties) {
+			if (!d.equals((TitleDeed) colorProperties.get(toBuildOn))) {
+				if (d.getBuildingCount() >= colorProperties.get(toBuildOn).getBuildingCount()) {
+					try {
+						colorProperties.get(toBuildOn).buyBuilding();
+						currentPlayer
+								.subtractBalance(colorProperties.get(toBuildOn).getBuildingCost());
+						System.out.println(
+								"Added 1 house to " + colorProperties.get(toBuildOn).getName());
+					} catch (IllegalArgumentException ex) {
+						System.out.println(ex.getMessage());
 					}
+				} else {
+					System.out.println("Buy property on a different square in the set first");
 				}
 			}
+		}
 	}
-	
-	
+
+
 
 	private void sellHouses(ArrayList<Color> monopolizedColors) {
 		ArrayList<TitleDeed> colorProperties = new ArrayList<>();
 		ArrayList<String> colorPropertiesName = new ArrayList<>();
 		System.out.println("What colored property would you like to sell houses/hotels for?");
-			Color choice = ConsoleUI.promptForMenuSelection(
-					monopolizedColors.toArray(new Color[0]), false);
-			for (OwnableSquare gettingProp : currentPlayer.getProperties()) {
-				if (gettingProp instanceof TitleDeed) {
-					if (((TitleDeed) gettingProp).getColor().equals(choice)) {
-						colorProperties.add((TitleDeed) gettingProp);
-						colorPropertiesName.add(gettingProp.getName());
+		Color choice =
+				ConsoleUI.promptForMenuSelection(monopolizedColors.toArray(new Color[0]), false);
+		for (OwnableSquare gettingProp : currentPlayer.getProperties()) {
+			if (gettingProp instanceof TitleDeed) {
+				if (((TitleDeed) gettingProp).getColor().equals(choice)) {
+					colorProperties.add((TitleDeed) gettingProp);
+					colorPropertiesName.add(gettingProp.getName());
+				}
+			}
+		}
+
+		try {
+			int toSellFrom = ConsoleUI
+					.promptForMenuSelection(colorPropertiesName.toArray(new String[0]), false) - 1;
+			for (TitleDeed d : colorProperties) {
+				if (!d.equals((TitleDeed) colorProperties.get(toSellFrom))) {
+					if (d.getBuildingCount() >= colorProperties.get(toSellFrom)
+							.getBuildingCount()) {
+						try {
+							colorProperties.get(toSellFrom).sellBuilding();
+							currentPlayer
+									.addBalance(colorProperties.get(toSellFrom).sellBuilding());
+							System.out.println("Sold 1 house from "
+									+ colorProperties.get(toSellFrom).getName());
+						} catch (IllegalArgumentException ex) {
+							System.out.println(ex.getMessage());
+						}
+					} else {
+						System.out
+								.println("Sell a property on a different square in the set first");
 					}
 				}
 			}
-			try {
-			int toSellFrom = ConsoleUI.promptForMenuSelection(colorPropertiesName.toArray(new String[0]), false) - 1;
-			currentPlayer.addBalance(colorProperties.get(toSellFrom).sellBuilding());
-			} catch(IllegalArgumentException ex) {
-				System.out.println(ex.getMessage());
-			}
+		} catch (IllegalArgumentException ex) {
+			System.out.println(ex.getMessage());
+		}
 	}
 
 	private void improve() {
@@ -406,7 +446,10 @@ public class MonopolyGame {
 		jailedThisTurn = false;
 	}
 
-	private void endGame() {}
+	private void endGame() {
+		System.out.println(
+				players.get(0).getName() + " wins! Congratulations! The rest of you are bad.");
+	}
 
 	private void bankruptPlayer(Player toBankrupt) {
 		bankruptPlayer(toBankrupt, null);
@@ -414,7 +457,9 @@ public class MonopolyGame {
 
 	private void bankruptPlayer(Player toBankrupt, Player bankruptingPlayer) {
 		players.remove(toBankrupt);
-		currentPlayerIndex--;
+		currentPlayerIndex %= players.size();
+		currentPlayer = players.get(currentPlayerIndex);
+		currentPlayerHasRolled = false;
 		for (OwnableSquare s : toBankrupt) {
 			if (s instanceof TitleDeed) {
 				for (int i = 0; i < ((TitleDeed) s).getBuildingCount(); i++) {
@@ -444,9 +489,9 @@ public class MonopolyGame {
 					System.out.println("You can't afford to do that!");
 				}
 				s.setOwnership(bankruptingPlayer);
-				bankruptingPlayer.addBalance(bankruptingPlayer.getBalance());
 			}
 		}
+		bankruptingPlayer.addBalance(toBankrupt.getBalance());
 	}
 
 	private void initGame() {
@@ -471,21 +516,42 @@ public class MonopolyGame {
 
 	private void initSecretPlayers() {
 		for (Player p : players) {
-			if (p.getName().equals("Monopoly!")) {
-				p.addProperties((OwnableSquare) board.getLocation("Park Place"),
-						(OwnableSquare) board.getLocation("Boardwalk"));
-				((OwnableSquare) board.getLocation("Park Place")).setOwnership(p);
-				((OwnableSquare) board.getLocation("Boardwalk")).setOwnership(p);
-			} else if (p.getName().equals("Jailbait!")) {
-				p.setJailed(true);
-				p.giveJailBreak();
-				p.setFalseRoll(true);
-				board.moveTo(p, board.getLocation("Jail"), false);
-			} else if (p.getName().equals("Broke!")) {
-				try {
-					p.subtractBalance(1499);
-				} catch (InsufficientFundsException e) {
-					e.printStackTrace();
+			if (p.getName().startsWith("!")) {
+				String pName = p.getName().substring(1);
+				if (pName.equalsIgnoreCase("Monopoly")) {
+					p.addProperties((OwnableSquare) board.getLocation("Park Place"),
+							(OwnableSquare) board.getLocation("Boardwalk"));
+					((OwnableSquare) board.getLocation("Park Place")).setOwnership(p);
+					((OwnableSquare) board.getLocation("Boardwalk")).setOwnership(p);
+				} else if (pName.equalsIgnoreCase("Jailbait")) {
+					p.setJailed(true);
+					p.giveJailBreak();
+					p.setFalseRoll(true);
+					board.moveTo(p, board.getLocation("Jail"), false);
+				} else if (pName.equalsIgnoreCase("Broke")) {
+					try {
+						p.subtractBalance(1499);
+					} catch (InsufficientFundsException e) {
+						e.printStackTrace();
+					}
+				} else if (pName.equalsIgnoreCase("Great Britain") || pName.equals("Olga")) {
+					for (Square s : board) {
+						if (s instanceof OwnableSquare) {
+							OwnableSquare deed = (OwnableSquare) s;
+							p.addProperties(deed);
+							deed.setOwnership(p);
+							try {
+								if (deed instanceof TitleDeed) {
+									((TitleDeed) deed).buyBuilding();
+									((TitleDeed) deed).buyBuilding();
+									((TitleDeed) deed).buyBuilding();
+									((TitleDeed) deed).buyBuilding();
+									((TitleDeed) deed).buyBuilding();
+								}
+							} catch (IllegalArgumentException e) {
+							}
+						}
+					}
 				}
 			}
 		}

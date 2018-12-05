@@ -5,16 +5,16 @@ public class InsufficientFundsException extends RuntimeException {
 
 	private final Player bankruptingPlayer;
 	private final int amountOver;
-	
+
 	public InsufficientFundsException(String message, Player bankruptingPlayer, int amountOver) {
 		this.bankruptingPlayer = bankruptingPlayer;
 		this.amountOver = amountOver;
 	}
-	
+
 	public Player getBankruptingPlayer() {
 		return bankruptingPlayer;
 	}
-	
+
 	public int getAmountOver() {
 		return amountOver;
 	}

@@ -4,7 +4,7 @@ import edu.neumont.csc110.Player;
 import edu.neumont.csc110.game_pieces_abstract.Card;
 
 public class JailBreakCard extends Card {
-	
+
 	/**
 	 * Constructs a new instance of a get out of jail free card
 	 * 

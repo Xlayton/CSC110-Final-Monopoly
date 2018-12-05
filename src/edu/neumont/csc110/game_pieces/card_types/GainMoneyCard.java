@@ -5,7 +5,7 @@ import edu.neumont.csc110.game_pieces_abstract.Card;
 
 public class GainMoneyCard extends Card {
 	private final int gainAmount;
-	
+
 	/**
 	 * 
 	 * @param flavorText - description of card
