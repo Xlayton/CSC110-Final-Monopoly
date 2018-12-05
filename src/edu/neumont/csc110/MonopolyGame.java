@@ -89,15 +89,16 @@ public class MonopolyGame {
 				mortgage();
 				sellHouses();
 			}
-			
+
 			if (amountRaised >= e.getAmountOver()) {
 				currentPlayer.subtractBalance(e.getBankruptingPlayer(), amountRaised);
 				return true;
 			}
-			
+
 			System.out.println(currentPlayer.getName() + " is bankrupt, and loses!");
 			if (e.getBankruptingPlayer() != null) {
-				System.out.println("Assets are transferred to " + e.getBankruptingPlayer().getName());
+				System.out
+						.println("Assets are transferred to " + e.getBankruptingPlayer().getName());
 			}
 			bankruptPlayer(currentPlayer, e.getBankruptingPlayer());
 			if (players.size() == 1) {
@@ -110,7 +111,7 @@ public class MonopolyGame {
 
 	private void sellHouses() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void improve() {
@@ -348,16 +349,19 @@ public class MonopolyGame {
 	}
 
 	private void bankruptPlayer(Player toBankrupt, Player bankruptingPlayer) {
+		players.remove(toBankrupt);
+		currentPlayerIndex--;
 		for (OwnableSquare s : toBankrupt) {
 			if (s instanceof TitleDeed) {
 				for (int i = 0; i < ((TitleDeed) s).getBuildingCount(); i++) {
-					toBankrupt.addBalance(((TitleDeed) s).sellBuilding());;
+					toBankrupt.addBalance(((TitleDeed) s).sellBuilding());
 				}
 			}
 			if (bankruptingPlayer == null) {
 				s.unmortgage();
 				s.setOwnership(null);
-				auction(s);
+				new ConsoleAuction().startAuction(s, players,
+						players.get((currentPlayerIndex + 1) % players.size()));;
 			} else {
 				try {
 					if (s.isMortgaged()) {
@@ -379,11 +383,7 @@ public class MonopolyGame {
 				bankruptingPlayer.addBalance(bankruptingPlayer.getBalance());
 			}
 		}
-		players.remove(toBankrupt);
-		currentPlayerIndex--;
 	}
-
-	private void auction(OwnableSquare s) {}
 
 	private void initGame() {
 		System.out.println("Welcome to Console Monopoly!");
