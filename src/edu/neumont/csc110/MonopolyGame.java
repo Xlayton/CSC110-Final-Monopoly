@@ -82,7 +82,7 @@ public class MonopolyGame {
 				break;
 			}
 		} catch (InsufficientFundsException e) {
-			System.out.println(currentPlayer.getName() + " can't afford to do that!");
+			System.out.println(e.getMessage());
 			ArrayList<Color> monopolizedColors = new ArrayList<>();
 			for (Color c : Color.values()) {
 				if (currentPlayer.isMonopolized(c)) {
@@ -93,9 +93,10 @@ public class MonopolyGame {
 			int amountRaised = 0;
 			int raisable = 0;
 
-			raisable += currentPlayer.getBalance();
 			for (OwnableSquare s : currentPlayer) {
-				raisable += s.getPrice() / 2;
+				if (!s.isMortgaged()) {
+					raisable += s.getPrice() / 2;
+				}
 				if (s instanceof TitleDeed) {
 					raisable +=
 							(((TitleDeed) s).getBuildingCost() * ((TitleDeed) s).getBuildingCount())
@@ -103,14 +104,35 @@ public class MonopolyGame {
 				}
 			}
 
-			while (raisable >= e.getAmountOver()) {
-				System.out.println("You need $" + (e.getAmountOver() - amountRaised) + " more");
-				mortgage();
-				sellHouses(monopolizedColors);
+			if (raisable >= e.getAmountOver()) {
+				while (amountRaised < e.getAmountOver()) {
+					System.out.println("You need $" + (e.getAmountOver() - amountRaised) + " more");
+					if (currentPlayer.getProperties().length > 0) {
+						boolean hasHouses = false;
+						for (OwnableSquare s : currentPlayer) {
+							if (s instanceof TitleDeed) {
+								if (((TitleDeed) s).getBuildingCount() > 0) {
+									hasHouses = true;
+									break;
+								}
+							}
+						}
+						if (hasHouses) {
+							amountRaised += sellHouses(monopolizedColors);
+						}
+						
+						if (amountRaised >= e.getAmountOver()) {
+							break;
+						}
+						if (!hasHouses) {
+							amountRaised += mortgage();
+						}
+					}
+				}
 			}
 
 			if (amountRaised >= e.getAmountOver()) {
-				currentPlayer.subtractBalance(e.getBankruptingPlayer(), amountRaised);
+				currentPlayer.subtractBalance(e.getBankruptingPlayer(), e.getOriginalCost());
 				return true;
 			}
 
@@ -151,7 +173,8 @@ public class MonopolyGame {
 						- 1;
 		for (TitleDeed d : colorProperties) {
 			if (!d.equals((TitleDeed) colorProperties.get(toBuildOn))) {
-				if (d.getBuildingCount() >= colorProperties.get(toBuildOn).getBuildingCount()) {
+				if (Math.abs(colorProperties.get(toBuildOn)
+						.getBuildingCount() - d.getBuildingCount() + 1) <= 1) {
 					try {
 						colorProperties.get(toBuildOn).buyBuilding();
 						currentPlayer
@@ -170,10 +193,10 @@ public class MonopolyGame {
 
 
 
-	private void sellHouses(ArrayList<Color> monopolizedColors) {
+	private int sellHouses(ArrayList<Color> monopolizedColors) {
 		ArrayList<TitleDeed> colorProperties = new ArrayList<>();
 		ArrayList<String> colorPropertiesName = new ArrayList<>();
-		System.out.println("What colored property would you like to sell houses/hotels for?");
+		System.out.println("What colored property would you like to sell houses/hotels from?");
 		Color choice =
 				ConsoleUI.promptForMenuSelection(monopolizedColors.toArray(new Color[0]), false);
 		for (OwnableSquare gettingProp : currentPlayer.getProperties()) {
@@ -189,27 +212,30 @@ public class MonopolyGame {
 			int toSellFrom = ConsoleUI
 					.promptForMenuSelection(colorPropertiesName.toArray(new String[0]), false) - 1;
 			for (TitleDeed d : colorProperties) {
-				if (!d.equals((TitleDeed) colorProperties.get(toSellFrom))) {
-					if (d.getBuildingCount() >= colorProperties.get(toSellFrom)
-							.getBuildingCount()) {
+				if (!d.equals(colorProperties.get(toSellFrom))) {
+					if (Math.abs(colorProperties.get(toSellFrom)
+							.getBuildingCount() - d.getBuildingCount() - 1) <= 1) {
 						try {
-							colorProperties.get(toSellFrom).sellBuilding();
 							currentPlayer
 									.addBalance(colorProperties.get(toSellFrom).sellBuilding());
 							System.out.println("Sold 1 house from "
 									+ colorProperties.get(toSellFrom).getName());
+							return (colorProperties.get(toSellFrom).getBuildingCost());
 						} catch (IllegalArgumentException ex) {
 							System.out.println(ex.getMessage());
 						}
 					} else {
 						System.out
 								.println("Sell a property on a different square in the set first");
+						return 0;
 					}
 				}
 			}
 		} catch (IllegalArgumentException ex) {
 			System.out.println(ex.getMessage());
+			return 0;
 		}
+		return 0;
 	}
 
 	private void improve() {
@@ -227,7 +253,7 @@ public class MonopolyGame {
 		}
 	}
 
-	private void mortgage() throws InsufficientFundsException {
+	private int mortgage() throws InsufficientFundsException {
 		ArrayList<String> properties = new ArrayList<>();
 		for (OwnableSquare s : currentPlayer.getProperties()) {
 			String str = s.getName() + " (";
@@ -248,10 +274,13 @@ public class MonopolyGame {
 				} else {
 					System.out.println("You can't afford to unmortgage that!");
 				}
+				return 0;
 			} else {
 				currentPlayer.addBalance(currentPlayer.getProperties()[property - 1].mortgage());
+				return currentPlayer.getProperties()[property - 1].getPrice() / 2;
 			}
 		}
+		return 0;
 	}
 
 	private void surrender() {
@@ -488,10 +517,13 @@ public class MonopolyGame {
 				} catch (InsufficientFundsException e) {
 					System.out.println("You can't afford to do that!");
 				}
+				bankruptingPlayer.addProperties(s);
 				s.setOwnership(bankruptingPlayer);
 			}
 		}
-		bankruptingPlayer.addBalance(toBankrupt.getBalance());
+		if (bankruptingPlayer != null) {
+			bankruptingPlayer.addBalance(toBankrupt.getBalance());
+		}
 	}
 
 	private void initGame() {
@@ -552,6 +584,17 @@ public class MonopolyGame {
 							}
 						}
 					}
+				} else if (pName.equalsIgnoreCase("Unlucky")) {
+					p.subtractBalance(1499);
+					p.setFalseRoll(2, 1);
+				} else if (pName.equalsIgnoreCase("UnluckyProp")) {
+					p.subtractBalance(1499);
+					p.setFalseRoll(38, 1);
+					p.addProperties((OwnableSquare) board.getLocation("Mediterranean Avenue"));
+					((OwnableSquare) board.getLocation("Mediterranean Avenue")).setOwnership(p);
+					p.addProperties((OwnableSquare) board.getLocation("Baltic Avenue"));
+					((OwnableSquare) board.getLocation("Baltic Avenue")).setOwnership(p);
+					((TitleDeed) board.getLocation("Baltic Avenue")).buyBuilding();
 				}
 			}
 		}

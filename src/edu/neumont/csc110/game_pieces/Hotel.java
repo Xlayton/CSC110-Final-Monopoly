@@ -20,10 +20,11 @@ public class Hotel {
 	}
 
 	public static void returnBuilding() {
-		House.takeBuilding();
-		House.takeBuilding();
-		House.takeBuilding();
-		House.takeBuilding();
+		for (int i = 0; i < 4; i++) {
+			if (!House.takeBuilding()) {
+				throw new IllegalArgumentException("No houses left to take!");
+			}
+		}
 		count++;
 	}
 }

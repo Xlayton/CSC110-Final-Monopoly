@@ -85,7 +85,13 @@ public class MonopolyBoard implements Iterable<Square> {
 			if (locations[i].getSquare().equals(location)) {
 				locations[i].putPiece(player.getPiece());
 				effects.add(player.getName() + " landed on " + location.getName());
-				effects.add(locations[i].getSquare().landedOn(player));
+				try {
+					effects.add(locations[i].getSquare().landedOn(player));
+				} catch (InsufficientFundsException e) {
+					throw new InsufficientFundsException(
+							player.getName() + " couldn't afford to land on " + location.getName(),
+							e.getBankruptingPlayer(), e.getOriginalCost(), e.getAmountOver());
+				}
 				if (i < currentIndex && shouldPassGo) {
 					effects.add(player.getName() + " passed or landed on go and gains $200");
 					player.addBalance(200);

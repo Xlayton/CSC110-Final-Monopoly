@@ -14,7 +14,7 @@ public class Player implements Iterable<OwnableSquare> {
 	private final ArrayList<OwnableSquare> properties;
 
 	private int houseCount, hotelCount, jailBreakCount, railroadCount, utilityCount, balance,
-			escapeAttempts;
+			escapeAttempts, falseRollOne, falseRollTwo;
 	private boolean isJailed, isAuctioning;
 	private boolean falseRoll;
 
@@ -37,7 +37,7 @@ public class Player implements Iterable<OwnableSquare> {
 
 	public void subtractBalance(Player payTo, int amount) throws InsufficientFundsException {
 		if (amount > balance) {
-			throw new InsufficientFundsException("Insufficient funds", payTo,
+			throw new InsufficientFundsException("Insufficient funds", payTo, amount,
 					Math.abs(balance - amount));
 		}
 		balance -= amount;
@@ -127,9 +127,17 @@ public class Player implements Iterable<OwnableSquare> {
 		this.falseRoll = falseRoll;
 	}
 
+	public void setFalseRoll(int i, int j) {
+		falseRollOne = i;
+		falseRollTwo = j;
+		falseRoll = true;
+	}
+
 	public int[] roll() {
 		if (!falseRoll) {
 			return new int[] {(new Random().nextInt(6) + 1), (new Random().nextInt(6) + 1)};
+		} else if (falseRollOne > 0 && falseRollTwo > 0){
+			return new int[] {falseRollOne, falseRollTwo};
 		} else {
 			int roll = new Random().nextInt(6) + 1;
 			return new int[] {roll, roll};

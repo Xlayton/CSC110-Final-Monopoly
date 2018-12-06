@@ -4,10 +4,12 @@ public class InsufficientFundsException extends RuntimeException {
 	private static final long serialVersionUID = 8881535800372883962L;
 
 	private final Player bankruptingPlayer;
-	private final int amountOver;
+	private final int originalCost, amountOver;
 
-	public InsufficientFundsException(String message, Player bankruptingPlayer, int amountOver) {
+	public InsufficientFundsException(String message, Player bankruptingPlayer, int originalCost, int amountOver) {
+		super(message);
 		this.bankruptingPlayer = bankruptingPlayer;
+		this.originalCost = originalCost;
 		this.amountOver = amountOver;
 	}
 
@@ -15,6 +17,10 @@ public class InsufficientFundsException extends RuntimeException {
 		return bankruptingPlayer;
 	}
 
+	public int getOriginalCost() {
+		return originalCost;
+	}
+	
 	public int getAmountOver() {
 		return amountOver;
 	}
